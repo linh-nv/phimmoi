@@ -20,4 +20,9 @@ class Category extends Model
         'description',
         'status',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

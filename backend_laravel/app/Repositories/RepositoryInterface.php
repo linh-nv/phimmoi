@@ -16,4 +16,6 @@ interface RepositoryInterface
     public function update(Model $model, array $attributes): Model;
     
     public function delete(Model $model): bool;
+
+    public function destroy(array $ids): bool;
 }

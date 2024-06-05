@@ -94,6 +94,12 @@ abstract class BaseRepository implements RepositoryInterface
         return true;
     }
 
+    public function destroy(array $ids): bool
+    {
+        $this->_model->destroy($ids);
+
+        return true;
+    }
     /**
      * Get All with Pagination
      * @return LengthAwarePaginator

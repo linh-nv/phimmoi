@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+
+use function App\Helpers\convert_to_slug;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,3 +23,11 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('refresh', [AuthController::class, 'refresh']);
 Route::get('me', [AuthController::class, 'userProfile'])->middleware('jwt.verify');
+
+Route::group(['middleware' => 'jwt.verify'], function () {
+    Route::apiResource('category', CategoryController::class);
+
+    Route::group(['prefix' => 'destroy'], function () {
+        Route::delete('category', [CategoryController::class, 'destroyMultiple']);
+    });
+});

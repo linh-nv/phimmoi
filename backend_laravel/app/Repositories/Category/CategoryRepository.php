@@ -3,7 +3,6 @@ namespace App\Repositories\Category;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Carbon;
 
 class CategoryRepository extends BaseRepository
 {
@@ -19,8 +18,10 @@ class CategoryRepository extends BaseRepository
 
     public function search(string $keyword): Collection
     {
-        return $this->_model->where('name', 'like', '%' . $keyword . '%')
+        return $this->_model->where('title', 'like', '%' . $keyword . '%')
+                           ->orWhere('slug', 'like', '%' . $keyword . '%')
                            ->orWhere('description', 'like', '%' . $keyword . '%')
+                           ->orWhere('status', 'like', '%' . $keyword . '%')
                            ->get();
     }
     

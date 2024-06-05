@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use Carbon\Carbon;
 
+use function App\Helpers\convert_to_slug;
+
 class CategoryService
 {
     protected CategoryRepository $categoryRepository;
@@ -15,8 +17,15 @@ class CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
+    public function getAll(?string $keyword = null)
+    {
+
+        return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getAll();
+    }
+
     public function getPaginate(?string $keyword = null)
     {
+
         return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getPaginate();
     }
 
@@ -24,7 +33,7 @@ class CategoryService
     {
         $categoryData = [
             'title' => $data['title'],
-            'slug' => $data['slug'],
+            'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
             'created_at' => Carbon::now(),
@@ -43,7 +52,7 @@ class CategoryService
 
         return $this->categoryRepository->update($category, [
             'title' => $data['title'],
-            'slug' => $data['slug'],
+            'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
         ]);
@@ -53,5 +62,11 @@ class CategoryService
     {
 
         return $this->categoryRepository->delete($category);
+    }
+    
+    public function destroyMultiple(array $ids): bool
+    {
+
+        return $this->categoryRepository->destroy($ids);
     }
 }
