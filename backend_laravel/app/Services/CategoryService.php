@@ -31,19 +31,19 @@ class CategoryService
 
     public function createCategory(array $data): Category
     {
-        $categoryData = [
+
+        return $this->categoryRepository->create([
             'title' => $data['title'],
             'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
             'created_at' => Carbon::now(),
-        ];
-
-        return $this->categoryRepository->create($categoryData);
+        ]);
     }
 
     public function getCategoryById(Category $category): Category
     {
+
         return $this->categoryRepository->find($category);
     }
 
@@ -63,7 +63,7 @@ class CategoryService
 
         return $this->categoryRepository->delete($category);
     }
-    
+
     public function destroyMultiple(array $ids): bool
     {
 
