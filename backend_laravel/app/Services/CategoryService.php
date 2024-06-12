@@ -55,6 +55,7 @@ class CategoryService
             'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
+            'updated_at' => Carbon::now(),
         ]);
     }
 

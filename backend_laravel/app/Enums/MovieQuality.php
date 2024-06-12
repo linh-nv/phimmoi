@@ -2,18 +2,18 @@
 
 namespace App\Enums;
 
-enum WardType: string
+enum MovieQuality: int
 {
-    case XA = 1;
-    case PHUONG = 2;
-    case THI_TRAN = 3;
-
+    case CAM = 1;
+    case FHD = 2;
+    case HD = 2;
+    
     public function label(): string
     {
         return match ($this) {
-            WardType::XA => 'Xã',
-            WardType::PHUONG => 'Phường',
-            WardType::THI_TRAN => 'Thị trấn',
+            MovieQuality::CAM => 'Cam',
+            MovieQuality::FHD => 'FHD',
+            MovieQuality::HD => 'HD',
         };
     }
 

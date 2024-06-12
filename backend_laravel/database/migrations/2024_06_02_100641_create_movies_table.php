@@ -34,8 +34,8 @@ return new class extends Migration
             $table->string('showtimes')->nullable();
             $table->integer('year')->nullable();
             $table->bigInteger('view')->default(0);
-            $table->json('actor')->nullable();
-            $table->json('director')->nullable();
+            $table->text('actor')->nullable();
+            $table->text('director')->nullable();
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();

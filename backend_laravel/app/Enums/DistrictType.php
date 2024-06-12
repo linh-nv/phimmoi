@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum DistrictType: string
+enum DistrictType: int
 {
-    case HUYEN = 'Huyện';
-    case QUAN = 'Quận';
-    case THI_XA = 'Thị xã';
+    case HUYEN = 1;
+    case QUAN = 2;
+    case THI_XA = 3;
 
     public function label(): string
     {

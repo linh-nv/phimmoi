@@ -38,6 +38,7 @@ class CountryService
             'description' => $data['description'],
             'status' => $data['status'],
             'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 
