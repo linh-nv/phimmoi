@@ -2,32 +2,37 @@
 
 namespace App\Services;
 
+use App\Singletons\ResourceSingleton;
 use App\Http\Resources\MovieResource;
+use App\Http\Resources\MovieResourceCollection;
 use App\Models\Movie;
 use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
-
 use function App\Helpers\convert_to_slug;
 
 class MovieService
 {
     protected MovieRepository $movieRepository;
+    protected $resourceSingleton;
 
     public function __construct(MovieRepository $movieRepository)
     {
         $this->movieRepository = $movieRepository;
+        $this->resourceSingleton = ResourceSingleton::getInstance();
     }
 
-    public function getAll(?string $keyword = null)
+    public function getAll(?string $keyword = null): MovieResource
     {
-        $movies = $keyword ? $this->movieRepository->search($keyword) : $this->movieRepository->getAll();
-        return MovieResource::collection($movies);
+        $movies = $keyword ? $this->movieRepository->getSearch($keyword) : $this->movieRepository->getAll();
+
+        return $this->resourceSingleton->getResource(MovieResource::class, $movies);
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): MovieResourceCollection
     {
-        $movies = $keyword ? $this->movieRepository->search($keyword) : $this->movieRepository->getPaginate();
-        return MovieResource::collection($movies);
+        $movies = $keyword ? $this->movieRepository->getSearch($keyword) : $this->movieRepository->getRelationship();
+
+        return $this->resourceSingleton->getResource(MovieResourceCollection::class, $movies);
     }
 
     public function createMovie(array $data): MovieResource
@@ -58,12 +63,17 @@ class MovieService
             'created_at' => Carbon::now(),
         ]);
 
-        return new MovieResource($movie);
+        $this->resourceSingleton->reset(MovieResource::class);
+        
+        return $this->resourceSingleton->getResource(MovieResource::class, $movie);
     }
 
     public function getMovieById(Movie $movie): MovieResource
     {
-        return new MovieResource($this->movieRepository->find($movie));
+        $movie = $this->movieRepository->find($movie);
+        $this->movieRepository->loadRelationship($movie);
+
+        return $this->resourceSingleton->getResource(MovieResource::class, $movie);
     }
 
     public function updateMovie(Movie $movie, array $data): MovieResource
@@ -94,16 +104,20 @@ class MovieService
             'updated_at' => Carbon::now(),
         ]);
 
-        return new MovieResource($updatedMovie);
+        $this->resourceSingleton->reset(MovieResource::class);
+
+        return $this->resourceSingleton->getResource(MovieResource::class, $updatedMovie);
     }
 
     public function deleteMovie(Movie $movie): bool
     {
+
         return $this->movieRepository->delete($movie);
     }
 
     public function destroyMultiple(array $ids): bool
     {
+
         return $this->movieRepository->destroy($ids);
     }
 }

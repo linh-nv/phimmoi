@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MovieQuality;
 use App\Enums\MovieStatus;
 use App\Enums\MovieType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ class Movie extends Model
     protected $casts = [
         'type' => MovieType::class,
         'status' => MovieStatus::class,
+        'quality' => MovieQuality::class,
         'is_copyright' => 'boolean',
         'sub_docquyen' => 'boolean',
         'chieurap' => 'boolean',
@@ -30,10 +32,10 @@ class Movie extends Model
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function genre()
+    public function genres()
     {
 
-        return $this->belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
+        return $this->belongsToMany(Genre::class,'movie_genre','movie_id','genre_id');
     }
 
     public function country()

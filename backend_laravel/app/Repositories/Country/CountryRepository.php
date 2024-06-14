@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Repositories\Country;
 
 use App\Repositories\BaseRepository;
-use Illuminate\Database\Eloquent\Collection;
+use App\Util\Constains;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class CountryRepository extends BaseRepository
+class CountryRepository extends BaseRepository implements CountryRepositoryInterface
 {
     /**
      * get model
@@ -12,17 +14,14 @@ class CountryRepository extends BaseRepository
      */
     public function getModel(): string
     {
-        
+
         return \App\Models\Country::class;
     }
 
-    public function search(string $keyword): Collection
+    public function getSearch(string $keyword): LengthAwarePaginator
     {
-        return $this->_model->where('title', 'like', '%' . $keyword . '%')
-                           ->orWhere('slug', 'like', '%' . $keyword . '%')
-                           ->orWhere('description', 'like', '%' . $keyword . '%')
-                           ->orWhere('status', 'like', '%' . $keyword . '%')
-                           ->get();
+        $searchFields = ['title', 'slug', 'description', 'status'];
+
+        return $this->search($searchFields, $keyword);
     }
-    
 }

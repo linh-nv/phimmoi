@@ -20,13 +20,13 @@ class GenreService
     public function getAll(?string $keyword = null)
     {
 
-        return $keyword ? $this->genreRepository->search($keyword) : $this->genreRepository->getAll();
+        return $keyword ? $this->genreRepository->getSearch($keyword) : $this->genreRepository->getAll();
     }
 
     public function getPaginate(?string $keyword = null)
     {
 
-        return $keyword ? $this->genreRepository->search($keyword) : $this->genreRepository->getPaginate();
+        return $keyword ? $this->genreRepository->getSearch($keyword) : $this->genreRepository->getPaginate();
     }
 
     public function createGenre(array $data): Genre

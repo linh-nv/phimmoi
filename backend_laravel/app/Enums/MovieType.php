@@ -16,6 +16,15 @@ enum MovieType: int
             MovieType::TVSHOWS => 'tvshows',
         };
     }
+    
+    public static function labelFromValue(int $value): string
+    {
+        return match ($value) {
+            self::SERIES->value => self::SERIES->label(),
+            self::SINGER->value => self::SINGER->label(),
+            self::TVSHOWS->value => self::TVSHOWS->label(),
+        };
+    }
 
     public static function values(): array
     {

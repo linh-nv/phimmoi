@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Country;
 use App\Repositories\Country\CountryRepository;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use function App\Helpers\convert_to_slug;
 
@@ -20,13 +21,13 @@ class CountryService
     public function getAll(?string $keyword = null)
     {
 
-        return $keyword ? $this->countryRepository->search($keyword) : $this->countryRepository->getAll();
+        return $keyword ? $this->countryRepository->getSearch($keyword) : $this->countryRepository->getAll();
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): LengthAwarePaginator
     {
 
-        return $keyword ? $this->countryRepository->search($keyword) : $this->countryRepository->getPaginate();
+        return $keyword ? $this->countryRepository->getSearch($keyword) : $this->countryRepository->getPaginate();
     }
 
     public function createCountry(array $data): Country

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use function App\Helpers\convert_to_slug;
 
@@ -20,13 +21,13 @@ class CategoryService
     public function getAll(?string $keyword = null)
     {
 
-        return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getAll();
+        return $keyword ? $this->categoryRepository->getSearch($keyword) : $this->categoryRepository->getAll();
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): LengthAwarePaginator
     {
 
-        return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getPaginate();
+        return $keyword ? $this->categoryRepository->getSearch($keyword) : $this->categoryRepository->getPaginate();
     }
 
     public function createCategory(array $data): Category

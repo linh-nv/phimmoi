@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('time')->nullable();
             $table->string('episode_current')->nullable();
             $table->integer('episode_total')->nullable();
-            $table->string('quality')->nullable();
+            $table->tinyInteger('quality')->nullable();
             $table->string('lang')->nullable();
             $table->string('notify')->nullable();
             $table->string('showtimes')->nullable();
