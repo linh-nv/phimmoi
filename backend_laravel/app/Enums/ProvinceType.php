@@ -14,6 +14,15 @@ enum ProvinceType: int
             ProvinceType::PROVINCE => 'Tỉnh',
         };
     }
+    
+    public static function labelFromValue(int $value): string
+    {
+        return match ($value) {
+            self::CITY->value => self::CITY->label(),
+            self::PROVINCE->value => self::PROVINCE->label(),
+            default => 'Unknown',
+        };
+    }
 
     public static function values(): array
     {

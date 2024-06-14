@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum WardType: string
 {
-    case XA = 'Xã';
-    case PHUONG = 'Phường';
-    case THI_TRAN = 'Thị trấn';
+    case XA = 1;
+    case PHUONG = 2;
+    case THI_TRAN = 3;
 
     public function label(): string
     {
@@ -14,6 +14,16 @@ enum WardType: string
             WardType::XA => 'Xã',
             WardType::PHUONG => 'Phường',
             WardType::THI_TRAN => 'Thị trấn',
+        };
+    }
+    
+    public static function labelFromValue(int $value): string
+    {
+        return match ($value) {
+            self::XA->value => self::XA->label(),
+            self::PHUONG->value => self::PHUONG->label(),
+            self::THI_TRAN->value => self::THI_TRAN->label(),
+            default => 'Unknown',
         };
     }
 
