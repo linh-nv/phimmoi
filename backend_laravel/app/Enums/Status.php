@@ -14,15 +14,6 @@ enum Status: int
             Status::ACTIVE => 'Active',
         };
     }
-    
-    public static function labelFromValue(int $value): string
-    {
-        return match ($value) {
-            self::INACTIVE->value => self::INACTIVE->label(),
-            self::ACTIVE->value => self::ACTIVE->label(),
-            default => 'Unknown',
-        };
-    }
 
     public static function values(): array
     {

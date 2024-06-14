@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 interface RepositoryInterface
 {
@@ -19,6 +18,4 @@ interface RepositoryInterface
     public function delete(Model $model): bool;
 
     public function destroy(array $ids): bool;
-    
-    public function search(array $searchFields, string $keyword): LengthAwarePaginator;
 }

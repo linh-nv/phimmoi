@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CountryController;
-use App\Http\Controllers\GenreController;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\UserController;
+
+use function App\Helpers\convert_to_slug;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,23 +18,16 @@ use App\Http\Controllers\UserController;
 */
 
 
-Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout']);
-Route::post('refresh', [UserController::class, 'refresh']);
-Route::post('change-password', [UserController::class, 'changePassWord']);
-Route::get('me', [UserController::class, 'userProfile'])->middleware('jwt.verify');
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::post('refresh', [AuthController::class, 'refresh']);
+Route::get('me', [AuthController::class, 'userProfile'])->middleware('jwt.verify');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('category', CategoryController::class);
-    Route::apiResource('genre', GenreController::class);
-    Route::apiResource('country', CountryController::class);
-    Route::apiResource('movie', MovieController::class);
 
     Route::group(['prefix' => 'destroy'], function () {
         Route::delete('category', [CategoryController::class, 'destroyMultiple']);
-        Route::delete('genre', [GenreController::class, 'destroyMultiple']);
-        Route::delete('country', [CountryController::class, 'destroyMultiple']);
-        Route::delete('movie', [MovieController::class, 'destroyMultiple']);
     });
 });

@@ -1,9 +1,10 @@
 <?php
 namespace App\Repositories\Category;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface CategoryRepositoryInterface
 {
-    public function getSearch(string $keyword): LengthAwarePaginator;
+    public function search(string $keyword): Collection;
+
 }

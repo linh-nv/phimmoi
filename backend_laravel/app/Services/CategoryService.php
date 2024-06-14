@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use Carbon\Carbon;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 use function App\Helpers\convert_to_slug;
 
@@ -21,30 +20,30 @@ class CategoryService
     public function getAll(?string $keyword = null)
     {
 
-        return $keyword ? $this->categoryRepository->getSearch($keyword) : $this->categoryRepository->getAll();
+        return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getAll();
     }
 
-    public function getPaginate(?string $keyword = null): LengthAwarePaginator
+    public function getPaginate(?string $keyword = null)
     {
 
-        return $keyword ? $this->categoryRepository->getSearch($keyword) : $this->categoryRepository->getPaginate();
+        return $keyword ? $this->categoryRepository->search($keyword) : $this->categoryRepository->getPaginate();
     }
 
     public function createCategory(array $data): Category
     {
-
-        return $this->categoryRepository->create([
+        $categoryData = [
             'title' => $data['title'],
             'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
             'created_at' => Carbon::now(),
-        ]);
+        ];
+
+        return $this->categoryRepository->create($categoryData);
     }
 
     public function getCategoryById(Category $category): Category
     {
-
         return $this->categoryRepository->find($category);
     }
 
@@ -56,7 +55,6 @@ class CategoryService
             'slug' => convert_to_slug($data['slug']),
             'description' => $data['description'],
             'status' => $data['status'],
-            'updated_at' => Carbon::now(),
         ]);
     }
 
@@ -65,7 +63,7 @@ class CategoryService
 
         return $this->categoryRepository->delete($category);
     }
-
+    
     public function destroyMultiple(array $ids): bool
     {
 
