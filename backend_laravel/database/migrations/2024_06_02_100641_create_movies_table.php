@@ -28,14 +28,14 @@ return new class extends Migration
             $table->string('time')->nullable();
             $table->string('episode_current')->nullable();
             $table->integer('episode_total')->nullable();
-            $table->tinyInteger('quality')->nullable();
+            $table->string('quality')->nullable();
             $table->string('lang')->nullable();
             $table->string('notify')->nullable();
             $table->string('showtimes')->nullable();
             $table->integer('year')->nullable();
             $table->bigInteger('view')->default(0);
-            $table->text('actor')->nullable();
-            $table->text('director')->nullable();
+            $table->json('actor')->nullable();
+            $table->json('director')->nullable();
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();

@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Repositories\Category;
 
 use App\Repositories\BaseRepository;
-use App\Util\Constains;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
-class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface
+class CategoryRepository extends BaseRepository
 {
     /**
      * get model
@@ -14,14 +12,17 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function getModel(): string
     {
-
+        
         return \App\Models\Category::class;
     }
 
-    public function getSearch(string $keyword): LengthAwarePaginator
+    public function search(string $keyword): Collection
     {
-        $searchFields = ['title', 'slug', 'description', 'status'];
-
-        return $this->search($searchFields, $keyword);
+        return $this->_model->where('title', 'like', '%' . $keyword . '%')
+                           ->orWhere('slug', 'like', '%' . $keyword . '%')
+                           ->orWhere('description', 'like', '%' . $keyword . '%')
+                           ->orWhere('status', 'like', '%' . $keyword . '%')
+                           ->get();
     }
+    
 }
