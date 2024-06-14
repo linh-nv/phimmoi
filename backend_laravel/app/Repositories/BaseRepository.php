@@ -109,4 +109,11 @@ abstract class BaseRepository implements RepositoryInterface
 
         return $this->_model->orderBy('id', 'DESC')->paginate(Constains::PER_PAGE);
     }
+
+    public function search(array $searchFields, string $keyword): LengthAwarePaginator
+    {
+        
+        return $this->_model->whereAny($searchFields, 'like', '%' . $keyword . '%')
+            ->paginate(Constains::PER_PAGE);
+    }
 }
