@@ -49,10 +49,10 @@ class Movie extends Model
         'chieurap' => 'boolean',
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
 
     public function category()
     {
@@ -70,5 +70,11 @@ class Movie extends Model
     {
 
         return $this->belongsTo(Country::class, 'country_id', 'id');
+    }
+
+    public function episodes()
+    {
+
+        return $this->hasMany(Episode::class);
     }
 }

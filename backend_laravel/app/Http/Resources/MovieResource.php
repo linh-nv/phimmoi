@@ -43,8 +43,7 @@ class MovieResource extends JsonResource
             'country' => CountryResource::make($this->whenLoaded('country')),
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'genres' => GenreResource::collection($this->whenLoaded('genres')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'episodes' => EpisodeResource::collection($this->whenLoaded('episodes')),
         ];
     }
 }
