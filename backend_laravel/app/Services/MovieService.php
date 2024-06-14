@@ -60,11 +60,17 @@ class MovieService
             'year' => $data['year'],
             'actor' => implode(',', $data['actor']),
             'director' => implode(',', $data['director']),
+            'country_id' => $data['country_id'],
+            'category_id' => $data['category_id'],
             'created_at' => Carbon::now(),
         ]);
 
+        if (isset($data['genre_ids'])) {
+            $this->movieRepository->attachGenres($movie, $data['genre_ids']);
+        }
+
         $this->resourceSingleton->reset(MovieResource::class);
-        
+
         return $this->resourceSingleton->getResource(MovieResource::class, $movie);
     }
 
@@ -101,8 +107,14 @@ class MovieService
             'year' => $data['year'],
             'actor' => implode(',', $data['actor']),
             'director' => implode(',', $data['director']),
+            'country_id' => $data['country_id'],
+            'category_id' => $data['category_id'],
             'updated_at' => Carbon::now(),
         ]);
+
+        if (isset($data['genre_ids'])) {
+            $this->movieRepository->syncGenres($movie, $data['genre_ids']);
+        }
 
         $this->resourceSingleton->reset(MovieResource::class);
 

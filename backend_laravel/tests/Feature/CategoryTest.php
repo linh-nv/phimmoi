@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Http\Middleware\JwtMiddleware;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
@@ -100,6 +101,24 @@ class CategoryTest extends TestCase
                 'description' => null,
                 'status' => null,
             ],
+            'Title too long' => [
+                'title' => Str::random(256),
+                'slug' => 'test-slug',
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Slug too long' => [
+                'title' => 'test title',
+                'slug' => Str::random(256),
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Status too large' => [
+                'title' => 'test title',
+                'slug' => 'test-slug',
+                'description' => 'test-description',
+                'status' => PHP_INT_MAX,
+            ],
         ];
     }
 
@@ -141,7 +160,7 @@ class CategoryTest extends TestCase
     public function test_category_update_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
     {
         $category = Category::factory()->create();
-        
+
         $response = $this->putJson("api/category/{$category->slug}", [
             'title' => $title,
             'slug' => $slug,
@@ -184,6 +203,24 @@ class CategoryTest extends TestCase
                 'description' => null,
                 'status' => null,
             ],
+            'Title too long' => [
+                'title' => Str::random(256),
+                'slug' => 'test-update-slug',
+                'description' => 'test-update-description',
+                'status' => $statusActive->value,
+            ],
+            'Slug too long' => [
+                'title' => 'test-update-title',
+                'slug' => Str::random(256),
+                'description' => 'test-update-description',
+                'status' => $statusActive->value,
+            ],
+            'Status too large' => [
+                'title' => 'test-update-title',
+                'slug' => 'test-update-slug',
+                'description' => 'test-update-description',
+                'status' => PHP_INT_MAX,
+            ],
         ];
     }
 
@@ -210,5 +247,40 @@ class CategoryTest extends TestCase
         $response = $this->deleteJson("api/category/{$nonExistentCategorySlug}");
 
         $response->assertStatus(404);
+    }
+
+    public function test_category_store_unique_slug_failed(): void
+    {
+        $category = Category::factory()->create(['slug' => 'test-slug']);
+
+        $response = $this->postJson('api/category', [
+            'title' => 'Another title',
+            'slug' => 'test-slug',
+            'description' => 'test-description',
+            'status' => Status::ACTIVE->value,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure([
+            'errors',
+        ]);
+    }
+
+    public function test_category_update_unique_slug_failed(): void
+    {
+        $category1 = Category::factory()->create(['slug' => 'test-slug-1']);
+        $category2 = Category::factory()->create(['slug' => 'test-slug-2']);
+
+        $response = $this->putJson("api/category/{$category2->slug}", [
+            'title' => 'Updated title',
+            'slug' => 'test-slug-1',
+            'description' => 'Updated description',
+            'status' => Status::ACTIVE->value,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure([
+            'errors',
+        ]);
     }
 }

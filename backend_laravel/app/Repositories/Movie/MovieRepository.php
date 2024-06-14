@@ -45,4 +45,14 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             $query->whereAny(['title', 'slug'], 'like', "%$keyword%");
         })->paginate(Constains::PER_PAGE);
     }
+
+    public function attachGenres(Movie $movie, array $genreIds): void
+    {
+        $movie->genres()->attach($genreIds);
+    }
+
+    public function syncGenres(Movie $movie, array $genreIds): void
+    {
+        $movie->genres()->sync($genreIds);
+    }
 }

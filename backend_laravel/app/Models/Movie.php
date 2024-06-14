@@ -12,6 +12,34 @@ class Movie extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'origin_name',
+        'content',
+        'type',
+        'status',
+        'poster_url',
+        'thumb_url',
+        'is_copyright',
+        'sub_docquyen',
+        'chieurap',
+        'trailer_url',
+        'time',
+        'episode_current',
+        'episode_total',
+        'quality',
+        'lang',
+        'notify',
+        'showtimes',
+        'year',
+        'view',
+        'actor',
+        'director',
+        'country_id',
+        'category_id',
+    ];
+
     protected $casts = [
         'type' => MovieType::class,
         'status' => MovieStatus::class,
