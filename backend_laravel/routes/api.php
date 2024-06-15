@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
@@ -31,11 +32,13 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('genre', GenreController::class);
     Route::apiResource('country', CountryController::class);
     Route::apiResource('movie', MovieController::class);
+    Route::apiResource('episode', EpisodeController::class);
 
     Route::group(['prefix' => 'destroy'], function () {
         Route::delete('category', [CategoryController::class, 'destroyMultiple']);
         Route::delete('genre', [GenreController::class, 'destroyMultiple']);
         Route::delete('country', [CountryController::class, 'destroyMultiple']);
         Route::delete('movie', [MovieController::class, 'destroyMultiple']);
+        Route::delete('episode', [EpisodeController::class, 'destroyMultiple']);
     });
 });

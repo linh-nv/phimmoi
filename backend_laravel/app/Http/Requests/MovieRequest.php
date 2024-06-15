@@ -49,8 +49,8 @@ class MovieRequest extends FormRequest
             'director.*' => 'string|max:255',
             'genre_ids' => 'nullable|array',
             'genre_ids.*' => 'integer|exists:genres,id',
-            'country_id' => 'required|integer',
-            'category_id' => 'required|integer',
+            'country_id' => 'required|integer|exists:countries,id',
+            'category_id' => 'required|integer|exists:categories,id',
         ];
     }
 
@@ -146,11 +146,11 @@ class MovieRequest extends FormRequest
 
             'country_id.required' => 'The country ID field is required.',
             'country_id.integer' => 'The country ID must be an integer.',
-            // 'country_id.exists' => 'The selected country ID is invalid.',
+            'country_id.exists' => 'The selected country ID is invalid.',
 
             'category_id.required' => 'The category ID field is required.',
             'category_id.integer' => 'The category ID must be an integer.',
-            // 'category_id.exists' => 'The selected category ID is invalid.',
+            'category_id.exists' => 'The selected category ID is invalid.',
         ];
     }
 }

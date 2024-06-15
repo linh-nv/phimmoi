@@ -21,13 +21,13 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function getRelationship(): LengthAwarePaginator
     {
         
-        return $this->_model->with('category', 'genres', 'country')->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
+        return $this->_model->with('category', 'genres', 'country', 'episodes')->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
     }
 
     public function loadRelationship(Movie $movie): Movie
     {
 
-        return $movie->load(['category', 'genres', 'country']);
+        return $movie->load(['category', 'genres', 'country', 'episodes']);
     }
 
     public function getSearch(string $keyword): LengthAwarePaginator

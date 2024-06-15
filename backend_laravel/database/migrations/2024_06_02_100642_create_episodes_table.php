@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('movie_id');
             $table->string('name');
             $table->string('slug');
-            $table->string('filename');
             $table->string('link_embed');
             $table->timestamps();
 

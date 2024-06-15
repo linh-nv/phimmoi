@@ -23,7 +23,6 @@ class EpisodeFactory extends Factory
             'movie_id' => Movie::factory(),
             'name' => $this->faker->sentence,
             'slug' => Str::slug($this->faker->sentence),
-            'filename' => $this->faker->word . '.mp4',
             'link_embed' => $this->faker->url,
         ];
     }
