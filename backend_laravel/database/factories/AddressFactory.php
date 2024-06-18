@@ -26,7 +26,7 @@ class AddressFactory extends Factory
             'address' => $this->faker->address,
             'city_id' => Province::factory(),
             'district_id' => District::factory(),
-            'commune_id' => Ward::factory(),
+            'ward_id' => Ward::factory(),
         ];
     }
 }

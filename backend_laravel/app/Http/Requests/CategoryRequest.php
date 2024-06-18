@@ -3,15 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use function App\Helpers\convert_to_slug;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryRequest extends FormRequest
 {
     public function authorize()
     {
+        $admin = Auth::guard('admin-api')->user();
 
-        return true;
+        return $admin instanceof \App\Models\Admin;
     }
 
     public function rules()

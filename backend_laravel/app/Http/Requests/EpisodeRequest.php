@@ -3,14 +3,16 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class EpisodeRequest extends FormRequest
 {
     public function authorize()
     {
+        $admin = Auth::guard('admin-api')->user();
 
-        return true;
+        return $admin instanceof \App\Models\Admin;
     }
 
     public function rules()
