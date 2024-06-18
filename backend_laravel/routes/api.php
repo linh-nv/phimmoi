@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
@@ -24,9 +25,15 @@ Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout']);
 Route::post('refresh', [UserController::class, 'refresh']);
-Route::post('change-password', [UserController::class, 'changePassWord']);
+Route::post('change-password', [UserController::class, 'changePassWord'])->middleware('jwt.verify');
 Route::get('me', [UserController::class, 'userProfile'])->middleware('jwt.verify');
 
+Route::group(['prefix' => 'admin'], function () {
+    Route::post('register', [AdminController::class, 'register']);
+    Route::post('login', [AdminController::class, 'login']);
+    Route::post('logout', [AdminController::class, 'logout']);
+    Route::post('refresh', [AdminController::class, 'refresh']);
+});
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('genre', GenreController::class);
