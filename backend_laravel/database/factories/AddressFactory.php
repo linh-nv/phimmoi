@@ -24,7 +24,7 @@ class AddressFactory extends Factory
         return [
             'user_id' => User::factory(),
             'address' => $this->faker->address,
-            'city_id' => Province::factory(),
+            'province_id' => Province::factory(),
             'district_id' => District::factory(),
             'ward_id' => Ward::factory(),
         ];

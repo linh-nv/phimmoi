@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
@@ -40,6 +41,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('country', CountryController::class);
     Route::apiResource('movie', MovieController::class);
     Route::apiResource('episode', EpisodeController::class);
+    Route::apiResource('address', AddressController::class);
 
     Route::group(['prefix' => 'destroy'], function () {
         Route::delete('category', [CategoryController::class, 'destroyMultiple']);
@@ -47,5 +49,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::delete('country', [CountryController::class, 'destroyMultiple']);
         Route::delete('movie', [MovieController::class, 'destroyMultiple']);
         Route::delete('episode', [EpisodeController::class, 'destroyMultiple']);
+        Route::delete('address', [AddressController::class, 'destroyMultiple']);
     });
 });
