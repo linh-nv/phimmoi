@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Ward extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['ward_id', 'ward_name', 'ward_type', 'district_id'];
 }

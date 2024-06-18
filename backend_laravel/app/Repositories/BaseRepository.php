@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Movie;
 use App\Repositories\RepositoryInterface;
 use App\Util\Constains;
 use Illuminate\Database\Eloquent\Model;
@@ -44,7 +45,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function getAll(): Collection
     {
         
-        return $this->_model->orderBy('id', 'DESC')->get();
+        return $this->_model->latest('updated_at')->get();
     }
 
     /**
@@ -54,7 +55,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function find(Model $model): Model
     {
-
+        $movie  = Movie::findOrFail($model->id);
         return $model;
     }
 
@@ -107,7 +108,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function getPaginate(): LengthAwarePaginator
     {
 
-        return $this->_model->orderBy('id', 'DESC')->paginate(Constains::PER_PAGE);
+        return $this->_model->latest('updated_at')->paginate(Constains::PER_PAGE);
     }
 
     public function search(array $searchFields, string $keyword): LengthAwarePaginator
