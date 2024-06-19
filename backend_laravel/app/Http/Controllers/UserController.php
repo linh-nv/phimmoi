@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRequest;
+use App\Messages\ResponseMessages;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -13,18 +14,11 @@ use Illuminate\Routing\Controllers\Middleware;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 
-class UserController extends Controller implements HasMiddleware
+class UserController extends Controller
 {
     use ResponseHandler;
 
     protected UserService $userService;
-
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth:api', except: ['login', 'register']),
-        ];
-    }
 
     public function __construct(UserService $userService)
     {
@@ -52,7 +46,7 @@ class UserController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_CREATED, $user);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while creating the user.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
         }
     }
 
@@ -88,7 +82,7 @@ class UserController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_OK, $user);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the user profile.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 

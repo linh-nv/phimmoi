@@ -23,11 +23,7 @@ use App\Http\Controllers\UserController;
 
 
 Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout']);
-Route::post('refresh', [UserController::class, 'refresh']);
-Route::post('change-password', [UserController::class, 'changePassWord'])->middleware('jwt.verify');
-Route::get('me', [UserController::class, 'userProfile'])->middleware('jwt.verify');
+Route::post('login', [UserController::class, 'login'])->name('login');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::post('register', [AdminController::class, 'register']);
@@ -36,6 +32,11 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('refresh', [AdminController::class, 'refresh']);
 });
 Route::group(['middleware' => 'jwt.verify'], function () {
+    Route::post('logout', [UserController::class, 'logout']);
+    Route::post('refresh', [UserController::class, 'refresh']);
+    Route::post('change-password', [UserController::class, 'changePassWord']);
+    Route::get('me', [UserController::class, 'userProfile']);
+
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('genre', GenreController::class);
     Route::apiResource('country', CountryController::class);
