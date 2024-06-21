@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Address;
 
+use App\Models\Address;
 use App\Repositories\BaseRepository;
 use App\Repositories\Address\AddressRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,6 +17,12 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
     {
 
         return \App\Models\Address::class;
+    }
+
+    public function loadRelationship(Address $address): Address
+    {
+
+        return $address->load(['province', 'district', 'ward']);
     }
 
     public function getSearch(string $keyword): LengthAwarePaginator

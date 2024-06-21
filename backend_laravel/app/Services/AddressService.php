@@ -2,29 +2,37 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AddressResource;
 use App\Models\Address;
 use App\Repositories\Address\AddressRepository;
+use App\Singletons\ResourceSingleton;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AddressService
 {
     protected AddressRepository $addressRepository;
+    protected $resourceSingleton;
 
     public function __construct(AddressRepository $addressRepository)
     {
         $this->addressRepository = $addressRepository;
+        $this->resourceSingleton = ResourceSingleton::getInstance();
     }
 
-    public function getAll(?string $keyword = null)
+    public function getAll(?string $keyword = null): Collection
     {
-
-        return $keyword ? $this->addressRepository->getSearch($keyword) : $this->addressRepository->getAll();
+        $address = $keyword ? $this->addressRepository->getSearch($keyword) : $this->addressRepository->getAll();
+    
+        return $address;
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): LengthAwarePaginator
     {
+        $address = $keyword ? $this->addressRepository->getSearch($keyword) : $this->addressRepository->getPaginate();
 
-        return $keyword ? $this->addressRepository->getSearch($keyword) : $this->addressRepository->getPaginate();
+        return $address;
     }
 
     public function createAddress(array $data): Address
@@ -40,10 +48,12 @@ class AddressService
         ]);
     }
 
-    public function getAddressById(Address $address): Address
+    public function getAddressById(Address $address)
     {
+        $address = $this->addressRepository->find($address);
+        $this->addressRepository->loadRelationship($address);
 
-        return $this->addressRepository->find($address);
+        return $this->resourceSingleton->getResource(AddressResource::class, $address);
     }
 
     public function updateAddress(Address $address, array $data): Address
