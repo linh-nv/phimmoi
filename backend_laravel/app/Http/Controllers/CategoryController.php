@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Messages\ResponseMessages;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
@@ -35,7 +36,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $categories);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the Categories.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 
@@ -50,7 +51,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_CREATED, $category);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while creating the Category.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
         }
     }
 
@@ -65,7 +66,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $category);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the Category.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 
@@ -80,7 +81,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $category);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while updating the Category.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('UPDATE_ERROR'));
         }
     }
 
@@ -95,7 +96,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while deleting the Category.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
         }
     }
 
@@ -112,7 +113,7 @@ class CategoryController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while deleting the Category.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
         }
     }
 }

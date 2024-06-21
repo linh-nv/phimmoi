@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\AdminRequest;
+use App\Messages\ResponseMessages;
 use App\Services\AdminService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -22,7 +23,7 @@ class AdminController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:admin-api', except: ['login', 'register']),
+            new Middleware('jwt.verify', except: ['login', 'register']),
         ];
     }
 
@@ -52,7 +53,7 @@ class AdminController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_CREATED, $admin);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while creating the Admin.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
         }
     }
 
@@ -88,7 +89,7 @@ class AdminController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_OK, $admin);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the Admin profile.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 

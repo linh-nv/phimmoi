@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Messages\ResponseMessages;
 
 class AddressController extends Controller
 {
@@ -25,7 +26,7 @@ class AddressController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         $keyword = $request->query('keyword');
 
@@ -34,8 +35,8 @@ class AddressController extends Controller
 
             return $this->responseSuccess(Response::HTTP_OK, $addresss);
         } catch (\Exception $e) {
-
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the Addresss.');
+throw $e;
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 
@@ -50,7 +51,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_CREATED, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while creating the Address.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
         }
     }
 
@@ -65,7 +66,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while retrieving the Address.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
         }
     }
 
@@ -80,7 +81,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while updating the Address.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('UPDATE_ERROR'));
         }
     }
 
@@ -95,7 +96,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while deleting the Address.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
         }
     }
 
@@ -111,8 +112,8 @@ class AddressController extends Controller
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
-
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while deleting the Address.');
+            
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
         }
     }
 }
