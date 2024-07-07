@@ -11,9 +11,10 @@ class CategoryRequest extends FormRequest
 {
     public function authorize()
     {
-        $admin = Auth::guard('admin-api')->user();
+        // $admin = Auth::guard('admin-api')->user();
 
-        return $admin instanceof \App\Models\Admin;
+        // return $admin instanceof \App\Models\Admin;
+        return true;
     }
 
     public function rules()

@@ -45,7 +45,7 @@ class CategoryService
     public function getCategoryById(Category $category): Category
     {
 
-        return $this->categoryRepository->find($category);
+        return $category;
     }
 
     public function updateCategory(Category $category, array $data): Category

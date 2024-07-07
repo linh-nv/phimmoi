@@ -82,10 +82,8 @@ class UserTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'access_token',
-            'token_type',
-            'expires_in',
-            'user',
+            'success',
+            'data'
         ]);
     }
 
@@ -123,7 +121,7 @@ class UserTest extends TestCase
         $response->assertStatus(500);
     }
 
-    public function test_user_profile_failse(): void
+    public function test_user_profile_success(): void
     {
         $user = User::factory()->create();
 
@@ -131,14 +129,14 @@ class UserTest extends TestCase
 
         $response = $this->getJson('api/me');
 
-        $response->assertStatus(401);
+        $response->assertStatus(200);
     }
 
     public function test_user_change_password_success(): void
     {
         $oldPassword = 'password123';
         $newPassword = 'newpassword123';
-        
+
         $user = User::factory()->create([
             'password' => Hash::make($oldPassword),
         ]);

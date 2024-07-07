@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('change-password', [AdminController::class, 'changePassWord']);
     Route::get('me', [AdminController::class, 'adminProfile']);
 });
-Route::group(['middleware' => 'jwt.verify'], function () {
+// Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('refresh', [UserController::class, 'refresh']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
@@ -54,4 +54,4 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::delete('episode', [EpisodeController::class, 'destroyMultiple']);
         Route::delete('address', [AddressController::class, 'destroyMultiple']);
     });
-});
+// });

@@ -55,7 +55,8 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function find(Model $model): Model
     {
-        $movie  = Movie::findOrFail($model->id);
+        $model  = $this->_model->findOrFail($model->id);
+        
         return $model;
     }
 
