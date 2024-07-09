@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -26,11 +27,21 @@ class UserTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJson([
+            'success' => 1,
+        ]);
         $response->assertJsonStructure([
             'success',
+            'data' => [
+                'name',
+                'email',
+                'phone',
+                'updated_at',
+                'created_at',
+                'id',
+            ]
         ]);
-
         $this->assertDatabaseHas('users', [
             'email' => 'testuser@example.com',
         ]);
@@ -47,8 +58,9 @@ class UserTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
+            'message',
             'errors',
         ]);
     }
@@ -62,8 +74,9 @@ class UserTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
+            'message',
             'errors',
         ]);
     }
@@ -80,10 +93,25 @@ class UserTest extends TestCase
             'password' => $password,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
-            'data'
+            'data' => [
+                "access_token",
+                "token_type",
+                "expires_in",
+                "user" => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "phone",
+                    "google_id",
+                    "google_verified_at",
+                    "created_at",
+                    "updated_at"
+                ]
+            ]
         ]);
     }
 
@@ -96,7 +124,19 @@ class UserTest extends TestCase
             'password' => 'wrongpassword',
         ]);
 
-        $response->assertStatus(401);
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $response->assertJson([
+            "success" => 0,
+            "data" => null,
+        ]);
+        $response->assertJsonStructure([
+            "success",
+            "data",
+            "errors" => [
+                "error_code",
+                "error_message"
+            ]
+        ]);
     }
 
     public function test_user_logout_success(): void
@@ -104,21 +144,75 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user, 'api');
-
+        $token = auth('api')->login($user);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token);
         $response = $this->postJson('api/logout');
 
-        $response->assertStatus(500);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'success' => 1,
+        ]);
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                'message',
+            ]
+        ]);
     }
 
-    public function test_user_refresh_failse(): void
+
+    public function test_user_logout_failse(): void
+    {
+        $response = $this->postJson('api/logout');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $response->assertJsonStructure([
+            'status'
+        ]);
+    }
+
+    public function test_user_refresh_success(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user, 'api');
-
+        $token = auth('api')->login($user);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token);
         $response = $this->postJson('api/refresh');
 
-        $response->assertStatus(500);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'success' => 1,
+        ]);
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                "access_token",
+                "token_type",
+                "expires_in",
+                "user" => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "phone",
+                    "google_id",
+                    "google_verified_at",
+                    "created_at",
+                    "updated_at"
+                ]
+            ]
+        ]);
+    }
+
+    public function test_user_refresh_failse(): void
+    {
+        $response = $this->postJson('api/refresh');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $response->assertJsonStructure([
+            'status'
+        ]);
     }
 
     public function test_user_profile_success(): void
@@ -126,10 +220,38 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user, 'api');
-
+        $token = auth('api')->login($user);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token);
         $response = $this->getJson('api/me');
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'success' => 1,
+        ]);
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "phone",
+                    "google_id",
+                    "google_verified_at",
+                    "created_at",
+                    "updated_at"
+            ]
+        ]);
+    }
+
+    public function test_user_profile_failed(): void
+    {
+        $response = $this->getJson('api/me');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+        $response->assertJsonStructure([
+            'status'
+        ]);
     }
 
     public function test_user_change_password_success(): void
@@ -142,13 +264,57 @@ class UserTest extends TestCase
         ]);
 
         $this->actingAs($user, 'api');
-
+        $token = auth('api')->login($user);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token);
         $response = $this->postJson('api/change-password', [
             'old_password' => $oldPassword,
             'new_password' => $newPassword,
             'new_password_confirmation' => $newPassword,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJson([
+            'success' => 1,
+        ]);
+        $response->assertJsonStructure([
+            'success',
+            'data' => [
+                    "id",
+                    "name",
+                    "email",
+                    "email_verified_at",
+                    "phone",
+                    "google_id",
+                    "google_verified_at",
+                    "created_at",
+                    "updated_at"
+            ]
+        ]);
+    }
+
+    public function test_user_change_password_failed(): void
+    {
+        $oldPassword = 'password123';
+        $newPassword = 'newpassword123';
+        $wrongPassword = 'wrongnewpassword123';
+
+        $user = User::factory()->create([
+            'password' => Hash::make($oldPassword),
+        ]);
+
+        $this->actingAs($user, 'api');
+        $token = auth('api')->login($user);
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+            ->postJson('api/change-password', [
+                'old_password' => 'wrongpassword',
+                'new_password' => $newPassword,
+                'new_password_confirmation' => $wrongPassword,
+            ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonStructure([
+            'message',
+            'errors'
+        ]);
     }
 }

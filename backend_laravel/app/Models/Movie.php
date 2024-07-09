@@ -49,10 +49,10 @@ class Movie extends Model
         'chieurap' => 'boolean',
     ];
 
-    // public function getRouteKeyName()
-    // {
-    //     return 'slug';
-    // }
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function category()
     {

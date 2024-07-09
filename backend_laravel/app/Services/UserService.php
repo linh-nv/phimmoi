@@ -43,14 +43,14 @@ class UserService
         ]);
     }
 
-    public function logout(): void
-    {
-        Auth::logout();
+    public function logout () {
+        Auth::guard('api')->logout();
         JWTAuth::invalidate(JWTAuth::getToken());
         
         session()->invalidate();
         session()->regenerateToken();
     }
+    
 
     public function refresh(): string
     {

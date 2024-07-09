@@ -25,6 +25,7 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
     }
 
@@ -35,6 +36,7 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
     }
 
@@ -51,11 +53,12 @@ class CategoryTest extends TestCase
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
     }
 
     /**
-     * @dataProvider categoryStoreDataProvider
+     * @dataProvider categoryDataProvider
      */
     public function test_category_store_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
     {
@@ -68,58 +71,9 @@ class CategoryTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonStructure([
+            'message',
             'errors',
         ]);
-    }
-
-    public static function categoryStoreDataProvider(): array
-    {
-        $statusActive = Status::ACTIVE;
-
-        return [
-            'Without title' => [
-                'title' => null,
-                'slug' => 'test',
-                'description' => 'test-description',
-                'status' => $statusActive->value,
-            ],
-            'Without slug' => [
-                'title' => 'test-title',
-                'slug' => null,
-                'description' => 'test-description',
-                'status' => $statusActive->value,
-            ],
-            'Without status' => [
-                'title' => 'test title',
-                'slug' => 'test-slug',
-                'description' => 'test-description',
-                'status' => null,
-            ],
-            'Empty' => [
-                'title' => null,
-                'slug' => null,
-                'description' => null,
-                'status' => null,
-            ],
-            'Title too long' => [
-                'title' => Str::random(256),
-                'slug' => 'test-slug',
-                'description' => 'test-description',
-                'status' => $statusActive->value,
-            ],
-            'Slug too long' => [
-                'title' => 'test title',
-                'slug' => Str::random(256),
-                'description' => 'test-description',
-                'status' => $statusActive->value,
-            ],
-            'Status too large' => [
-                'title' => 'test title',
-                'slug' => 'test-slug',
-                'description' => 'test-description',
-                'status' => PHP_INT_MAX,
-            ],
-        ];
     }
 
     public function test_category_show_success(): void
@@ -129,6 +83,7 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
     }
 
@@ -151,11 +106,12 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
     }
 
     /**
-     * @dataProvider categoryUpdateDataProvider
+     * @dataProvider categoryDataProvider
      */
     public function test_category_update_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
     {
@@ -233,6 +189,7 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'success',
+            'data'
         ]);
 
         $this->assertDatabaseMissing('categories', [
@@ -282,5 +239,55 @@ class CategoryTest extends TestCase
         $response->assertJsonStructure([
             'errors',
         ]);
+    }
+
+    public static function categoryDataProvider(): array
+    {
+        $statusActive = Status::ACTIVE;
+
+        return [
+            'Without title' => [
+                'title' => null,
+                'slug' => 'test',
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Without slug' => [
+                'title' => 'test-title',
+                'slug' => null,
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Without status' => [
+                'title' => 'test title',
+                'slug' => 'test-slug',
+                'description' => 'test-description',
+                'status' => null,
+            ],
+            'Empty' => [
+                'title' => null,
+                'slug' => null,
+                'description' => null,
+                'status' => null,
+            ],
+            'Title too long' => [
+                'title' => Str::random(256),
+                'slug' => 'test-slug',
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Slug too long' => [
+                'title' => 'test title',
+                'slug' => Str::random(256),
+                'description' => 'test-description',
+                'status' => $statusActive->value,
+            ],
+            'Status too large' => [
+                'title' => 'test title',
+                'slug' => 'test-slug',
+                'description' => 'test-description',
+                'status' => PHP_INT_MAX,
+            ],
+        ];
     }
 }

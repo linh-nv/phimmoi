@@ -10,9 +10,10 @@ class MovieRequest extends FormRequest
 {
     public function authorize()
     {
-        $admin = Auth::guard('admin-api')->user();
+        // $admin = Auth::guard('admin-api')->user();
 
-        return $admin instanceof \App\Models\Admin;
+        // return $admin instanceof \App\Models\Admin;
+        return true;
     }
 
     public function rules()
@@ -25,7 +26,7 @@ class MovieRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories', 'slug')->ignore($movieId),
+                Rule::unique('movies', 'slug')->ignore($movieId),
             ],
             'origin_name' => 'required|string|max:255',
             'content' => 'required',
