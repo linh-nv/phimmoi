@@ -5,15 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryRequest extends FormRequest
 {
     public function authorize()
     {
-        $admin = Auth::guard('admin-api')->user();
+        // $admin = Auth::guard('admin-api')->user();
 
-        return $admin instanceof \App\Models\Admin;
+        // return $admin instanceof \App\Models\Admin;
+        return true;
     }
 
     public function rules()

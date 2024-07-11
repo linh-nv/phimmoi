@@ -80,7 +80,7 @@ class CategoryController extends Controller
 
             return $this->responseSuccess(Response::HTTP_OK, $category);
         } catch (\Exception $e) {
-
+            throw $e;
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('UPDATE_ERROR'));
         }
     }

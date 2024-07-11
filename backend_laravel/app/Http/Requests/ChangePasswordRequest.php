@@ -12,9 +12,9 @@ class ChangePasswordRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $admin = Auth::guard('admin-api')->user();
+        $user = Auth::user();
 
-        return $admin instanceof \App\Models\Admin;
+        return $user instanceof \App\Models\User;
     }
 
     /**

@@ -4,12 +4,13 @@ namespace Tests\Feature;
 
 use App\Enums\Status;
 use App\Http\Middleware\JwtMiddleware;
-use App\Models\Category;
+use App\Models\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class CategoryTest extends TestCase
+class CountryTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -19,38 +20,38 @@ class CategoryTest extends TestCase
         $this->withoutMiddleware(JwtMiddleware::class);
     }
 
-    public function test_category_list(): void
+    public function test_country_list(): void
     {
-        $response = $this->getJson('api/category');
-        $response->assertStatus(200);
+        $response = $this->getJson('api/country');
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
             'data'
         ]);
     }
 
-    public function test_category_search_by_keyword(): void
+    public function test_country_search_by_keyword(): void
     {
         $keyword = 'test';
-        $response = $this->getJson('api/category?keyword=' . $keyword);
-        $response->assertStatus(200);
+        $response = $this->getJson('api/country?keyword=' . $keyword);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
             'data'
         ]);
     }
 
-    public function test_category_store_success(): void
+    public function test_country_store_success(): void
     {
         $statusActive = Status::ACTIVE;
-        $response = $this->postJson('api/category', [
+        $response = $this->postJson('api/country', [
             'title' => 'test title',
             'slug' => 'test-slug',
             'description' => 'test-description',
             'status' => $statusActive->value,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure([
             'success',
             'data'
@@ -58,52 +59,52 @@ class CategoryTest extends TestCase
     }
 
     /**
-     * @dataProvider categoryDataProvider
+     * @dataProvider countryDataProvider
      */
-    public function test_category_store_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
+    public function test_country_store_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
     {
-        $response = $this->postJson('api/category', [
+        $response = $this->postJson('api/country', [
             'title' => $title,
             'slug' => $slug,
             'description' => $description,
             'status' => $status,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
             'errors',
         ]);
     }
 
-    public function test_category_show_success(): void
+    public function test_country_show_success(): void
     {
-        $category = Category::factory()->create();
-        $response = $this->getJson('api/category/' . $category->slug);
-        $response->assertStatus(200);
+        $country = Country::factory()->create();
+        $response = $this->getJson('api/country/' . $country->slug);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
             'data'
         ]);
     }
 
-    public function test_category_show_failed(): void
+    public function test_country_show_failed(): void
     {
-        $response = $this->getJson('api/category/1');
-        $response->assertStatus(404);
+        $response = $this->getJson('api/country/1');
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
-    public function test_category_update_success(): void
+    public function test_country_update_success(): void
     {
         $statusActive = Status::ACTIVE;
-        $category = Category::factory()->create();
-        $response = $this->putJson("api/category/{$category->slug}", [
+        $country = Country::factory()->create();
+        $response = $this->putJson("api/country/{$country->slug}", [
             'title' => 'test title',
             'slug' => 'test-slug',
             'description' => 'test-description',
             'status' => $statusActive->value,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
             'data'
@@ -111,87 +112,87 @@ class CategoryTest extends TestCase
     }
 
     /**
-     * @dataProvider categoryDataProvider
+     * @dataProvider countryDataProvider
      */
-    public function test_category_update_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
+    public function test_country_update_failed(string|null $slug, string|null $title, string|null $description, int|null $status): void
     {
-        $category = Category::factory()->create();
+        $country = Country::factory()->create();
 
-        $response = $this->putJson("api/category/{$category->slug}", [
+        $response = $this->putJson("api/country/{$country->slug}", [
             'title' => $title,
             'slug' => $slug,
             'description' => $description,
             'status' => $status,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'errors',
         ]);
     }
 
-    public function test_category_delete_success(): void
+    public function test_country_delete_success(): void
     {
-        $category = Category::factory()->create();
+        $country = Country::factory()->create();
 
-        $response = $this->deleteJson("api/category/{$category->slug}");
+        $response = $this->deleteJson("api/country/{$country->slug}");
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure([
             'success',
             'data'
         ]);
 
         $this->assertDatabaseMissing('categories', [
-            'id' => $category->id,
+            'id' => $country->id,
         ]);
     }
 
-    public function test_category_delete_failed(): void
+    public function test_country_delete_failed(): void
     {
-        $nonExistentCategorySlug = 'non-existent-category-slug';
+        $nonExistentCountrySlug = 'non-existent-country-slug';
 
-        $response = $this->deleteJson("api/category/{$nonExistentCategorySlug}");
+        $response = $this->deleteJson("api/country/{$nonExistentCountrySlug}");
 
-        $response->assertStatus(404);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
-    public function test_category_store_unique_slug_failed(): void
+    public function test_country_store_unique_slug_failed(): void
     {
-        $category = Category::factory()->create(['slug' => 'test-slug']);
+        $country = Country::factory()->create(['slug' => 'test-slug']);
 
-        $response = $this->postJson('api/category', [
+        $response = $this->postJson('api/country', [
             'title' => 'Another title',
             'slug' => 'test-slug',
             'description' => 'test-description',
             'status' => Status::ACTIVE->value,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'errors',
         ]);
     }
 
-    public function test_category_update_unique_slug_failed(): void
+    public function test_country_update_unique_slug_failed(): void
     {
-        $category1 = Category::factory()->create(['slug' => 'test-slug-1']);
-        $category2 = Category::factory()->create(['slug' => 'test-slug-2']);
+        $country1 = Country::factory()->create(['slug' => 'test-slug-1']);
+        $country2 = Country::factory()->create(['slug' => 'test-slug-2']);
 
-        $response = $this->putJson("api/category/{$category2->slug}", [
+        $response = $this->putJson("api/country/{$country2->slug}", [
             'title' => 'Updated title',
             'slug' => 'test-slug-1',
             'description' => 'Updated description',
             'status' => Status::ACTIVE->value,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'errors',
         ]);
     }
 
-    public static function categoryDataProvider(): array
+    public static function countryDataProvider(): array
     {
         $statusActive = Status::ACTIVE;
 
