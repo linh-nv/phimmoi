@@ -27,7 +27,7 @@ class EpisodeRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories', 'slug')->ignore($episodeId),
+                Rule::unique('episodes', 'slug')->ignore($episodeId),
             ],
             'link_embed' => 'required|string|max:255',
         ];

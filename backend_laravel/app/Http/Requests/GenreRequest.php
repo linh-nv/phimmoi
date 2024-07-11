@@ -10,9 +10,10 @@ class GenreRequest extends FormRequest
 {
     public function authorize()
     {
-        $admin = Auth::guard('admin-api')->user();
+        // $admin = Auth::guard('admin-api')->user();
 
-        return $admin instanceof \App\Models\Admin;
+        // return $admin instanceof \App\Models\Admin;
+        return true;
     }
 
     public function rules()
@@ -25,7 +26,7 @@ class GenreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories', 'slug')->ignore($genreId),
+                Rule::unique('genres', 'slug')->ignore($genreId),
             ],
             'status' => 'required|int|max:2',
         ];

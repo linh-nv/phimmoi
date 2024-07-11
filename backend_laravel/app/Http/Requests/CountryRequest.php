@@ -26,7 +26,7 @@ class CountryRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories', 'slug')->ignore($countryId),
+                Rule::unique('countries', 'slug')->ignore($countryId),
             ],
             'status' => 'required|int|max:2',
         ];
