@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
-    
+
     protected $casts = [
         'status' => Status::class,
     ];
