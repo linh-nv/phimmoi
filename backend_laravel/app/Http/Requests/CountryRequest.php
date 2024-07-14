@@ -10,10 +10,9 @@ class CountryRequest extends FormRequest
 {
     public function authorize()
     {
-        // $admin = Auth::guard('admin-api')->user();
+        $admin = Auth::guard('admin-api')->user();
 
-        // return $admin instanceof \App\Models\Admin;
-        return true;
+        return $admin instanceof \App\Models\Admin;
     }
 
     public function rules()

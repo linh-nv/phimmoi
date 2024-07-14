@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MovieRequest;
-use App\Messages\ResponseMessages;
 use App\Models\Movie;
 use App\Services\MovieService;
 use Illuminate\Http\JsonResponse;
@@ -36,7 +35,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $categories);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -51,7 +50,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_CREATED, $movie);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -66,7 +65,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $movie);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -81,7 +80,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $movie);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('UPDATE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -96,7 +95,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -113,7 +112,7 @@ class MovieController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 }

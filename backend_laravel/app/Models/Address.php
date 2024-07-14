@@ -22,13 +22,13 @@ class Address extends Model
 
         return $this->belongsTo(Province::class, 'province_id', 'province_id');
     }
-    
+
     public function district()
     {
 
         return $this->belongsTo(District::class, 'district_id', 'district_id');
     }
-    
+
     public function ward()
     {
 

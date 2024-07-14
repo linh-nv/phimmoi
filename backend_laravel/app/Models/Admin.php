@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+
 class Admin extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
@@ -51,7 +52,7 @@ class Admin extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier() 
+    public function getJWTIdentifier()
     {
 
         return $this->getKey();
@@ -62,13 +63,13 @@ class Admin extends Authenticatable implements JWTSubject
      *
      * @return array
      */
-    public function getJWTCustomClaims() 
+    public function getJWTCustomClaims()
     {
-        
+
         return [];
     }
 
-    public function isAdmin ()
+    public function isAdmin()
     {
 
         return $this->is_admin;

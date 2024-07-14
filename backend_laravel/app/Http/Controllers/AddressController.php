@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Messages\ResponseMessages;
 
 class AddressController extends Controller
 {
@@ -36,7 +35,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $addresss);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -51,7 +50,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_CREATED, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -66,7 +65,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -81,7 +80,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('UPDATE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -96,7 +95,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -113,7 +112,7 @@ class AddressController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
             
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('DELETE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 }
