@@ -1,25 +1,25 @@
 <template>
   <section class="flex flex-col gap-10">
-    <h1 class="text-4xl font-bold">Dashboard</h1>
+    <h1>Dashboard</h1>
     <section class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <!-- Stats cards -->
       <div class="rounded-lg bg-white p-4 shadow">
-        <h2 class="text-xl">Total User</h2>
+        <h2>New Users In The Month</h2>
         <p class="text-3xl font-bold">40,689</p>
         <p class="text-green-500">8.5% Up from yesterday</p>
       </div>
       <div class="rounded-lg bg-white p-4 shadow">
-        <h2 class="text-xl">Total Order</h2>
+        <h2>Views In The Month</h2>
         <p class="text-3xl font-bold">10,293</p>
         <p class="text-green-500">1.3% Up from past week</p>
       </div>
       <div class="rounded-lg bg-white p-4 shadow">
-        <h2 class="text-xl">Total Sales</h2>
+        <h2>Visits During The Month</h2>
         <p class="text-3xl font-bold">$89,000</p>
         <p class="text-red-500">4.3% Down from yesterday</p>
       </div>
       <div class="rounded-lg bg-white p-4 shadow">
-        <h2 class="text-xl">Total Pending</h2>
+        <h2>New Movies Of The Month</h2>
         <p class="text-3xl font-bold">2,040</p>
         <p class="text-green-500">1.8% Up from yesterday</p>
       </div>
@@ -27,13 +27,13 @@
 
     <section class="mb-4 rounded-lg bg-white p-4 shadow">
       <!-- Sales Details chart -->
-      <h2 class="mb-4 text-xl">Sales Details</h2>
+      <h2 class="mb-4">Views Categories Of The Month</h2>
       <BarChart />
     </section>
 
     <section class="rounded-lg bg-white p-4 shadow">
       <!-- Deals Details table -->
-      <h2 class="mb-4 text-xl">Deals Details</h2>
+      <h2 class="mb-4">Deals Details</h2>
       <table class="w-full">
         <thead>
           <tr>

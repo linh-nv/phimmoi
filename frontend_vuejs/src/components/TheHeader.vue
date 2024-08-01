@@ -4,9 +4,7 @@
   >
     <div class="flex">
       <!-- Logo -->
-      <div
-        class="flex items-center justify-center bg-transparent text-3xl font-bold text-red-500"
-      >
+      <div class="flex items-center justify-center bg-transparent text-red-500">
         <h1>LINHFLIX</h1>
       </div>
     </div>
