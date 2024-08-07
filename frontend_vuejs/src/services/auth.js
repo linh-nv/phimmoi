@@ -1,67 +1,24 @@
-import axiosInstance from "./axiosInstance";
-import { useUserStore } from "../stores/userStore";
+import axiosInstance from "@/services/axiosInstance";
 
-export async function login(credentials) {
-  try {
-    const response = await axiosInstance.post("/login", credentials);
-    const { access_token, expires_in, admin } = response.data.data;
-    const userStore = useUserStore();
+const AUTH_ENDPOINTS = {
+  LOGIN: '/admin/login',
+  REGISTER: '/admin/register',
+  REFRESH: '/admin/refresh',
+};
 
-    const expirationTime = new Date().getTime() + expires_in * 1000;
+export const authService = {
+  async login(credentials) {
+    const response = await axiosInstance.post(AUTH_ENDPOINTS.LOGIN, credentials);
+    return response.data;
+  },
 
-    userStore.setUser(admin);
-    userStore.setAccessToken(access_token);
-    userStore.setTokenExpiration(expirationTime);
+  async register(userData) {
+    const response = await axiosInstance.post(AUTH_ENDPOINTS.REGISTER, userData);
+    return response.data;
+  },
 
-    axiosInstance.defaults.headers.common["Authorization"] =
-      `Bearer ${access_token}`;
-
-    return response;
-  } catch (error) {
-    handleError(error);
-    throw error;
-  }
-}
-
-export async function register(userData) {
-  try {
-    const response = await axiosInstance.post("/register", userData);
-    return response;
-  } catch (error) {
-    handleError(error);
-    throw error;
-  }
-}
-
-export async function refreshToken() {
-  try {
-    const response = await axiosInstance.post("/refresh");
-    return response;
-  } catch (error) {
-    handleError(error);
-    throw error;
-  }
-}
-
-export function initializeAuth() {
-  const userStore = useUserStore();
-  if (userStore.accessToken) {
-    axiosInstance.defaults.headers.common["Authorization"] =
-      `Bearer ${userStore.accessToken}`;
-
-    // Set up token refresh if necessary
-    const expirationTime =
-      parseInt(userStore.tokenExpiration) - new Date().getTime();
-    if (expirationTime > 0) {
-      setTimeout(refreshToken, expirationTime - 60000); // refresh 1 minute before expiration
-    }
-  }
-}
-
-function handleError(error) {
-  if (error.response) {
-    console.error(error.response.data.error || "Request failed.");
-  } else {
-    console.error("An unexpected error occurred.", error.response);
-  }
-}
+  async refreshToken() {
+    const response = await axiosInstance.post(AUTH_ENDPOINTS.REFRESH);
+    return response.data;
+  },
+};

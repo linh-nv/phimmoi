@@ -1,13 +1,15 @@
 import axios from "axios";
 import { API_BASE_URL } from "@/utils/apisDomain";
-import { useUserStore } from "../stores/userStore";
-import { useLoadingStore } from "../stores/loadingStore";
+import { useAuthStore } from "@/stores/authStore";
+import { useLoadingStore } from "@/stores/loadingStore";
 import router from "../router";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -27,54 +29,13 @@ const processQueue = (error, token = null) => {
 };
 
 axiosInstance.interceptors.request.use(
-  async (config) => {
-    const userStore = useUserStore();
+  (config) => {
     const loadingStore = useLoadingStore();
-    const token = userStore.accessToken;
-    const tokenExpiration = userStore.tokenExpiration;
-
     loadingStore.startLoading();
 
+    const token = localStorage.getItem("accessToken");
     if (token) {
-      // Kiểm tra nếu token hết hạn
-      if (tokenExpiration && new Date().getTime() > tokenExpiration) {
-        if (!isRefreshing) {
-          isRefreshing = true;
-
-          try {
-            const response = await axiosInstance.post("/refresh");
-            const { access_token, expires_in } = response.data;
-            const expirationTime = new Date().getTime() + expires_in * 1000;
-
-            userStore.setAccessToken(access_token);
-            userStore.setTokenExpiration(expirationTime);
-            axiosInstance.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${access_token}`;
-
-            processQueue(null, access_token);
-          } catch (error) {
-            processQueue(error, null);
-            userStore.setAccessToken(null);
-            router.push({ name: "login" });
-          } finally {
-            isRefreshing = false;
-          }
-        }
-
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            config.headers.Authorization = `Bearer ${token}`;
-            return config;
-          })
-          .catch((err) => {
-            return Promise.reject(err);
-          });
-      }
-
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Authorization"] = "Bearer " + token;
     }
     return config;
   },
@@ -82,7 +43,7 @@ axiosInstance.interceptors.request.use(
     const loadingStore = useLoadingStore();
     loadingStore.stopLoading();
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -93,55 +54,53 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const loadingStore = useLoadingStore();
-    loadingStore.stopLoading();
+    const authStore = useAuthStore();
+    const originalRequest = error.config;
 
-    const {
-      config,
-      response: { status },
-    } = error;
-    const userStore = useUserStore();
-
-    if (status === 401 && !config._retry) {
-      config._retry = true;
-
-      if (!isRefreshing) {
-        isRefreshing = true;
-
-        try {
-          const response = await axiosInstance.post("/refresh");
-          const { access_token, expires_in } = response.data;
-          const expirationTime = new Date().getTime() + expires_in * 1000;
-
-          userStore.setAccessToken(access_token);
-          userStore.setTokenExpiration(expirationTime);
-          axiosInstance.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${access_token}`;
-
-          processQueue(null, access_token);
-        } catch (error) {
-          processQueue(error, null);
-          userStore.setAccessToken(null);
-          router.push({ name: "login" });
-        } finally {
-          isRefreshing = false;
-        }
+    if (error.response.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers["Authorization"] = "Bearer " + token;
+            return axiosInstance(originalRequest);
+          })
+          .catch((err) => {
+            loadingStore.stopLoading();
+            return Promise.reject(err);
+          });
       }
 
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      })
-        .then((token) => {
-          config.headers.Authorization = `Bearer ${token}`;
-          return axiosInstance(config);
-        })
-        .catch((err) => {
-          return Promise.reject(err);
-        });
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const response = await authStore.refreshToken();
+        const { access_token } = response.data;
+        axiosInstance.defaults.headers.common["Authorization"] =
+          "Bearer " + access_token;
+        processQueue(null, access_token);
+        return axiosInstance(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+        authStore.clearAuth();
+        router.push("/login");
+        loadingStore.stopLoading();
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
+    if (error.response.status >= 400 && error.response.status < 600) {
+        authStore.clearAuth();
+        router.push("/login");
+    }
+
+    loadingStore.stopLoading();
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;
