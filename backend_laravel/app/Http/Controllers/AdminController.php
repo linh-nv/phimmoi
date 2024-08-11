@@ -31,7 +31,7 @@ class AdminController extends Controller
             return $this->responseError(Response::HTTP_UNAUTHORIZED, 'UNAUTHORIZED', 'Unauthorized');
         }
 
-        return $this->responseSuccess(Response::HTTP_OK, $this->adminService->createNewToken($token));
+        return $this->responseSuccess(Response::HTTP_OK, $token);
     }
 
     public function register(AdminRequest $request): JsonResponse
