@@ -3,29 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\AdminRequest;
-use App\Messages\ResponseMessages;
 use App\Services\AdminService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller implements HasMiddleware
+class AdminController extends Controller
 {
     use ResponseHandler;
 
     protected AdminService $adminService;
-
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('jwt.verify', except: ['login', 'register']),
-        ];
-    }
 
     public function __construct(AdminService $adminService)
     {
@@ -53,7 +42,7 @@ class AdminController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_CREATED, $admin);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('CREATE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -89,7 +78,7 @@ class AdminController extends Controller implements HasMiddleware
             return $this->responseSuccess(Response::HTTP_OK, $admin);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', ResponseMessages::getMessage('RETRIEVE_ERROR'));
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
