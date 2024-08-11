@@ -7,23 +7,14 @@ use App\Http\Requests\AdminRequest;
 use App\Services\AdminService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller implements HasMiddleware
+class AdminController extends Controller
 {
     use ResponseHandler;
 
     protected AdminService $adminService;
-
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('jwt.verify', except: ['login', 'register']),
-        ];
-    }
 
     public function __construct(AdminService $adminService)
     {
