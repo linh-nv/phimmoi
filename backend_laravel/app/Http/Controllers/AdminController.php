@@ -54,19 +54,20 @@ class AdminController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, ['message' => 'Admin successfully signed out']);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while logging out.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
-    public function refresh(): JsonResponse
+    public function refresh(Request $request): JsonResponse
     {
         try {
-            $token = $this->adminService->refresh();
-
-            return $this->responseSuccess(Response::HTTP_OK, $this->adminService->createNewToken($token));
+            $refreshToken = $request->refresh_token;
+            $refresh = $this->adminService->refresh($refreshToken);
+            
+            return $this->responseSuccess(Response::HTTP_OK, $refresh);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while refreshing the token.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 
@@ -90,7 +91,7 @@ class AdminController extends Controller
             return $this->responseSuccess(Response::HTTP_OK, $updatedAdmin);
         } catch (\Exception $e) {
 
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', 'An error occurred while changing the password.');
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
 }
