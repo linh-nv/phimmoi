@@ -53,7 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { login } from "@/services/auth";
+import { authService } from "@/services/authService";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
@@ -75,7 +75,7 @@ const { handleSubmit } = useForm({
 
 const onSubmit = async () => {
   try {
-    const response = await login({
+    const response = await authService.login({
       email: email.value,
       password: password.value,
     });
