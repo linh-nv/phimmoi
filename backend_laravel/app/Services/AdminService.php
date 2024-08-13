@@ -2,35 +2,70 @@
 
 namespace App\Services;
 
+use App\JWT\Admin\AdminJWT;
 use App\Repositories\Admin\AdminRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminService
 {
     protected AdminRepository $adminRepository;
+    protected AdminJWT $adminJWT;
 
-    public function __construct(AdminRepository $adminRepository)
+    public function __construct(AdminRepository $adminRepository, AdminJWT $adminJWT)
     {
         $this->adminRepository = $adminRepository;
+        $this->adminJWT = $adminJWT;
     }
 
-    public function login(array $credentials): ?string
+    /**
+     * ============== JWT service =============    
+     * */
+    public function login($credentials): array
     {
-        $adminCredentials = [
-            "email" => $credentials['email'],
-            "password" => $credentials['password']
-        ];
-
-        if (!$token = Auth::guard('admin-api')->attempt($adminCredentials)) {
-
-            return null;
+        if (!$token = auth()->guard('admin-api')->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $token;
+        /** @var Admin $admin */
+        $admin = auth()->guard('admin-api')->user();
+
+        return $this->adminJWT->handleToken($token, $admin);
+    }
+
+
+    public function logout(): void
+    {
+        $auth = Auth::guard('admin-api');
+        $user = $auth->user();
+
+        $this->adminJWT->revokeRefreshToken($user->id);
+        $auth->logout();
+        JWTAuth::invalidate(JWTAuth::getToken());
+    }
+
+    public function refresh(string $refreshToken): array
+    {
+        $payload = JWTAuth::setToken($refreshToken)->getPayload();
+        $adminId = $payload['sub'];
+        $admin = $this->adminRepository->find($adminId);
+        $this->adminJWT->checkRefreshToken($admin, $refreshToken);
+        $accessToken = JWTAuth::fromUser($admin);
+
+        return $this->adminJWT->handleToken($accessToken, $admin);
+    }
+    /**
+     * ====================================    
+     * */
+
+    public function adminProfile(): Admin
+    {
+
+        return Auth::guard('admin-api')->user();
     }
 
     public function register(array $data): Admin
@@ -45,44 +80,13 @@ class AdminService
         ]);
     }
 
-    public function logout(): void
-    {
-        Auth::guard('admin-api')->logout();
-        JWTAuth::invalidate(JWTAuth::getToken());
-        
-        session()->invalidate();
-        session()->regenerateToken();
-    }
-
-    public function refresh(): string
-    {
-        
-        return Auth::guard('admin-api')->refresh();
-    }
-
-    public function adminProfile(): Admin
-    {
-
-        return Auth::guard('admin-api')->user();
-    }
-
     public function changePassword(string $newPassword): Admin
     {
+        /** @var Admin $admin */
         $admin = Auth::guard('admin-api')->user();
 
         return $this->adminRepository->update($admin, [
             'password' => bcrypt($newPassword)
         ]);
-    }
-
-    public function createNewToken($token): array
-    {
-
-        return [
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => Auth::guard('admin-api')->factory()->getTTL() * 60,
-            'admin' => Auth::guard('admin-api')->user(),
-        ];
     }
 }
