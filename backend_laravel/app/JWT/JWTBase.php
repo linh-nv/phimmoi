@@ -2,6 +2,7 @@
 
 namespace App\JWT;
 
+use App\Exceptions\RefreshTokenException;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Traits\ResponseHandler;
@@ -52,9 +53,9 @@ abstract class JWTBase implements JWTInterface
      */
     public function createRefreshToken(Model $user): string
     {
-        $refreshTTL = config('jwt.refresh_ttl'); 
+        $refreshTTL = config('jwt.refresh_ttl');
         $refreshToken = JWTAuth::customClaims(['type' => 'refresh', 'exp' => now()->addMinutes($refreshTTL)->timestamp])->fromUser($user);
-        $this->saveRefreshToken($refreshToken, $user, $this->_modelJWT);
+        $this->saveRefreshToken($refreshToken, $user);
 
         return $refreshToken;
     }
@@ -80,24 +81,24 @@ abstract class JWTBase implements JWTInterface
     /**
      * Get user from refresh token
      */
-    public function getUserFromRefreshToken(string $refreshToken): ?Model
+    public function checkRefreshToken(Model $user, string $refreshToken): ?Model
     {
-        $user = JWTAuth::setToken($refreshToken)->toUser();
+        if (!$this->_modelJWT::where('user_id', $user->id)->where('token', $refreshToken)->first()) {
 
-        if($this->_modelJWT::where('user_id', $user->id)->where('token', $refreshToken)->first()){
-            
-            return $user;
+            throw new RefreshTokenException('Refresh token is invalid or has expired.');
         }
 
-        return null;
+        return $user;
     }
 
     /**
      * Revoke refresh token
      */
-    public function revokeRefreshToken(Model $user): void
+    public function revokeRefreshToken($user_id): void
     {
-        $user->delete();
+        $refreshToken = $this->_modelJWT->where('user_id', $user_id)->firstOrFail();
+
+        $refreshToken->delete();
     }
 
     /**

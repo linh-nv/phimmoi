@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Exceptions\RefreshTokenException;
 use App\JWT\Admin\AdminJWT;
 use App\Repositories\Admin\AdminRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
-use App\Models\AdminRefreshToken;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -27,9 +25,9 @@ class AdminService
     /**
      * ============== JWT service =============    
      * */
-    public function login($credentials)
+    public function login($credentials): array
     {
-        if (! $token = auth()->guard('admin-api')->attempt($credentials)) {
+        if (!$token = auth()->guard('admin-api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -43,27 +41,22 @@ class AdminService
     public function logout(): void
     {
         $auth = Auth::guard('admin-api');
-        /** @var Admin $user */
         $user = $auth->user();
 
-        $this->adminJWT->revokeRefreshToken($user);
+        $this->adminJWT->revokeRefreshToken($user->id);
         $auth->logout();
         JWTAuth::invalidate(JWTAuth::getToken());
     }
 
     public function refresh(string $refreshToken): array
     {
-        try {
-            /** @var Admin $admin */
-            $admin = $this->adminJWT->getUserFromRefreshToken($refreshToken);
-            $accessToken = JWTAuth::fromUser($admin);
-            $responseTokens = $this->adminJWT->handleToken($accessToken, $admin);
+        $payload = JWTAuth::setToken($refreshToken)->getPayload();
+        $adminId = $payload['sub'];
+        $admin = $this->adminRepository->find($adminId);
+        $this->adminJWT->checkRefreshToken($admin, $refreshToken);
+        $accessToken = JWTAuth::fromUser($admin);
 
-            return $responseTokens;
-        } catch (\Exception $e) {
-
-            throw new RefreshTokenException('Failed to refresh token: ' . $e->getMessage());
-        }
+        return $this->adminJWT->handleToken($accessToken, $admin);
     }
     /**
      * ====================================    
