@@ -53,7 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { authService } from "@/services/auth";
+import { authService } from "@/services/authService";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 

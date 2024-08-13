@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { cookieService } from "@/services/cookieService";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,16 +17,16 @@ const router = createRouter({
           path: "/movie",
           children: [
             {
-              path:"",
+              path: "",
               name: "movie",
               component: () => import("../views/Movies/MovieView.vue"),
             },
             {
-              path:"/form",
+              path: "/form",
               name: "movie-form",
               component: () => import("../views/Movies/MovieForm.vue"),
-            }
-          ]
+            },
+          ],
         },
       ],
     },
@@ -46,6 +47,23 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const token = cookieService.getAccessToken();
+  if (token) {
+    if (to.name === "login") {
+      next("/");
+    } else {
+      next();
+    }
+  } else {
+    if (to.name !== "login") {
+      next({ name: "login" });
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;

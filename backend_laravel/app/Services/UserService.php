@@ -25,10 +25,10 @@ class UserService
     /**
      * ============== JWT service =============    
      * */
-    public function login($credentials): array
+    public function login($credentials): ?array
     {
         if (!$token = auth()->guard('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return null;
         }
 
         /** @var User $user */

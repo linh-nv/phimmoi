@@ -58,10 +58,20 @@
     <section class="paginate">
       <span>Showing {{ meta.from }}-{{ meta.to }} of {{ meta.total }}</span>
       <div class="paginate-button">
-        <button class="left" @click="prevPage" :disabled="!links.prev">
+        <button
+          class="left"
+          @click="prevPage"
+          :disabled="!links.prev"
+          :class="!links.prev ? 'opacity-50' : ''"
+        >
           <i class="fa-solid fa-caret-left"></i>
         </button>
-        <button class="right" @click="nextPage" :disabled="!links.next">
+        <button
+          class="right"
+          @click="nextPage"
+          :disabled="!links.next"
+          :class="!links.next ? 'opacity-50' : ''"
+        >
           <i class="fa-solid fa-caret-right"></i>
         </button>
       </div>
@@ -81,10 +91,9 @@ const currentPage = ref(1);
 const fetchMovies = async (page = 1) => {
   try {
     const response = await movieService.getAll(page);
-    console.log(response.data.data);
-    movies.value = response.data.data.data;
-    links.value = response.data.data.links;
-    meta.value = response.data.data.meta;
+    movies.value = response.data.data;
+    links.value = response.data.links;
+    meta.value = response.data.meta;
   } catch (error) {
     console.error(error);
   }
@@ -110,5 +119,90 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Styles như bạn đã cung cấp */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0 1px 1px #e5e7eb;
+  padding: 1rem;
+}
+th,
+td {
+  padding: 1rem;
+  text-align: center;
+}
+th {
+  width: calc(100% / 9);
+}
+td {
+  width: calc(100% / 9);
+}
+.long-space {
+  word-break: break-word;
+  white-space: normal;
+  overflow: unset;
+  width: 20%;
+}
+td {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+thead,
+tbody {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+tbody {
+  width: 100%;
+  overflow-y: auto;
+}
+.actions {
+  word-break: break-word;
+  white-space: normal;
+  overflow: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.actions button {
+  word-break: break-word;
+  white-space: normal;
+  overflow: unset;
+  display: block;
+  padding: 0.25rem;
+  border-radius: 50%;
+  aspect-ratio: 4;
+  white-space: wrap;
+}
+
+.paginate {
+  display: flex;
+  justify-content: space-between;
+}
+.paginate-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+.paginate-button button {
+  padding: 0.1rem 0.8rem;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+}
+.paginate-button button:hover {
+  color: #3b82f6;
+}
+.paginate-button .left {
+  border-radius: 10px 0 0 10px;
+}
+.paginate-button .right {
+  border-radius: 0 10px 10px 0;
+}
 </style>
