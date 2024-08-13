@@ -21,21 +21,23 @@ use App\Http\Controllers\UserController;
 |
 */
 
-
-Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login'])->name('login');
-
 Route::group(['prefix' => 'admin'], function () {
     Route::post('register', [AdminController::class, 'register']);
     Route::post('login', [AdminController::class, 'login']);
-    Route::post('logout', [AdminController::class, 'logout']);
     Route::post('refresh', [AdminController::class, 'refresh']);
-    Route::post('change-password', [AdminController::class, 'changePassWord']);
-    Route::get('me', [AdminController::class, 'adminProfile']);
+    Route::group(['middleware' => 'jwt.verify'], function () {
+        Route::post('logout', [AdminController::class, 'logout']);
+        Route::post('change-password', [AdminController::class, 'changePassword']);
+        Route::get('me', [AdminController::class, 'adminProfile']);
+    });
 });
+
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login'])->name('login');
+Route::post('refresh', [UserController::class, 'refresh']);
+
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('logout', [UserController::class, 'logout']);
-    Route::post('refresh', [UserController::class, 'refresh']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);
 

@@ -53,10 +53,10 @@ abstract class BaseRepository implements RepositoryInterface
      * @param Model $model
      * @return Model
      */
-    public function find(Model $model): Model
+    public function find($modelOrId): Model
     {
-        $model  = $this->_model->findOrFail($model->id);
-        
+        $model = $this->_model->findOrFail($modelOrId instanceof Model ? $modelOrId->id : $modelOrId);
+    
         return $model;
     }
 
