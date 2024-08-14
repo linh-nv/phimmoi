@@ -9,6 +9,8 @@ use App\Models\Movie;
 use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
 use function App\Helpers\convert_to_slug;
+use function App\Helpers\deleteFile;
+use function App\Helpers\uploadFile;
 
 class MovieService
 {
@@ -37,15 +39,26 @@ class MovieService
 
     public function createMovie(array $data): MovieResource
     {
+        $slug = convert_to_slug($data['slug']);
+
+        // Upload poster
+        if (isset($data['poster'])) {
+            $posterUrl = uploadFile($data['poster'], $slug, 'poster');
+        }
+        // Upload thumbnail
+        if (isset($data['thumb'])) {
+            $thumbUrl = uploadFile($data['thumb'], $slug, 'thumb');
+        }
+
         $movie = $this->movieRepository->create([
             'name' => $data['name'],
-            'slug' => convert_to_slug($data['slug']),
+            'slug' => $slug,
             'origin_name' => $data['origin_name'],
             'content' => $data['content'],
             'type' => $data['type'],
             'status' => $data['status'],
-            'poster_url' => $data['poster_url'],
-            'thumb_url' => $data['thumb_url'],
+            'poster_url' => $posterUrl ?? null,
+            'thumb_url' => $thumbUrl ?? null,
             'is_copyright' => $data['is_copyright'],
             'sub_docquyen' => $data['sub_docquyen'],
             'chieurap' => $data['chieurap'],
@@ -84,6 +97,17 @@ class MovieService
 
     public function updateMovie(Movie $movie, array $data): MovieResource
     {
+        $slug = convert_to_slug($data['slug']);
+
+        // Upload poster
+        if (isset($data['poster'])) {
+            $posterUrl = uploadFile($data['poster'], $slug, 'poster');
+        }
+        // Upload thumbnail
+        if (isset($data['thumb'])) {
+            $thumbUrl = uploadFile($data['thumb'], $slug, 'thumb');
+        }
+
         $updatedMovie = $this->movieRepository->update($movie, [
             'name' => $data['name'],
             'slug' => convert_to_slug($data['slug']),
@@ -91,8 +115,8 @@ class MovieService
             'content' => $data['content'],
             'type' => $data['type'],
             'status' => $data['status'],
-            'poster_url' => $data['poster_url'],
-            'thumb_url' => $data['thumb_url'],
+            'poster_url' => $posterUrl ?? $movie->poster_url,
+            'thumb_url' => $thumbUrl ?? $movie->thumb_url,
             'is_copyright' => $data['is_copyright'],
             'sub_docquyen' => $data['sub_docquyen'],
             'chieurap' => $data['chieurap'],
@@ -123,12 +147,28 @@ class MovieService
 
     public function deleteMovie(Movie $movie): bool
     {
+        if ($movie->poster_url) {
+            deleteFile($movie->poster_url);
+        }
+        if ($movie->thumb_url) {
+            deleteFile($movie->thumb_url);
+        }
 
         return $this->movieRepository->delete($movie);
     }
 
     public function destroyMultiple(array $ids): bool
     {
+        $movies = $this->movieRepository->findByIds($ids);
+        foreach ($movies as $movie) {
+            if ($movie->poster_url) {
+                deleteFile($movie->poster_url);
+            }
+
+            if ($movie->thumb_url) {
+                deleteFile($movie->thumb_url);
+            }
+        }
 
         return $this->movieRepository->destroy($ids);
     }
