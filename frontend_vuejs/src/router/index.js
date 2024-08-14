@@ -50,7 +50,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = cookieService.getAccessToken();
+  const token = cookieService.getRefreshToken();
+
   if (token) {
     if (to.name === "login") {
       next("/");
@@ -59,7 +60,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (to.name !== "login") {
-      next({ name: "login" });
+      next({ name: "login", query: { redirect: to.fullPath } });
     } else {
       next();
     }

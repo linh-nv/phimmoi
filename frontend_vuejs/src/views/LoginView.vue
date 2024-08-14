@@ -52,12 +52,15 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { authService } from "@/services/authService";
+import { useUserStore } from "@/stores/userStore";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
 const email = ref("");
 const password = ref("");
 
@@ -79,7 +82,11 @@ const onSubmit = async () => {
       email: email.value,
       password: password.value,
     });
-    router.push({ name: "home" });
+
+    userStore.setUser(response.data.data);
+
+    const redirectPath = route.query.redirect || "/";
+    router.push(redirectPath);
   } catch (error) {
     alert("An unexpected error occurred. Please try again.");
   }
