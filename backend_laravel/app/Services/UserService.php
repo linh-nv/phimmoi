@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
@@ -28,6 +27,7 @@ class UserService
     public function login($credentials): ?array
     {
         if (!$token = auth()->guard('api')->attempt($credentials)) {
+            
             return null;
         }
 

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use Carbon\Carbon;
-use Illuminate\Http\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminService
@@ -28,6 +27,7 @@ class AdminService
     public function login($credentials): ?array
     {
         if (!$token = auth()->guard('admin-api')->attempt($credentials)) {
+            
             return null;
         }
 

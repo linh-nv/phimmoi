@@ -54,7 +54,7 @@ abstract class JWTBase implements JWTInterface
     public function createRefreshToken(Model $user): string
     {
         $refreshTTL = config('jwt.refresh_ttl');
-        $refreshToken = JWTAuth::customClaims(['type' => 'refresh', 'exp' => now()->addMinutes($refreshTTL)->timestamp])->fromUser($user);
+        $refreshToken = JWTAuth::customClaims(['type' => 'refresh', 'exp' => time() + $refreshTTL])->fromUser($user);
         $this->saveRefreshToken($refreshToken, $user);
 
         return $refreshToken;
@@ -65,7 +65,6 @@ abstract class JWTBase implements JWTInterface
      */
     public function saveRefreshToken(string $refreshToken, Model $user): void
     {
-
         $this->_modelJWT::updateOrCreate(
             [
                 'user_id' => $user->id
@@ -73,7 +72,7 @@ abstract class JWTBase implements JWTInterface
             [
                 'token' => $refreshToken,
                 'user_id' => $user->id,
-                'expires_at' => now()->addDays(14),
+                'expires_at' => time() + config('jwt.refresh_ttl'),
             ]
         );
     }
@@ -83,9 +82,10 @@ abstract class JWTBase implements JWTInterface
      */
     public function checkRefreshToken(Model $user, string $refreshToken): ?Model
     {
-        if (!$this->_modelJWT::where('user_id', $user->id)->where('token', $refreshToken)->first()) {
+        $refreshToken = $this->_modelJWT::where('user_id', $user->id)->where('token', $refreshToken)->firstOrFail();
+        if ($refreshToken->expires_at < time()) {
 
-            throw new RefreshTokenException('Refresh token is invalid or has expired.');
+            throw new RefreshTokenException('Refresh token has expired.');
         }
 
         return $user;
