@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('token')->unique();
             $table->foreignId('user_id')->constrained('admins')->onDelete('cascade');
-            $table->timestamp('expires_at');
+            $table->bigInteger('expires_at');
             $table->timestamps();
         });
     }
