@@ -3,7 +3,6 @@
 namespace App\Singletons;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ResourceSingleton
 {

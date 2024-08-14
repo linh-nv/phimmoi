@@ -44,7 +44,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function getAll(): Collection
     {
-        
+
         return $this->_model->latest('updated_at')->get();
     }
 
@@ -56,8 +56,14 @@ abstract class BaseRepository implements RepositoryInterface
     public function find($modelOrId): Model
     {
         $model = $this->_model->findOrFail($modelOrId instanceof Model ? $modelOrId->id : $modelOrId);
-    
+
         return $model;
+    }
+
+    public function findByIds(array $ids): Collection
+    {
+
+        return Movie::whereIn('id', $ids)->get();
     }
 
     /**
@@ -92,7 +98,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function delete(Model $model): bool
     {
         $model->delete();
-        
+
         return true;
     }
 
@@ -114,7 +120,7 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function search(array $searchFields, string $keyword): LengthAwarePaginator
     {
-        
+
         return $this->_model->whereAny($searchFields, 'like', '%' . $keyword . '%')
             ->paginate(Constains::PER_PAGE);
     }
