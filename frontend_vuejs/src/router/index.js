@@ -19,12 +19,12 @@ const router = createRouter({
             {
               path: "",
               name: "movie",
-              component: () => import("../views/Movies/MovieView.vue"),
+              component: () => import("@/views/Movies/MovieView.vue"),
             },
             {
-              path: "/form",
+              path: "form",
               name: "movie-form",
-              component: () => import("../views/Movies/MovieForm.vue"),
+              component: () => import("@/views/Movies/MovieForm.vue"),
             },
           ],
         },

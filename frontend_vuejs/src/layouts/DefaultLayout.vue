@@ -13,7 +13,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto bg-gray-100">
       <TheHeader :collapsed="isSidebarCollapsed" />
-      <div id="content" class="px-20">
+      <div id="content" class="flex flex-col gap-6 px-20">
         <router-view></router-view>
       </div>
     </main>

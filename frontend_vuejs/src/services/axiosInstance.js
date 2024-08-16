@@ -67,9 +67,13 @@ axiosInstance.interceptors.response.use(
         error.response.status >= 400 &&
         error.response.status < 600
       ) {
-        await authService.refreshToken();
+        if (error.response.status == 401) {
+          await authService.refreshToken();
 
-        return axiosInstance(error.config);
+          return axiosInstance(error.config);
+        }
+        cookieService.removeTokens();
+        router.push({ name: "login" });
       }
     } catch (refreshError) {
       cookieService.removeTokens();
