@@ -56,4 +56,10 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::delete('episode', [EpisodeController::class, 'destroyMultiple']);
         Route::delete('address', [AddressController::class, 'destroyMultiple']);
     });
+
+    Route::group(['prefix' => 'pluck'], function () {
+        Route::get('category', [CategoryController::class, 'pluckTitle']);
+        Route::get('genre', [GenreController::class, 'pluckTitle']);
+        Route::get('country', [CountryController::class, 'pluckTitle']);
+    });
 });

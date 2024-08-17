@@ -3,7 +3,7 @@
 namespace App\Repositories\Country;
 
 use App\Repositories\BaseRepository;
-use App\Util\Constains;
+use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CountryRepository extends BaseRepository implements CountryRepositoryInterface
@@ -23,5 +23,11 @@ class CountryRepository extends BaseRepository implements CountryRepositoryInter
         $searchFields = ['title', 'slug', 'description', 'status'];
 
         return $this->search($searchFields, $keyword);
+    }
+
+    public function pluckTitle(): Collection
+    {
+
+        return $this->_model->pluck('title', 'id');
     }
 }

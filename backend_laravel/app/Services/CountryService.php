@@ -6,6 +6,7 @@ use App\Models\Country;
 use App\Repositories\Country\CountryRepository;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 use function App\Helpers\convert_to_slug;
 
@@ -70,5 +71,11 @@ class CountryService
     {
 
         return $this->countryRepository->destroy($ids);
+    }
+
+    public function pluckTitle(): Collection
+    {
+
+        return $this->countryRepository->pluckTitle();
     }
 }

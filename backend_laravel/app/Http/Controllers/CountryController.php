@@ -115,4 +115,19 @@ class CountryController extends Controller
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
+
+    /**
+     * Pluck title of all category.
+     */
+    public function pluckTitle(): JsonResponse
+    {
+        try {
+            $titles = $this->countryService->pluckTitle();
+
+            return $this->responseSuccess(Response::HTTP_OK, $titles);
+        } catch (\Exception $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
 }
