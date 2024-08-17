@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Repositories\Category\CategoryRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use function App\Helpers\convert_to_slug;
@@ -70,5 +71,11 @@ class CategoryService
     {
 
         return $this->categoryRepository->destroy($ids);
+    }
+
+    public function pluckTitle(): Collection
+    {
+
+        return $this->categoryRepository->pluckTitle();
     }
 }

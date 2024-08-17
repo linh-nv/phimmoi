@@ -2,8 +2,9 @@
 
 namespace App\Repositories\Category;
 
+use App\Models\Category;
 use App\Repositories\BaseRepository;
-use App\Util\Constains;
+use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface
@@ -23,5 +24,11 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         $searchFields = ['title', 'slug', 'description', 'status'];
 
         return $this->search($searchFields, $keyword);
+    }
+
+    public function pluckTitle(): Collection
+    {
+
+        return $this->_model->pluck('title', 'id');
     }
 }

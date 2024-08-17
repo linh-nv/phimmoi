@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Genre;
 use App\Repositories\Genre\GenreRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 use function App\Helpers\convert_to_slug;
 
@@ -69,5 +70,11 @@ class GenreService
     {
 
         return $this->genreRepository->destroy($ids);
+    }
+
+    public function pluckTitle(): Collection
+    {
+
+        return $this->genreRepository->pluckTitle();
     }
 }
