@@ -1,18 +1,33 @@
 <template>
-  <Form @submit="handleSubmit" :validation-schema="validationSchema">
-    <div>
+  <section class="head flex items-center justify-between">
+    <h1>New Movie</h1>
+    <router-link
+      :to="{ name: 'movie' }"
+      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
+    >
+      <i class="fa-solid fa-circle-plus"></i>
+      <span>List movies</span>
+    </router-link>
+  </section>
+  <div class="line border border-gray-200"></div>
+  <Form
+    @submit="handleSubmit"
+    :validation-schema="validationSchema"
+    class="form-box"
+  >
+    <div class="form-group">
       <label for="name">Name:</label>
       <Field name="name" v-model="form.name" type="text" id="name" />
       <ErrorMessage name="name" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="slug">Slug:</label>
       <Field name="slug" v-model="form.slug" type="text" id="slug" />
       <ErrorMessage name="slug" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="origin_name">Origin Name:</label>
       <Field
         name="origin_name"
@@ -23,19 +38,19 @@
       <ErrorMessage name="origin_name" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="w-full flex flex-col">
       <label for="content">Content:</label>
       <Field as="textarea" name="content" v-model="form.content" id="content" />
       <ErrorMessage name="content" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="type">Type:</label>
       <Field name="type" v-model.number="form.type" type="number" id="type" />
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="status">Status:</label>
       <Field
         name="status"
@@ -46,7 +61,7 @@
       <ErrorMessage name="status" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="poster">Poster:</label>
       <Field
         name="poster"
@@ -57,7 +72,7 @@
       <ErrorMessage name="poster" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="thumb">Thumb:</label>
       <Field
         name="thumb"
@@ -68,46 +83,48 @@
       <ErrorMessage name="thumb" class="form-message text-red-500" />
     </div>
 
-    <div>
-      <label for="is_copyright">Is Copyright:</label>
-      <Field
-        name="is_copyright"
-        v-model="form.is_copyright"
-        type="checkbox"
-        id="is_copyright"
-        :true-value="true"
-        :false-value="false"
-      />
-      <ErrorMessage name="is_copyright" class="form-message text-red-500" />
+    <div class="form-group">
+      <div class="flex gap-4">
+        <label for="is_copyright">Is Copyright:</label>
+        <Field
+          name="is_copyright"
+          v-model="form.is_copyright"
+          type="checkbox"
+          id="is_copyright"
+          :true-value="true"
+          :false-value="false"
+        />
+        <ErrorMessage name="is_copyright" class="form-message text-red-500" />
+      </div>
+
+      <div class="flex gap-4">
+        <label for="sub_docquyen">Sub Docquyen:</label>
+        <Field
+          name="sub_docquyen"
+          v-model="form.sub_docquyen"
+          type="checkbox"
+          id="sub_docquyen"
+          :true-value="true"
+          :false-value="false"
+        />
+        <ErrorMessage name="sub_docquyen" class="form-message text-red-500" />
+      </div>
+
+      <div class="flex gap-4">
+        <label for="chieurap">Chieurap:</label>
+        <Field
+          name="chieurap"
+          v-model="form.chieurap"
+          type="checkbox"
+          id="chieurap"
+          :true-value="true"
+          :false-value="false"
+        />
+        <ErrorMessage name="chieurap" class="form-message text-red-500" />
+      </div>
     </div>
 
-    <div>
-      <label for="sub_docquyen">Sub Docquyen:</label>
-      <Field
-        name="sub_docquyen"
-        v-model="form.sub_docquyen"
-        type="checkbox"
-        id="sub_docquyen"
-        :true-value="true"
-        :false-value="false"
-      />
-      <ErrorMessage name="sub_docquyen" class="form-message text-red-500" />
-    </div>
-
-    <div>
-      <label for="chieurap">Chieurap:</label>
-      <Field
-        name="chieurap"
-        v-model="form.chieurap"
-        type="checkbox"
-        id="chieurap"
-        :true-value="true"
-        :false-value="false"
-      />
-      <ErrorMessage name="chieurap" class="form-message text-red-500" />
-    </div>
-
-    <div>
+    <div class="form-group">
       <label for="trailer_url">Trailer URL:</label>
       <Field
         name="trailer_url"
@@ -118,13 +135,13 @@
       <ErrorMessage name="trailer_url" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="time">Time:</label>
       <Field name="time" v-model="form.time" type="text" id="time" />
       <ErrorMessage name="time" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="episode_current">Episode Current:</label>
       <Field
         name="episode_current"
@@ -135,7 +152,7 @@
       <ErrorMessage name="episode_current" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="episode_total">Episode Total:</label>
       <Field
         name="episode_total"
@@ -146,7 +163,7 @@
       <ErrorMessage name="episode_total" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="quality">Quality:</label>
       <Field
         name="quality"
@@ -157,19 +174,19 @@
       <ErrorMessage name="quality" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="lang">Language:</label>
       <Field name="lang" v-model="form.lang" type="text" id="lang" />
       <ErrorMessage name="lang" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="notify">Notify:</label>
       <Field name="notify" v-model="form.notify" type="text" id="notify" />
       <ErrorMessage name="notify" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="showtimes">Showtimes:</label>
       <Field
         name="showtimes"
@@ -180,72 +197,13 @@
       <ErrorMessage name="showtimes" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="year">Year:</label>
       <Field name="year" v-model.number="form.year" type="number" id="year" />
       <ErrorMessage name="year" class="form-message text-red-500" />
     </div>
 
-    <div>
-      <label for="actor">Actor:</label>
-      <input
-        v-model="actorInput"
-        type="text"
-        id="actor"
-        @keydown.enter.prevent="addActor"
-      />
-      <button @click.prevent="addActor">Add Actor</button>
-      <ul>
-        <Field name="actor" v-for="(actor, index) in form.actor" :key="index">
-          {{ actor }}
-          <button @click.prevent="removeActor(index)">Remove</button>
-        </Field>
-      </ul>
-      <ErrorMessage name="actor" class="form-message text-red-500" />
-    </div>
-
-    <div>
-      <label for="director">Director:</label>
-      <input
-        v-model="directorInput"
-        type="text"
-        id="director"
-        @keydown.enter.prevent="addDirector"
-      />
-      <button @click.prevent="addDirector">Add Director</button>
-      <ul>
-        <Field
-          name="director"
-          v-for="(director, index) in form.director"
-          :key="index"
-        >
-          {{ director }}
-          <button @click.prevent="removeDirector(index)">Remove</button>
-        </Field>
-      </ul>
-      <ErrorMessage name="director" class="form-message text-red-500" />
-    </div>
-
-    <div>
-      <label for="genre_ids">Genres:</label>
-      <Field
-        name="genre_ids"
-        v-model.number="genreInput"
-        type="number"
-        id="genre_ids"
-        @keydown.enter.prevent="addGenre"
-      />
-      <button @click.prevent="addGenre">Add Genre</button>
-      <ul>
-        <li v-for="(genre, index) in form.genre_ids" :key="index">
-          {{ genre }}
-          <button @click.prevent="removeGenre(index)">Remove</button>
-        </li>
-      </ul>
-      <ErrorMessage name="genre_ids" class="form-message text-red-500" />
-    </div>
-
-    <div>
+    <div class="form-group">
       <label for="country_id">Country:</label>
       <Field
         name="country_id"
@@ -256,7 +214,7 @@
       <ErrorMessage name="country_id" class="form-message text-red-500" />
     </div>
 
-    <div>
+    <div class="form-group">
       <label for="category_id">Category:</label>
       <Field
         name="category_id"
@@ -267,7 +225,115 @@
       <ErrorMessage name="category_id" class="form-message text-red-500" />
     </div>
 
-    <button type="submit">Add Movie</button>
+    <div class="flex w-full justify-center gap-10 flex-wrap">
+      <div class="form-group">
+        <label for="actor">Actor:</label>
+
+        <div class="flex gap-2">
+          <input
+            v-model="actorInput"
+            type="text"
+            id="actor"
+            @keydown.enter.prevent="addActor"
+            class="flex-1"
+          />
+          <button
+            @click.prevent="addActor"
+            class="rounded-lg bg-sky-500 px-4 py-1 text-white"
+          >
+            Add Actor
+          </button>
+        </div>
+        <ul class="flex flex-col gap-1">
+          <Field name="actor" v-for="(actor, index) in form.actor" :key="index">
+            <li
+              class="flex items-center justify-between rounded-lg bg-green-50 pl-4 shadow shadow-gray-100"
+            >
+              {{ actor }}
+              <button
+                @click.prevent="removeActor(index)"
+                class="rounded-lg bg-rose-500 px-1 py-2 text-white"
+              >
+                Remove
+              </button>
+            </li>
+          </Field>
+        </ul>
+        <ErrorMessage name="actor" class="form-message text-red-500" />
+      </div>
+
+      <div class="form-group">
+        <label for="director">Director:</label>
+        <div class="flex gap-2">
+          <input
+            v-model="directorInput"
+            type="text"
+            id="director"
+            @keydown.enter.prevent="addDirector"
+            class="flex-1"
+          />
+          <button
+            @click.prevent="addDirector"
+            class="rounded-lg bg-sky-500 px-4 py-1 text-white"
+          >
+            Add Director
+          </button>
+        </div>
+        <ul class="flex flex-col gap-1">
+          <Field
+            name="director"
+            v-for="(director, index) in form.director"
+            :key="index"
+          >
+            <li
+              class="flex items-center justify-between rounded-lg bg-green-50 pl-4 shadow shadow-gray-100"
+            >
+              {{ director }}
+              <button
+                @click.prevent="removeDirector(index)"
+                class="rounded-lg bg-rose-500 px-1 py-2 text-white"
+              >
+                Remove
+              </button>
+            </li>
+          </Field>
+        </ul>
+        <ErrorMessage name="director" class="form-message text-red-500" />
+      </div>
+    </div>
+    <div class="w-full">
+      <label for="genre_ids">Genres:</label>
+      <Field
+        name="genre_ids"
+        v-model.number="genreInput"
+        type="number"
+        id="genre_ids"
+        @keydown.enter.prevent="addGenre"
+      />
+      <button @click.prevent="addGenre">Add Genre</button>
+      <ul class="flex flex-col gap-1">
+        <li
+          v-for="(genre, index) in form.genre_ids"
+          :key="index"
+          class="flex items-center justify-between rounded-lg bg-green-50 pl-4 shadow shadow-gray-100"
+        >
+          {{ genre }}
+          <button
+            class="rounded-lg bg-rose-500 px-1 py-2 text-white"
+            @click.prevent="removeGenre(index)"
+          >
+            Remove
+          </button>
+        </li>
+      </ul>
+      <ErrorMessage name="genre_ids" class="form-message text-red-500" />
+    </div>
+    <button
+      class="w-2/3 rounded-md bg-blue-500 px-4 py-2 text-xl font-semibold text-white"
+      type="submit"
+    >
+      Add Movie
+    </button>
   </Form>
 </template>
 
@@ -398,7 +464,7 @@ const handleSubmit = async () => {
   form.sub_docquyen = form.sub_docquyen ? 1 : 0;
   try {
     await movieService.create(form);
-    route.push('movie')
+    route.push("movie");
     alert("Movie added successfully!");
   } catch (error) {
     if (error.response && error.response.data.errors) {
