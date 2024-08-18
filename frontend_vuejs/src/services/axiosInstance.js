@@ -29,7 +29,7 @@ axiosInstance.interceptors.request.use(
         accessToken = response.data.access_token;
       } catch (error) {
         cookieService.removeTokens();
-        router.push({ name: "login" });
+        window.location.href = "/login";
 
         loadingStore.stopLoading();
 
@@ -73,11 +73,11 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(error.config);
         }
         cookieService.removeTokens();
-        router.push({ name: "login" });
+        window.location.href = "/login";
       }
     } catch (refreshError) {
       cookieService.removeTokens();
-      router.push({ name: "login" });
+      window.location.href = "/login";
 
       return Promise.reject(refreshError);
     } finally {

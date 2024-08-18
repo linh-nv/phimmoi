@@ -38,7 +38,7 @@
       <ErrorMessage name="origin_name" class="form-message text-red-500" />
     </div>
 
-    <div class="w-full flex flex-col">
+    <div class="flex w-full flex-col">
       <label for="content">Content:</label>
       <Field as="textarea" name="content" v-model="form.content" id="content" />
       <ErrorMessage name="content" class="form-message text-red-500" />
@@ -203,32 +203,33 @@
       <ErrorMessage name="year" class="form-message text-red-500" />
     </div>
 
-    <div class="form-group">
-      <label for="country_id">Country:</label>
-      <Field
-        name="country_id"
-        v-model.number="form.country_id"
-        type="number"
-        id="country_id"
-      />
-      <ErrorMessage name="country_id" class="form-message text-red-500" />
+    <!-- Country Select -->
+    <div class="flex w-full flex-wrap gap-8">
+      <div class="form-group">
+        <label for="country_id">Country:</label>
+        <select v-model.number="form.country_id" id="country_id">
+          <option v-for="[id, title] in countries" :key="id" :value="id">
+            {{ title }}
+          </option>
+        </select>
+        <ErrorMessage name="country_id" class="form-message text-red-500" />
+      </div>
+
+      <!-- Category Select -->
+      <div class="form-group">
+        <label for="category_id">Category:</label>
+        <select v-model.number="form.category_id" id="category_id">
+          <option v-for="[id, title] in categories" :key="id" :value="id">
+            {{ title }}
+          </option>
+        </select>
+        <ErrorMessage name="category_id" class="form-message text-red-500" />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="category_id">Category:</label>
-      <Field
-        name="category_id"
-        v-model.number="form.category_id"
-        type="number"
-        id="category_id"
-      />
-      <ErrorMessage name="category_id" class="form-message text-red-500" />
-    </div>
-
-    <div class="flex w-full justify-center gap-10 flex-wrap">
+    <div class="flex w-full flex-wrap justify-center gap-8">
       <div class="form-group">
         <label for="actor">Actor:</label>
-
         <div class="flex gap-2">
           <input
             v-model="actorInput"
@@ -301,51 +302,38 @@
         <ErrorMessage name="director" class="form-message text-red-500" />
       </div>
     </div>
-    <div class="w-full">
-      <label for="genre_ids">Genres:</label>
-      <Field
-        name="genre_ids"
-        v-model.number="genreInput"
-        type="number"
-        id="genre_ids"
-        @keydown.enter.prevent="addGenre"
-      />
-      <button @click.prevent="addGenre">Add Genre</button>
-      <ul class="flex flex-col gap-1">
-        <li
-          v-for="(genre, index) in form.genre_ids"
-          :key="index"
-          class="flex items-center justify-between rounded-lg bg-green-50 pl-4 shadow shadow-gray-100"
-        >
-          {{ genre }}
-          <button
-            class="rounded-lg bg-rose-500 px-1 py-2 text-white"
-            @click.prevent="removeGenre(index)"
-          >
-            Remove
-          </button>
-        </li>
-      </ul>
+
+    <div class="flex w-full flex-wrap gap-2">
+      <label for="genres">Genres:</label>
+      <div class="flex flex-wrap">
+        <label class="w-1/4 p-2" v-for="[id, title] in genres" :key="id">
+          <input type="checkbox" :value="id" v-model="form.genre_ids" />
+          {{ title }}
+        </label>
+      </div>
       <ErrorMessage name="genre_ids" class="form-message text-red-500" />
     </div>
+
     <button
       class="w-2/3 rounded-md bg-blue-500 px-4 py-2 text-xl font-semibold text-white"
       type="submit"
     >
-      Add Movie
+      Submit
     </button>
   </Form>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { categoryService } from "@/services/Category/category";
+import { countryService } from "@/services/Country/country";
+import { genreService } from "@/services/Genre/genre";
 import { movieService } from "@/services/Movie/movie.js";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
-const route = useRoute();
-
+const router = useRouter();
 const validationSchema = yup.object({
   name: yup.string().max(255).required("Name is required"),
   slug: yup.string().max(255).required("Slug is required"),
@@ -380,8 +368,8 @@ const validationSchema = yup.object({
     .of(yup.string().max(255))
     .min(1, "At least one director is required"),
   genre_ids: yup.array().of(yup.number().integer().min(1)).nullable(true),
-  country_id: yup.number().required("Country is required"),
-  category_id: yup.number().required("Category is required"),
+  country_id: yup.number(),
+  category_id: yup.number(),
 });
 
 useForm({
@@ -419,7 +407,6 @@ const form = reactive({
 const errors = ref({});
 const actorInput = ref("");
 const directorInput = ref("");
-const genreInput = ref(null);
 
 const handleFileChange = (event, field) => {
   form[field] = event.target.files[0];
@@ -447,24 +434,13 @@ const removeDirector = (index) => {
   form.director.splice(index, 1);
 };
 
-const addGenre = () => {
-  if (genreInput.value) {
-    form.genre_ids.push(genreInput.value);
-    genreInput.value = null;
-  }
-};
-
-const removeGenre = (index) => {
-  form.genre_ids.splice(index, 1);
-};
-
 const handleSubmit = async () => {
   form.chieurap = form.chieurap ? 1 : 0;
   form.is_copyright = form.is_copyright ? 1 : 0;
   form.sub_docquyen = form.sub_docquyen ? 1 : 0;
   try {
     await movieService.create(form);
-    route.push("movie");
+    router.push({ name: "movie" });
     alert("Movie added successfully!");
   } catch (error) {
     if (error.response && error.response.data.errors) {
@@ -474,4 +450,22 @@ const handleSubmit = async () => {
     }
   }
 };
+
+const categories = ref([]);
+const countries = ref([]);
+const genres = ref([]);
+
+onMounted(async () => {
+  try {
+    const categoryResponse = await categoryService.pluck();
+    const countryResponse = await countryService.pluck();
+    const genreResponse = await genreService.pluck();
+
+    categories.value = Object.entries(categoryResponse.data);
+    countries.value = Object.entries(countryResponse.data);
+    genres.value = Object.entries(genreResponse.data);
+  } catch (error) {
+    console.error("Error fetching data", error);
+  }
+});
 </script>
