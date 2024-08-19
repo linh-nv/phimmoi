@@ -9,6 +9,7 @@ use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EnumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +63,10 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::get('genre', [GenreController::class, 'pluckTitle']);
         Route::get('country', [CountryController::class, 'pluckTitle']);
     });
+
+    Route::get('/enums', [EnumController::class, 'getAllEnums']);
+    Route::get('/enums/status', [EnumController::class, 'getStatus']);
+    Route::get('/enums/movie-quality', [EnumController::class, 'getMovieQuality']);
+    Route::get('/enums/movie-status', [EnumController::class, 'getMovieStatus']);
+    Route::get('/enums/movie-type', [EnumController::class, 'getMovieType']);
 });
