@@ -16,6 +16,9 @@ export const apiService = {
   getAll: (endpoint, page = 1) =>
     handleApiCall(() => axiosInstance.get(`${endpoint}`, { params: { page } })),
 
+  get: (endpoint) => 
+    handleApiCall(() => axiosInstance.get(`${endpoint}`)),
+
   create: (endpoint, data, headers = {}) =>
     handleApiCall(() =>
       axiosInstance.post(endpoint, data, {

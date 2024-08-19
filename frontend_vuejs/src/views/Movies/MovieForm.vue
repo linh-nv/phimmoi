@@ -44,21 +44,26 @@
       <ErrorMessage name="content" class="form-message text-red-500" />
     </div>
 
+    <!-- Type -->
     <div class="form-group">
       <label for="type">Type:</label>
-      <Field name="type" v-model.number="form.type" type="number" id="type" />
+      <select v-model.number="form.type" id="type" name="type">
+        <option v-for="[key, value] in type" :value="key">
+          {{ value }}
+        </option>
+      </select>
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
+    <!-- Status -->
     <div class="form-group">
       <label for="status">Status:</label>
-      <Field
-        name="status"
-        v-model.number="form.status"
-        type="number"
-        id="status"
-      />
-      <ErrorMessage name="status" class="form-message text-red-500" />
+      <select v-model.number="form.status" id="status" name="status">
+        <option v-for="[key, value] in movieStatus" :value="key">
+          {{ value }}
+        </option>
+      </select>
+      <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
     <div class="form-group">
@@ -163,15 +168,15 @@
       <ErrorMessage name="episode_total" class="form-message text-red-500" />
     </div>
 
+    <!-- Quality -->
     <div class="form-group">
       <label for="quality">Quality:</label>
-      <Field
-        name="quality"
-        v-model.number="form.quality"
-        type="number"
-        id="quality"
-      />
-      <ErrorMessage name="quality" class="form-message text-red-500" />
+      <select v-model.number="form.quality" id="quality" name="quality">
+        <option v-for="[key, value] in quality" :value="key">
+          {{ value }}
+        </option>
+      </select>
+      <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
     <div class="form-group">
@@ -329,6 +334,7 @@ import { categoryService } from "@/services/Category/category";
 import { countryService } from "@/services/Country/country";
 import { genreService } from "@/services/Genre/genre";
 import { movieService } from "@/services/Movie/movie.js";
+import { enumService } from "@/services/Enum/enum.js";
 import { useRouter } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
@@ -454,16 +460,23 @@ const handleSubmit = async () => {
 const categories = ref([]);
 const countries = ref([]);
 const genres = ref([]);
+const type = ref([]);
+const quality = ref([]);
+const movieStatus = ref([]);
 
 onMounted(async () => {
   try {
     const categoryResponse = await categoryService.pluck();
     const countryResponse = await countryService.pluck();
     const genreResponse = await genreService.pluck();
+    const enumResponse = await enumService.getAll();
 
     categories.value = Object.entries(categoryResponse.data);
     countries.value = Object.entries(countryResponse.data);
     genres.value = Object.entries(genreResponse.data);
+    type.value = Object.entries(enumResponse.data.type);
+    quality.value = Object.entries(enumResponse.data.quality);
+    movieStatus.value = Object.entries(enumResponse.data["movie-status"]);
   } catch (error) {
     console.error("Error fetching data", error);
   }
