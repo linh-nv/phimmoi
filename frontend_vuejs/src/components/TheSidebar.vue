@@ -72,30 +72,24 @@ const menuItems = ref([
     link: findPathByName("movie"),
     isActive: false,
   },
-  // {
-  //   name: "Episodes",
-  //   icon: "fa-solid fa-video",
-  //   link: findPathByName("episode"),
-  //   isActive: false,
-  // },
-  // {
-  //   name: "Categories",
-  //   icon: "fa-solid fa-layer-group",
-  //   link: findPathByName("category"),
-  //   isActive: false,
-  // },
-  // {
-  //   name: "Genres",
-  //   icon: "fa-solid fa-list",
-  //   link: findPathByName("genre"),
-  //   isActive: false,
-  // },
-  // {
-  //   name: "Countries",
-  //   icon: "fa-solid fa-globe",
-  //   link: findPathByName("country"),
-  //   isActive: false,
-  // },
+  {
+    name: "Categories",
+    icon: "fa-solid fa-layer-group",
+    link: findPathByName("category"),
+    isActive: false,
+  },
+  {
+    name: "Genres",
+    icon: "fa-solid fa-list",
+    link: findPathByName("genre"),
+    isActive: false,
+  },
+  {
+    name: "Countries",
+    icon: "fa-solid fa-globe",
+    link: findPathByName("country"),
+    isActive: false,
+  },
 ]);
 
 const selectItem = (selectedItem) => {

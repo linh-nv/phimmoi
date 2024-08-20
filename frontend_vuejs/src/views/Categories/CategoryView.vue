@@ -1,12 +1,12 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>List Movies</h1>
+    <h1>List Categories</h1>
     <router-link
-      :to="{ name: 'movie-form' }"
+      :to="{ name: 'category-form' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
-      <span>New movie</span>
+      <span>New category</span>
     </router-link>
   </section>
   <div class="line border border-gray-200"></div>
@@ -15,30 +15,20 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Poster</th>
           <th class="long-space">Title</th>
           <th class="long-space">Slug</th>
-          <th>Episode Total</th>
-          <th>Episode Current</th>
-          <th>Year</th>
+          <th>Description</th>
           <th>Status</th>
-          <th>Views</th>
           <th class="long-space">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="movie in movies" :key="movie.id">
-          <td>{{ movie.id }}</td>
-          <td>
-            <img :src="movie.poster_url" alt="poster" />
-          </td>
-          <td class="long-space">{{ movie.name }}</td>
-          <td class="long-space">{{ movie.slug }}</td>
-          <td>{{ movie.episode_total }}</td>
-          <td>{{ movie.episode_current }}</td>
-          <td>{{ movie.year }}</td>
-          <td>{{ movie.status }}</td>
-          <td>{{ movie.view }}</td>
+        <tr v-for="category in categories" :key="category.id">
+          <td>{{ category.id }}</td>
+          <td class="long-space truncate">{{ category.title }}</td>
+          <td class="long-space truncate">{{ category.slug }}</td>
+          <td class="truncate">{{ category.description }}</td>
+          <td>{{ category.status }}</td>
           <td class="long-space">
             <div class="actions text-white">
               <button class="bg-green-500">
@@ -57,21 +47,21 @@
     </table>
   </section>
   <section class="paginate">
-    <span>Showing {{ meta.from }}-{{ meta.to }} of {{ meta.total }}</span>
+    <span>Showing {{ pageFrom }}-{{ pageTo }} of {{ pageTotal }}</span>
     <div class="paginate-button">
       <button
         class="left"
         @click="prevPage"
-        :disabled="!links.prev"
-        :class="!links.prev ? 'opacity-50' : ''"
+        :disabled="!linkPrev"
+        :class="!linkPrev ? 'opacity-50' : ''"
       >
         <i class="fa-solid fa-caret-left"></i>
       </button>
       <button
         class="right"
         @click="nextPage"
-        :disabled="!links.next"
-        :class="!links.next ? 'opacity-50' : ''"
+        :disabled="!linkNext"
+        :class="!linkNext ? 'opacity-50' : ''"
       >
         <i class="fa-solid fa-caret-right"></i>
       </button>
@@ -81,43 +71,49 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { movieService } from "@/services/Movie/movie.js";
+import { categoryService } from "@/services/Category/category.js";
 
-const movies = ref([]);
-const links = ref({});
-const meta = ref({});
-const currentPage = ref(1);
+const categories = ref([]);
+const linkNext = ref({});
+const linkPrev = ref({});
+const currentPage = ref({});
+const pageFrom = ref({});
+const pageTo = ref({});
+const pageTotal = ref({});
 
-const fetchMovies = async (page = 1) => {
+const fetchCategories = async (page = 1) => {
   try {
-    const response = await movieService.getAll(page);
-    movies.value = response.data.data;
-    links.value = response.data.links;
-    meta.value = response.data.meta;
+    const response = await categoryService.getAll(page);
+    categories.value = response.data.data;
+
+    currentPage.value = response.data.current_page;
+    linkNext.value = response.data.next_page_url;
+    linkPrev.value = response.data.prev_page_url;
+    pageFrom.value = response.data.from;
+    pageTo.value = response.data.to;
+    pageTotal.value = response.data.total;
   } catch (error) {
     console.error(error);
   }
 };
 
 const prevPage = () => {
-  if (links.value.prev) {
-    currentPage.value -= 1;
-    fetchMovies(currentPage.value);
+  if (linkPrev) {
+    currentPage.value--;
+    fetchCategories(currentPage.value);
   }
 };
 
 const nextPage = () => {
-  if (links.value.next) {
-    currentPage.value += 1;
-    fetchMovies(currentPage.value);
+  if (linkNext) {
+    currentPage.value++;
+    fetchCategories(currentPage.value);
   }
 };
 
 onMounted(() => {
-  fetchMovies();
+  fetchCategories();
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

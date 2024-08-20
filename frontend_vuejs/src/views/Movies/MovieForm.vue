@@ -47,22 +47,24 @@
     <!-- Type -->
     <div class="form-group">
       <label for="type">Type:</label>
-      <select v-model.number="form.type" id="type" name="type">
+      <Field as="select" v-model.number="form.type" id="type" name="type">
+        <option value="" disabled>Select Type</option>
         <option v-for="[key, value] in type" :value="key">
           {{ value }}
         </option>
-      </select>
+      </Field>
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
     <!-- Status -->
     <div class="form-group">
       <label for="status">Status:</label>
-      <select v-model.number="form.status" id="status" name="status">
+      <Field as="select" v-model.number="form.status" id="status" name="status">
+        <option value="" disabled>Select Status</option>
         <option v-for="[key, value] in movieStatus" :value="key">
           {{ value }}
         </option>
-      </select>
+      </Field>
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
@@ -171,11 +173,12 @@
     <!-- Quality -->
     <div class="form-group">
       <label for="quality">Quality:</label>
-      <select v-model.number="form.quality" id="quality" name="quality">
+      <Field as="select" v-model.number="form.quality" id="quality" name="quality">
+        <option value="" disabled>Select Quality</option>
         <option v-for="[key, value] in quality" :value="key">
           {{ value }}
         </option>
-      </select>
+      </Field>
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 

@@ -28,6 +28,51 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: "/category",
+          children: [
+            {
+              path: "",
+              name: "category",
+              component: () => import("@/views/Categories/CategoryView.vue"),
+            },
+            {
+              path: "form",
+              name: "category-form",
+              component: () => import("@/views/Categories/CategoryForm.vue"),
+            },
+          ],
+        },
+        {
+          path: "/genre",
+          children: [
+            {
+              path: "",
+              name: "genre",
+              component: () => import("@/views/Movies/MovieView.vue"),
+            },
+            {
+              path: "form",
+              name: "genre-form",
+              component: () => import("@/views/Movies/MovieForm.vue"),
+            },
+          ],
+        },
+        {
+          path: "/country",
+          children: [
+            {
+              path: "",
+              name: "country",
+              component: () => import("@/views/Movies/MovieView.vue"),
+            },
+            {
+              path: "form",
+              name: "country-form",
+              component: () => import("@/views/Movies/MovieForm.vue"),
+            },
+          ],
+        },
       ],
     },
     {

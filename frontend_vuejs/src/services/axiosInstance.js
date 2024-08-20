@@ -3,7 +3,6 @@ import { cookieService } from "@/services/cookieService";
 import { authService } from "@/services/authService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useLoadingStore } from "@/stores/loadingStore";
-import router from "../router";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
