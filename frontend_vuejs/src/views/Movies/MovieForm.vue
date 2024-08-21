@@ -3,9 +3,9 @@
     <h1>New Movie</h1>
     <router-link
       :to="{ name: 'movie' }"
-      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
+      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
     >
-      <i class="fa-solid fa-circle-plus"></i>
+      <i class="fa-solid fa-rectangle-list"></i>
       <span>List movies</span>
     </router-link>
   </section>
@@ -173,7 +173,12 @@
     <!-- Quality -->
     <div class="form-group">
       <label for="quality">Quality:</label>
-      <Field as="select" v-model.number="form.quality" id="quality" name="quality">
+      <Field
+        as="select"
+        v-model.number="form.quality"
+        id="quality"
+        name="quality"
+      >
         <option value="" disabled>Select Quality</option>
         <option v-for="[key, value] in quality" :value="key">
           {{ value }}

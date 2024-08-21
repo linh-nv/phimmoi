@@ -30,7 +30,7 @@
         <tr v-for="movie in movies" :key="movie.id">
           <td>{{ movie.id }}</td>
           <td>
-            <img :src="movie.poster_url" alt="poster" />
+            <img :src="movie.poster_url" :alt="'poster-' + movie.slug" />
           </td>
           <td class="long-space">{{ movie.name }}</td>
           <td class="long-space">{{ movie.slug }}</td>
@@ -41,9 +41,13 @@
           <td>{{ movie.view }}</td>
           <td class="long-space">
             <div class="actions text-white">
-              <button class="bg-green-500">
-                <i class="fa-solid fa-circle-info"></i>
-              </button>
+              <router-link
+                :to="{ name: 'movie-detail', params: { slug: movie.slug } }"
+              >
+                <button class="bg-green-500">
+                  <i class="fa-solid fa-circle-info"></i>
+                </button>
+              </router-link>
               <button class="bg-sky-500">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
@@ -117,7 +121,3 @@ onMounted(() => {
   fetchMovies();
 });
 </script>
-
-<style scoped>
-
-</style>

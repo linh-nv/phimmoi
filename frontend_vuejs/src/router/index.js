@@ -26,6 +26,11 @@ const router = createRouter({
               name: "movie-form",
               component: () => import("@/views/Movies/MovieForm.vue"),
             },
+            {
+              path: "detail/:slug",
+              name: "movie-detail",
+              component: () => import("@/views/Movies/MovieDetail.vue"),
+            }
           ],
         },
         {
