@@ -20,6 +20,12 @@ h2 {
   font-weight: 500;
 }
 
+h3 {
+  font-size: 1.10rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
 :root {
   --border-color: #e5e7eb;
 }

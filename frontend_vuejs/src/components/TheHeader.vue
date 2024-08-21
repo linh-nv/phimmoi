@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed right-0 top-0 flex w-full flex-1 items-center justify-between border-b border-b-gray-200 bg-white px-8 py-4"
+    class="fixed right-0 top-0 z-50 flex w-full flex-1 items-center justify-between border-b border-b-gray-200 bg-white px-8 py-4"
   >
     <div class="flex">
       <!-- Logo -->

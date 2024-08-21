@@ -51,7 +51,7 @@
               <button class="bg-sky-500">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button class="bg-red-500">
+              <button @click="deleteItem(movie.slug)" class="bg-red-500">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -117,6 +117,15 @@ const nextPage = () => {
   }
 };
 
+const deleteItem = async (slug) => {
+  try {
+    const response = await movieService.delete(slug);
+    alert("Movie delete successfully!");
+    fetchMovies();
+  } catch (error) {
+    console.error(error);
+  }
+};
 onMounted(() => {
   fetchMovies();
 });

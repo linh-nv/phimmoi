@@ -37,7 +37,7 @@
               <button class="bg-sky-500">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button class="bg-red-500">
+              <button @click="deleteItem(category.slug)" class="bg-red-500">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -111,9 +111,17 @@ const nextPage = () => {
   }
 };
 
+const deleteItem = async (slug) => {
+  try {
+    const response = await categoryService.delete(slug);
+    alert("Category delete successfully!");
+    fetchCategories();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
   fetchCategories();
 });
 </script>
-
-<style scoped></style>
