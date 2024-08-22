@@ -1,6 +1,6 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>New Movie</h1>
+    <h1>{{ slug ? "Edit Movie" : "New Movie" }}</h1>
     <router-link
       :to="{ name: 'movie' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
@@ -15,18 +15,48 @@
     :validation-schema="validationSchema"
     class="form-box"
   >
+    <!-- Poster - Thumbnail -->
+    <div class="flex w-full flex-wrap gap-8">
+      <div class="form-group">
+        <label for="poster">Poster:</label>
+        <div v-if="slug" class="w-full">
+          <img :src="form.poster_url" alt="" />
+        </div>
+        <Field
+          name="poster"
+          @change="handleFileChange($event, 'poster')"
+          type="file"
+          id="poster"
+        />
+        <ErrorMessage name="poster" class="form-message text-red-500" />
+      </div>
+
+      <div class="form-group">
+        <label for="thumb">Thumb:</label>
+        <div v-if="slug" class="w-full">
+          <img :src="form.thumb_url" alt="" />
+        </div>
+        <Field
+          name="thumb"
+          @change="handleFileChange($event, 'thumb')"
+          type="file"
+          id="thumb"
+        />
+      </div>
+      <ErrorMessage name="thumb" class="form-message text-red-500" />
+    </div>
+
+    <!-- Name - Slug - Origin name - Content -->
     <div class="form-group">
       <label for="name">Name:</label>
       <Field name="name" v-model="form.name" type="text" id="name" />
       <ErrorMessage name="name" class="form-message text-red-500" />
     </div>
-
     <div class="form-group">
       <label for="slug">Slug:</label>
       <Field name="slug" v-model="form.slug" type="text" id="slug" />
       <ErrorMessage name="slug" class="form-message text-red-500" />
     </div>
-
     <div class="form-group">
       <label for="origin_name">Origin Name:</label>
       <Field
@@ -37,7 +67,6 @@
       />
       <ErrorMessage name="origin_name" class="form-message text-red-500" />
     </div>
-
     <div class="flex w-full flex-col">
       <label for="content">Content:</label>
       <Field as="textarea" name="content" v-model="form.content" id="content" />
@@ -68,32 +97,11 @@
       <ErrorMessage name="type" class="form-message text-red-500" />
     </div>
 
-    <div class="form-group">
-      <label for="poster">Poster:</label>
-      <Field
-        name="poster"
-        @change="handleFileChange($event, 'poster')"
-        type="file"
-        id="poster"
-      />
-      <ErrorMessage name="poster" class="form-message text-red-500" />
-    </div>
-
-    <div class="form-group">
-      <label for="thumb">Thumb:</label>
-      <Field
-        name="thumb"
-        @change="handleFileChange($event, 'thumb')"
-        type="file"
-        id="thumb"
-      />
-      <ErrorMessage name="thumb" class="form-message text-red-500" />
-    </div>
-
+    <!-- Is Copyright - Sub Docquyen - Chieurap -->
     <div class="form-group">
       <div class="flex gap-4">
         <label for="is_copyright">Is Copyright:</label>
-        <Field
+        <input
           name="is_copyright"
           v-model="form.is_copyright"
           type="checkbox"
@@ -101,12 +109,10 @@
           :true-value="true"
           :false-value="false"
         />
-        <ErrorMessage name="is_copyright" class="form-message text-red-500" />
       </div>
-
       <div class="flex gap-4">
         <label for="sub_docquyen">Sub Docquyen:</label>
-        <Field
+        <input
           name="sub_docquyen"
           v-model="form.sub_docquyen"
           type="checkbox"
@@ -114,12 +120,10 @@
           :true-value="true"
           :false-value="false"
         />
-        <ErrorMessage name="sub_docquyen" class="form-message text-red-500" />
       </div>
-
       <div class="flex gap-4">
         <label for="chieurap">Chieurap:</label>
-        <Field
+        <input
           name="chieurap"
           v-model="form.chieurap"
           type="checkbox"
@@ -127,10 +131,10 @@
           :true-value="true"
           :false-value="false"
         />
-        <ErrorMessage name="chieurap" class="form-message text-red-500" />
       </div>
     </div>
 
+    <!-- Trailer URL -  -->
     <div class="form-group">
       <label for="trailer_url">Trailer URL:</label>
       <Field
@@ -216,30 +220,39 @@
       <ErrorMessage name="year" class="form-message text-red-500" />
     </div>
 
-    <!-- Country Select -->
+    <!-- Country - Category Select -->
     <div class="flex w-full flex-wrap gap-8">
       <div class="form-group">
         <label for="country_id">Country:</label>
-        <select v-model.number="form.country_id" id="country_id">
+        <Field
+          as="select"
+          v-model.number="form.country_id"
+          id="country_id"
+          name="country_id"
+        >
           <option v-for="[id, title] in countries" :key="id" :value="id">
             {{ title }}
           </option>
-        </select>
+        </Field>
         <ErrorMessage name="country_id" class="form-message text-red-500" />
       </div>
-
-      <!-- Category Select -->
       <div class="form-group">
         <label for="category_id">Category:</label>
-        <select v-model.number="form.category_id" id="category_id">
+        <Field
+          as="select"
+          v-model.number="form.category_id"
+          id="category_id"
+          name="category_id"
+        >
           <option v-for="[id, title] in categories" :key="id" :value="id">
             {{ title }}
           </option>
-        </select>
+        </Field>
         <ErrorMessage name="category_id" class="form-message text-red-500" />
       </div>
     </div>
 
+    <!-- Actor - Director -->
     <div class="flex w-full flex-wrap justify-center gap-8">
       <div class="form-group">
         <label for="actor">Actor:</label>
@@ -316,6 +329,7 @@
       </div>
     </div>
 
+    <!-- Genre -->
     <div class="flex w-full flex-wrap gap-2">
       <label for="genres">Genres:</label>
       <div class="flex flex-wrap">
@@ -327,6 +341,7 @@
       <ErrorMessage name="genre_ids" class="form-message text-red-500" />
     </div>
 
+    <!-- Submit -->
     <button
       class="w-2/3 rounded-md bg-blue-500 px-4 py-2 text-xl font-semibold text-white"
       type="submit"
@@ -343,11 +358,14 @@ import { countryService } from "@/services/Country/country";
 import { genreService } from "@/services/Genre/genre";
 import { movieService } from "@/services/Movie/movie.js";
 import { enumService } from "@/services/Enum/enum.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
 const router = useRouter();
+const route = useRoute();
+const slug = route.params.slug;
+
 const validationSchema = yup.object({
   name: yup.string().max(255).required("Name is required"),
   slug: yup.string().max(255).required("Slug is required"),
@@ -357,9 +375,6 @@ const validationSchema = yup.object({
   status: yup.number().oneOf([1, 2]).required("Status is required"),
   poster: yup.mixed().required("Poster is required"),
   thumb: yup.mixed().required("Thumb is required"),
-  is_copyright: yup.boolean(),
-  sub_docquyen: yup.boolean(),
-  chieurap: yup.boolean(),
   trailer_url: yup.string().max(255).nullable(true),
   time: yup.string().max(255).nullable(true),
   episode_current: yup.string().max(255).nullable(true),
@@ -382,8 +397,8 @@ const validationSchema = yup.object({
     .of(yup.string().max(255))
     .min(1, "At least one director is required"),
   genre_ids: yup.array().of(yup.number().integer().min(1)).nullable(true),
-  country_id: yup.number(),
-  category_id: yup.number(),
+  country_id: yup.number().required(),
+  category_id: yup.number().required(),
 });
 
 useForm({
@@ -452,10 +467,20 @@ const handleSubmit = async () => {
   form.chieurap = form.chieurap ? 1 : 0;
   form.is_copyright = form.is_copyright ? 1 : 0;
   form.sub_docquyen = form.sub_docquyen ? 1 : 0;
+
   try {
-    await movieService.create(form);
+    if (slug) {
+      console.log(form);
+      
+      await movieService.update(slug, form);
+      alert("Movie updated successfully!");
+    } else {
+      console.log(form);
+
+      await movieService.create(form);
+      alert("Movie added successfully!");
+    }
     router.push({ name: "movie" });
-    alert("Movie added successfully!");
   } catch (error) {
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
@@ -485,6 +510,20 @@ onMounted(async () => {
     type.value = Object.entries(enumResponse.data.type);
     quality.value = Object.entries(enumResponse.data.quality);
     movieStatus.value = Object.entries(enumResponse.data["movie-status"]);
+
+    if (slug) {
+      const response = await movieService.find(slug);
+      
+      form.genre_ids = response.data.genres.map((genre) => genre.id);
+      Object.assign(form, {
+        ...response.data,
+        actor: response.data.actor.split(","),
+        director: response.data.director.split(","),
+        category_id: response.data.category.id,
+        country_id: response.data.country.id,
+        genres: response.data.genres,
+      });
+    }
   } catch (error) {
     console.error("Error fetching data", error);
   }

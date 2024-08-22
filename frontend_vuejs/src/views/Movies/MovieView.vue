@@ -48,9 +48,13 @@
                   <i class="fa-solid fa-circle-info"></i>
                 </button>
               </router-link>
-              <button class="bg-sky-500">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
+              <router-link
+                :to="{ name: 'movie-update', params: { slug: movie.slug } }"
+              >
+                <button class="bg-sky-500">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </router-link>
               <button @click="deleteItem(movie.slug)" class="bg-red-500">
                 <i class="fa-solid fa-trash-can"></i>
               </button>

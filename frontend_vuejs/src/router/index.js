@@ -25,6 +25,12 @@ const router = createRouter({
               path: "form",
               name: "movie-form",
               component: () => import("@/views/Movies/MovieForm.vue"),
+              children: [
+                {
+                  path: ":slug",
+                  name: "movie-update",
+                }
+              ]
             },
             {
               path: "detail/:slug",

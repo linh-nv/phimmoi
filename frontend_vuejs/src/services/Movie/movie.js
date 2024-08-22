@@ -12,15 +12,15 @@ export const movieService = {
     return apiService.create(endpoint, data);
   },
 
-  update(id, data) {
-    return apiService.update(endpoint, id, data);
+  update(slug, data) {
+    return apiService.updateMovie(endpoint, slug + "?method=PUT", data);
   },
 
-  find(id) {
-    return apiService.find(endpoint, id);
+  find(slug) {
+    return apiService.find(endpoint, slug);
   },
 
-  delete(id) {
-    return apiService.delete(endpoint, id);
+  delete(slug) {
+    return apiService.delete(endpoint, slug);
   },
 };

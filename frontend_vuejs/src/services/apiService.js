@@ -16,8 +16,7 @@ export const apiService = {
   getAll: (endpoint, page = 1) =>
     handleApiCall(() => axiosInstance.get(`${endpoint}`, { params: { page } })),
 
-  get: (endpoint) => 
-    handleApiCall(() => axiosInstance.get(`${endpoint}`)),
+  get: (endpoint) => handleApiCall(() => axiosInstance.get(`${endpoint}`)),
 
   create: (endpoint, data, headers = {}) =>
     handleApiCall(() =>
@@ -26,16 +25,23 @@ export const apiService = {
       }),
     ),
 
-  update: (endpoint, id, data, headers = {}) =>
+  update: (endpoint, slug, data, headers = {}) =>
     handleApiCall(() =>
-      axiosInstance.put(`${endpoint}/${id}`, data, { headers }),
+      axiosInstance.put(`${endpoint}/${slug}`, data, { headers }),
     ),
 
-  find: (endpoint, id) =>
-    handleApiCall(() => axiosInstance.get(`${endpoint}/${id}`)),
+  updateMovie: (endpoint, slug, data, headers = {}) =>
+    handleApiCall(() =>
+      axiosInstance.post(`${endpoint}/${slug}`, data, {
+        headers: { "Content-Type": "multipart/form-data", ...headers },
+      }),
+    ),
 
-  delete: (endpoint, id) =>
-    handleApiCall(() => axiosInstance.delete(`${endpoint}/${id}`)),
+  find: (endpoint, slug) =>
+    handleApiCall(() => axiosInstance.get(`${endpoint}/${slug}`)),
+
+  delete: (endpoint, slug) =>
+    handleApiCall(() => axiosInstance.delete(`${endpoint}/${slug}`)),
 
   search: (endpoint, params = {}) =>
     handleApiCall(() => axiosInstance.get(endpoint, { params })),
