@@ -31,8 +31,8 @@ class MovieRequest extends FormRequest
             'content' => 'required',
             'type' => 'required|int|in:1,2,3',
             'status' => 'required|int|in:1,2',
-            'poster' => 'required|file',
-            'thumb' => 'required|file',
+            'poster' => 'required|image',
+            'thumb' => 'required|image',
             'is_copyright' => 'required|bool',
             'sub_docquyen' => 'required|bool',
             'chieurap' => 'required|bool',
@@ -85,11 +85,11 @@ class MovieRequest extends FormRequest
             'status.int' => 'The status must be an integer.',
             'status.in' => 'The selected status is invalid.',
 
-            'poster.required' => 'The poster URL is required.',
-            'poster.file' => 'The poster URL must be a file.',
+            'poster.required' => 'The poster is required.',
+            'poster.image' => 'The poster must be a image.',
 
             'thumb.required' => 'The thumb URL is required.',
-            'thumb.file' => 'The thumb URL must be a file.',
+            'thumb.image' => 'The thumb URL must be a image.',
 
             'is_copyright.required' => 'The copyright status is required.',
             'is_copyright.bool' => 'The copyright status must be a boolean.',
