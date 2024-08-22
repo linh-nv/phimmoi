@@ -95,8 +95,9 @@ class MovieService
         return $this->resourceSingleton->getResource(MovieResource::class, $movie);
     }
 
-    public function updateMovie(Movie $movie, array $data): MovieResource
+    public function updateMovie($slug, array $data): MovieResource
     {
+        $movie = $this->movieRepository->where('slug', $slug);
         $slug = convert_to_slug($data['slug']);
 
         // Upload poster
@@ -136,6 +137,7 @@ class MovieService
             'updated_at' => Carbon::now(),
         ]);
 
+        // Sync genres
         if (isset($data['genre_ids'])) {
             $this->movieRepository->syncGenres($movie, $data['genre_ids']);
         }

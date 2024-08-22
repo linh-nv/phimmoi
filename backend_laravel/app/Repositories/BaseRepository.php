@@ -66,6 +66,12 @@ abstract class BaseRepository implements RepositoryInterface
         return Movie::whereIn('id', $ids)->get();
     }
 
+    public function where($field, $data): Model
+    {
+        $model = $this->_model->where($field, $data)->firstOrFail();
+
+        return $model;
+    }
     /**
      * Create
      * @param array $attributes

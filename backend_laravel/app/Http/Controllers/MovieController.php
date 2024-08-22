@@ -72,14 +72,14 @@ class MovieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(MovieRequest $request, Movie $movie): JsonResponse
+    public function update(Request $request, $slug): JsonResponse
     {
         try {
-            $movie = $this->movieService->updateMovie($movie, $request->all());
+            $movie = $this->movieService->updateMovie($slug, $request->all());
 
             return $this->responseSuccess(Response::HTTP_OK, $movie);
         } catch (\Exception $e) {
-
+            throw $e;
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
