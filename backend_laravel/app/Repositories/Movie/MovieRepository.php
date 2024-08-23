@@ -18,6 +18,12 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         return \App\Models\Movie::class;
     }
 
+    public function findBySlug($slug): Movie
+    {
+        
+        return $this->where('slug', $slug);
+    }
+
     public function getRelationship(): LengthAwarePaginator
     {
         

@@ -48,6 +48,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('movie/{slug}', [MovieController::class, 'update']);
     Route::apiResource('movie', MovieController::class);
     Route::apiResource('episode', EpisodeController::class);
+    Route::get('episode/movie/{slug}', [EpisodeController::class, 'getByMovie']);
     Route::apiResource('address', AddressController::class);
 
     Route::group(['prefix' => 'destroy'], function () {
