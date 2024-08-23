@@ -37,7 +37,7 @@
                   params: { slug: country.slug },
                 }"
               >
-                <button class="bg-sky-500">
+                <button class="bg-orange-500">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </router-link>

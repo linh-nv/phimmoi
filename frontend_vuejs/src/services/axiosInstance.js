@@ -27,8 +27,8 @@ axiosInstance.interceptors.request.use(
         const response = await authService.refreshToken();
         accessToken = response.data.access_token;
       } catch (error) {
-        cookieService.removeTokens();
-        window.location.href = "/login";
+        // cookieService.removeTokens();
+        // window.location.href = "/login";
 
         loadingStore.stopLoading();
 
@@ -71,8 +71,8 @@ axiosInstance.interceptors.response.use(
 
           return axiosInstance(error.config);
         }
-        cookieService.removeTokens();
-        window.location.href = "/login";
+        // cookieService.removeTokens();
+        // window.location.href = "/login";
       }
     } catch (refreshError) {
       cookieService.removeTokens();

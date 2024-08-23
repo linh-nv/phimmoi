@@ -1,12 +1,12 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>New Genre</h1>
+    <h1>New Episode</h1>
     <router-link
-      :to="{ name: 'genre' }"
+      :to="{ name: 'episode' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
     >
       <i class="fa-solid fa-rectangle-list"></i>
-      <span>List genres</span>
+      <span>List episodes</span>
     </router-link>
   </section>
   <div class="line border border-gray-200"></div>
@@ -16,9 +16,9 @@
     class="form-box"
   >
     <div class="form-group">
-      <label for="title">Title:</label>
-      <Field name="title" v-model="form.title" type="text" id="title" />
-      <ErrorMessage name="title" class="form-message text-red-500" />
+      <label for="name">Name:</label>
+      <Field name="name" v-model="form.name" type="text" id="name" />
+      <ErrorMessage name="name" class="form-message text-red-500" />
     </div>
 
     <div class="form-group">
@@ -27,27 +27,15 @@
       <ErrorMessage name="slug" class="form-message text-red-500" />
     </div>
 
-    <div class="flex w-full flex-col">
-      <label for="description">Description:</label>
-      <Field
-        as="textarea"
-        name="description"
-        v-model="form.description"
-        id="description"
-      />
-      <ErrorMessage name="description" class="form-message text-red-500" />
-    </div>
-
-    <!-- Status -->
     <div class="form-group">
-      <label for="status">Status:</label>
-      <Field as="select" v-model.number="form.status" id="status" name="status">
-        <option value="" disabled>Select Status</option>
-        <option v-for="[key, value] in genreStatus" :value="key">
-          {{ value }}
-        </option>
-      </Field>
-      <ErrorMessage name="status" class="form-message text-red-500" />
+      <label for="link_embed">Link:</label>
+      <Field
+        name="link_embed"
+        v-model="form.link_embed"
+        type="text"
+        id="link_embed"
+      />
+      <ErrorMessage name="link_embed" class="form-message text-red-500" />
     </div>
 
     <button
@@ -61,15 +49,16 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { genreService } from "@/services/Genre/genre";
-import { enumService } from "@/services/Enum/enum.js";
+import { episodeService } from "@/services/Episode/episode";
+import { movieService } from "@/services/Movie/movie";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
-import { formSchema } from "@/validation/Genre/formSchema";
+import { formSchema } from "@/validation/Episode/formSchema";
 
 const router = useRouter();
 const route = useRoute();
 const slug = route.params.slug;
+const id = route.params.id;
 
 const validationSchema = formSchema;
 
@@ -78,28 +67,27 @@ useForm({
 });
 
 const form = reactive({
-  title: "",
+  movie_id: "",
+  name: "",
   slug: "",
-  origin_name: "",
-  description: "",
-  status: null,
+  link_embed: "",
 });
 
 const errors = ref({});
 
 const handleSubmit = async () => {
   try {
-    if (slug) {
-      await genreService.update(slug, form);
+    if (id) {
+      await episodeService.update(id, form);
 
-      alert("Genre updated successfully!");
+      alert("Episode updated successfully!");
     } else {
-      await genreService.create(form);
+      await episodeService.create(form);
 
-      alert("Genre added successfully!");
+      alert("Episode added successfully!");
     }
 
-    router.push({ name: "genre" });
+    router.push({ name: "episode" });
   } catch (error) {
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
@@ -109,19 +97,18 @@ const handleSubmit = async () => {
   }
 };
 
-const genreStatus = ref([]);
-
 onMounted(async () => {
   try {
-    const enumResponse = await enumService.getStatus();
-    genreStatus.value = Object.entries(enumResponse.data);
+    const movieResponse = await movieService.find(slug);
 
-    if (slug) {
-      const response = await genreService.find(slug);
+    form.movie_id = movieResponse.data.id;
+
+    if (id) {
+      const response = await episodeService.find(id);
       Object.assign(form, { ...response.data });
     }
   } catch (error) {
-    console.error("Error fetching data", error);
+    console.error(error);
   }
 });
 </script>
