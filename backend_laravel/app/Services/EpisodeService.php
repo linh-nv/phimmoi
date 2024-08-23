@@ -4,17 +4,27 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Repositories\Episode\EpisodeRepository;
+use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
-
+use Illuminate\Database\Eloquent\Collection;
 use function App\Helpers\convert_to_slug;
 
 class EpisodeService
 {
     protected EpisodeRepository $episodeRepository;
+    protected MovieRepository $movieRepository;
 
-    public function __construct(EpisodeRepository $episodeRepository)
+    public function __construct(EpisodeRepository $episodeRepository, MovieRepository $movieRepository)
     {
         $this->episodeRepository = $episodeRepository;
+        $this->movieRepository = $movieRepository;
+    }
+
+    public function getEpisodesByMovie($movieSlug): Collection
+    {
+        $movie_id = $this->movieRepository->findBySlug($movieSlug);
+
+        return $this->episodeRepository->getEpisodesByMovie($movie_id->id);
     }
 
     public function getAll(?string $keyword = null)

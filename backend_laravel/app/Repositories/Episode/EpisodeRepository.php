@@ -4,6 +4,7 @@ namespace App\Repositories\Episode;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class EpisodeRepository extends BaseRepository implements EpisodeRepositoryInterface
 {
@@ -15,6 +16,12 @@ class EpisodeRepository extends BaseRepository implements EpisodeRepositoryInter
     {
 
         return \App\Models\Episode::class;
+    }
+
+    public function getEpisodesByMovie(string $movie_id): Collection
+    {
+
+        return $this->_model->where('movie_id', $movie_id)->get();
     }
 
     public function getSearch(string $keyword): LengthAwarePaginator
