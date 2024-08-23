@@ -41,6 +41,33 @@ const router = createRouter({
               name: "movie-detail",
               component: () => import("@/views/Movies/MovieDetail.vue"),
             },
+            
+            // Episode
+            {
+              path: "episode",
+              children: [
+                {
+                  path: ":slug",
+                  name: "episode",
+                  component: () => import("@/views/Episodes/EpisodeView.vue"),
+                },
+                {
+                  path: "form",
+                  children: [
+                    {
+                      path: ":slug",
+                      name: "episode-create",
+                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                    },
+                    {
+                      path: "update/:slug/:id",
+                      name: "episode-update",
+                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                    },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {
@@ -57,12 +84,14 @@ const router = createRouter({
                 {
                   path: "",
                   name: "category-create",
-                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                  component: () =>
+                    import("@/views/Categories/CategoryForm.vue"),
                 },
                 {
                   path: ":slug",
                   name: "category-update",
-                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                  component: () =>
+                    import("@/views/Categories/CategoryForm.vue"),
                 },
               ],
             },
@@ -120,6 +149,8 @@ const router = createRouter({
         },
       ],
     },
+
+    // Auth route
     {
       path: "/",
       component: () => import("@/layouts/AuthLayout.vue"),
