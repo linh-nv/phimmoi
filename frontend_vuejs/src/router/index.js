@@ -74,12 +74,22 @@ const router = createRouter({
             {
               path: "",
               name: "genre",
-              component: () => import("@/views/Movies/MovieView.vue"),
+              component: () => import("@/views/Genres/GenreView.vue"),
             },
             {
               path: "form",
-              name: "genre-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "genre-create",
+                  component: () => import("@/views/Genres/GenreForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "genre-update",
+                  component: () => import("@/views/Genres/GenreForm.vue"),
+                },
+              ],
             },
           ],
         },
@@ -89,12 +99,22 @@ const router = createRouter({
             {
               path: "",
               name: "country",
-              component: () => import("@/views/Movies/MovieView.vue"),
+              component: () => import("@/views/Countries/CountryView.vue"),
             },
             {
               path: "form",
-              name: "country-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "country-create",
+                  component: () => import("@/views/Countries/CountryForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "country-update",
+                  component: () => import("@/views/Countries/CountryForm.vue"),
+                },
+              ],
             },
           ],
         },
