@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Movies</h1>
     <router-link
-      :to="{ name: 'movie-form' }"
+      :to="{ name: 'movie-create' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>

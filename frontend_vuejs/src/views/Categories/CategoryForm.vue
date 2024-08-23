@@ -3,9 +3,9 @@
     <h1>New Category</h1>
     <router-link
       :to="{ name: 'category' }"
-      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
+      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
     >
-      <i class="fa-solid fa-circle-plus"></i>
+      <i class="fa-solid fa-rectangle-list"></i>
       <span>List categories</span>
     </router-link>
   </section>
@@ -43,11 +43,11 @@
       <label for="status">Status:</label>
       <Field as="select" v-model.number="form.status" id="status" name="status">
         <option value="" disabled>Select Status</option>
-        <option v-for="[key, value] in status" :value="key">
+        <option v-for="[key, value] in categoryStatus" :value="key">
           {{ value }}
         </option>
       </Field>
-      <ErrorMessage name="type" class="form-message text-red-500" />
+      <ErrorMessage name="status" class="form-message text-red-500" />
     </div>
 
     <button
@@ -63,17 +63,15 @@
 import { ref, reactive, onMounted } from "vue";
 import { categoryService } from "@/services/Category/category";
 import { enumService } from "@/services/Enum/enum.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup";
+import { formSchema } from "@/validation/Category/formSchema";
 
 const router = useRouter();
-const validationSchema = yup.object({
-  title: yup.string().max(255).required("Title is required"),
-  slug: yup.string().max(255).required("Slug is required"),
-  description: yup.string().required("Description is required"),
-  status: yup.number().oneOf([1, 2]).required("Status is required"),
-});
+const route = useRoute();
+const slug = route.params.slug;
+
+const validationSchema = formSchema;
 
 useForm({
   validationSchema,
@@ -91,10 +89,17 @@ const errors = ref({});
 
 const handleSubmit = async () => {
   try {
-    await categoryService.create(form);
+    if (slug) {
+      await categoryService.update(slug, form);
+
+      alert("Category updated successfully!");
+    } else {
+      await categoryService.create(form);
+
+      alert("Category added successfully!");
+    }
 
     router.push({ name: "category" });
-    alert("Category added successfully!");
   } catch (error) {
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
@@ -104,13 +109,17 @@ const handleSubmit = async () => {
   }
 };
 
-const status = ref([]);
+const categoryStatus = ref([]);
 
 onMounted(async () => {
   try {
     const enumResponse = await enumService.getStatus();
+    categoryStatus.value = Object.entries(enumResponse.data);
 
-    status.value = Object.entries(enumResponse.data);
+    if (slug) {
+      const response = await categoryService.find(slug);
+      Object.assign(form, { ...response.data });
+    }
   } catch (error) {
     console.error("Error fetching data", error);
   }

@@ -23,20 +23,24 @@ const router = createRouter({
             },
             {
               path: "form",
-              name: "movie-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
               children: [
+                {
+                  path: "",
+                  name: "movie-create",
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
                 {
                   path: ":slug",
                   name: "movie-update",
-                }
-              ]
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
+              ],
             },
             {
               path: "detail/:slug",
               name: "movie-detail",
               component: () => import("@/views/Movies/MovieDetail.vue"),
-            }
+            },
           ],
         },
         {
@@ -49,8 +53,18 @@ const router = createRouter({
             },
             {
               path: "form",
-              name: "category-form",
-              component: () => import("@/views/Categories/CategoryForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "category-create",
+                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "category-update",
+                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                },
+              ],
             },
           ],
         },

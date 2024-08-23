@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Categories</h1>
     <router-link
-      :to="{ name: 'category-form' }"
+      :to="{ name: 'category-create' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -31,12 +31,16 @@
           <td>{{ category.status }}</td>
           <td class="long-space">
             <div class="actions text-white">
-              <button class="bg-green-500">
-                <i class="fa-solid fa-circle-info"></i>
-              </button>
-              <button class="bg-sky-500">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
+              <router-link
+                :to="{
+                  name: 'category-update',
+                  params: { slug: category.slug },
+                }"
+              >
+                <button class="bg-sky-500">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </router-link>
               <button @click="deleteItem(category.slug)" class="bg-red-500">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
