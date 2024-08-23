@@ -3,7 +3,6 @@ import { cookieService } from "@/services/cookieService";
 import { authService } from "@/services/authService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useLoadingStore } from "@/stores/loadingStore";
-import router from "../router";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -29,7 +28,7 @@ axiosInstance.interceptors.request.use(
         accessToken = response.data.access_token;
       } catch (error) {
         cookieService.removeTokens();
-        router.push({ name: "login" });
+        window.location.href = "/login";
 
         loadingStore.stopLoading();
 
@@ -67,13 +66,17 @@ axiosInstance.interceptors.response.use(
         error.response.status >= 400 &&
         error.response.status < 600
       ) {
-        await authService.refreshToken();
+        if (error.response.status == 401) {
+          await authService.refreshToken();
 
-        return axiosInstance(error.config);
+          return axiosInstance(error.config);
+        }
+        cookieService.removeTokens();
+        window.location.href = "/login";
       }
     } catch (refreshError) {
       cookieService.removeTokens();
-      router.push({ name: "login" });
+      window.location.href = "/login";
 
       return Promise.reject(refreshError);
     } finally {

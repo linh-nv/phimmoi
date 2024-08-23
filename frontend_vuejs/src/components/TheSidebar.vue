@@ -45,49 +45,49 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({
   collapsed: Boolean,
 });
 
 const route = useRoute();
+const router = useRouter();
+
+const findPathByName = (name) => {
+  const route = router.resolve({ name });
+  return route ? route.path : "/";
+};
 
 const menuItems = ref([
   {
     name: "Dashboard",
     icon: "fa-solid fa-house",
-    link: "/",
+    link: findPathByName("home"),
     isActive: false,
   },
   {
     name: "Movies",
     icon: "fa-solid fa-film",
-    link: "/movie",
-    isActive: false,
-  },
-  {
-    name: "Episodes",
-    icon: "fa-solid fa-video",
-    link: "/episode",
+    link: findPathByName("movie"),
     isActive: false,
   },
   {
     name: "Categories",
     icon: "fa-solid fa-layer-group",
-    link: "/category",
+    link: findPathByName("category"),
     isActive: false,
   },
   {
     name: "Genres",
     icon: "fa-solid fa-list",
-    link: "/genre",
+    link: findPathByName("genre"),
     isActive: false,
   },
   {
     name: "Countries",
     icon: "fa-solid fa-globe",
-    link: "/country",
+    link: findPathByName("country"),
     isActive: false,
   },
 ]);
@@ -100,10 +100,15 @@ const selectItem = (selectedItem) => {
 
 // Watch for route changes to update active menu item
 watch(
-  route,
-  (newRoute) => {
+  () => route.path,
+  (newPath) => {
     menuItems.value.forEach((item) => {
-      item.isActive = item.link === newRoute.path;
+      if (item.link === "/") {
+        // Xử lý đặc biệt cho route gốc
+        item.isActive = newPath === "/";
+      } else {
+        item.isActive = newPath.startsWith(item.link);
+      }
     });
   },
   { immediate: true },

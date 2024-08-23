@@ -13,7 +13,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto bg-gray-100">
       <TheHeader :collapsed="isSidebarCollapsed" />
-      <div id="content" class="px-20">
+      <div id="view_content" class="flex flex-col gap-6 px-20 pb-52">
         <router-view></router-view>
       </div>
     </main>
@@ -33,7 +33,7 @@ const toggleSidebar = () => {
 </script>
 
 <style scope>
-#content {
+#view_content {
   height: calc(100vh - 4rem);
   padding-top: 6rem;
 }

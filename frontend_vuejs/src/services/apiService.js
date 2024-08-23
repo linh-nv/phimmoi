@@ -5,27 +5,47 @@ const handleApiCall = async (apiCall) => {
     const response = await apiCall();
     return response.data;
   } catch (error) {
-    console.error(error.response?.data?.error || "An unexpected error occurred.");
+    console.error(
+      error.response?.data?.error || "An unexpected error occurred.",
+    );
     throw error;
   }
 };
 
 export const apiService = {
-  getAll: (endpoint, page = 1) => 
+  getAll: (endpoint, page = 1) =>
     handleApiCall(() => axiosInstance.get(`${endpoint}`, { params: { page } })),
 
-  create: (endpoint, data, headers = {}) => 
-    handleApiCall(() => axiosInstance.post(endpoint, data, { headers: { "Content-Type": "multipart/form-data", ...headers } })),
+  get: (endpoint) => handleApiCall(() => axiosInstance.get(`${endpoint}`)),
 
-  update: (endpoint, id, data, headers = {}) => 
-    handleApiCall(() => axiosInstance.put(`${endpoint}/${id}`, data, { headers })),
+  create: (endpoint, data, headers = {}) =>
+    handleApiCall(() =>
+      axiosInstance.post(endpoint, data, {
+        headers: { "Content-Type": "multipart/form-data", ...headers },
+      }),
+    ),
 
-  find: (endpoint, id) => 
-    handleApiCall(() => axiosInstance.get(`${endpoint}/${id}`)),
+  update: (endpoint, slug, data, headers = {}) =>
+    handleApiCall(() =>
+      axiosInstance.put(`${endpoint}/${slug}`, data, { headers }),
+    ),
 
-  delete: (endpoint, id) => 
-    handleApiCall(() => axiosInstance.delete(`${endpoint}/${id}`)),
+  updateMovie: (endpoint, slug, data, headers = {}) =>
+    handleApiCall(() =>
+      axiosInstance.post(`${endpoint}/${slug}`, data, {
+        headers: { "Content-Type": "multipart/form-data", ...headers },
+      }),
+    ),
 
-  search: (endpoint, params = {}) => 
+  find: (endpoint, slug) =>
+    handleApiCall(() => axiosInstance.get(`${endpoint}/${slug}`)),
+
+  delete: (endpoint, slug) =>
+    handleApiCall(() => axiosInstance.delete(`${endpoint}/${slug}`)),
+
+  search: (endpoint, params = {}) =>
     handleApiCall(() => axiosInstance.get(endpoint, { params })),
+
+  pluck: (endpoint) =>
+    handleApiCall(() => axiosInstance.get("/pluck" + endpoint)),
 };

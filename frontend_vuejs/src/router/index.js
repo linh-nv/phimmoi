@@ -19,12 +19,82 @@ const router = createRouter({
             {
               path: "",
               name: "movie",
-              component: () => import("../views/Movies/MovieView.vue"),
+              component: () => import("@/views/Movies/MovieView.vue"),
             },
             {
-              path: "/form",
-              name: "movie-form",
-              component: () => import("../views/Movies/MovieForm.vue"),
+              path: "form",
+              children: [
+                {
+                  path: "",
+                  name: "movie-create",
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "movie-update",
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
+              ],
+            },
+            {
+              path: "detail/:slug",
+              name: "movie-detail",
+              component: () => import("@/views/Movies/MovieDetail.vue"),
+            },
+          ],
+        },
+        {
+          path: "/category",
+          children: [
+            {
+              path: "",
+              name: "category",
+              component: () => import("@/views/Categories/CategoryView.vue"),
+            },
+            {
+              path: "form",
+              children: [
+                {
+                  path: "",
+                  name: "category-create",
+                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "category-update",
+                  component: () => import("@/views/Categories/CategoryForm.vue"),
+                },
+              ],
+            },
+          ],
+        },
+        {
+          path: "/genre",
+          children: [
+            {
+              path: "",
+              name: "genre",
+              component: () => import("@/views/Movies/MovieView.vue"),
+            },
+            {
+              path: "form",
+              name: "genre-form",
+              component: () => import("@/views/Movies/MovieForm.vue"),
+            },
+          ],
+        },
+        {
+          path: "/country",
+          children: [
+            {
+              path: "",
+              name: "country",
+              component: () => import("@/views/Movies/MovieView.vue"),
+            },
+            {
+              path: "form",
+              name: "country-form",
+              component: () => import("@/views/Movies/MovieForm.vue"),
             },
           ],
         },
@@ -50,7 +120,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = cookieService.getAccessToken();
+  const token = cookieService.getRefreshToken();
+
   if (token) {
     if (to.name === "login") {
       next("/");
@@ -59,7 +130,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (to.name !== "login") {
-      next({ name: "login" });
+      next({ name: "login", query: { redirect: to.fullPath } });
     } else {
       next();
     }
