@@ -6,7 +6,7 @@ use App\Models\Episode;
 use App\Repositories\Episode\EpisodeRepository;
 use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use function App\Helpers\convert_to_slug;
 
 class EpisodeService
@@ -20,7 +20,7 @@ class EpisodeService
         $this->movieRepository = $movieRepository;
     }
 
-    public function getEpisodesByMovie($movieSlug): Collection
+    public function getEpisodesByMovie($movieSlug): LengthAwarePaginator
     {
         $movie_id = $this->movieRepository->findBySlug($movieSlug);
 
