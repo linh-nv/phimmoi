@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('origin_name');
-            $table->text('content');
-            $table->tinyInteger('type');
-            $table->tinyInteger('status');
+            $table->text('content')->nullable();
+            $table->tinyInteger('type')->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->string('poster_url');
             $table->string('thumb_url');
             $table->boolean('is_copyright')->default(false);
@@ -27,21 +27,24 @@ return new class extends Migration
             $table->string('trailer_url')->nullable();
             $table->string('time')->nullable();
             $table->string('episode_current')->nullable();
-            $table->integer('episode_total')->nullable();
+            $table->string('episode_total')->nullable();
             $table->tinyInteger('quality')->nullable();
             $table->string('lang')->nullable();
             $table->string('notify')->nullable();
             $table->string('showtimes')->nullable();
-            $table->integer('year')->nullable();
+            $table->integer('year');
             $table->bigInteger('view')->default(0);
             $table->text('actor')->nullable();
             $table->text('director')->nullable();
-            $table->unsignedBigInteger('country_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamps();
 
+            // fk
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // full text
+            $table->fullText(['actor', 'director']);
         });
     }
 

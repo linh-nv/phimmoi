@@ -75,6 +75,6 @@ class Movie extends Model
     public function episodes()
     {
 
-        return $this->hasMany(Episode::class);
+        return $this->hasMany(Episode::class, 'movie_slug', 'slug');
     }
 }
