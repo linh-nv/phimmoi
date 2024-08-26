@@ -11,6 +11,7 @@ interface MovieRepositoryInterface
     public function getRelationship(): LengthAwarePaginator;
     public function loadRelationship(Movie $movie): Movie;
     public function getSearch(string $keyword): LengthAwarePaginator;
+    public function getSearchActorAndDerector(string $keyword): LengthAwarePaginator;
     public function attachGenres(Movie $movie, array $genreIds): void;
     public function syncGenres(Movie $movie, array $genreIds): void;
 }
