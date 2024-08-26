@@ -1,12 +1,12 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>List Categories</h1>
+    <h1>List Countries</h1>
     <router-link
-      :to="{ name: 'category-create' }"
+      :to="{ name: 'country-create' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
-      <span>New category</span>
+      <span>New country</span>
     </router-link>
   </section>
   <div class="line border border-gray-200"></div>
@@ -23,25 +23,25 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="category in categories" :key="category.id">
-          <td>{{ category.id }}</td>
-          <td class="long-space truncate">{{ category.title }}</td>
-          <td class="long-space truncate">{{ category.slug }}</td>
-          <td class="truncate">{{ category.description }}</td>
-          <td>{{ category.status }}</td>
+        <tr v-for="country in countries" :key="country.id">
+          <td>{{ country.id }}</td>
+          <td class="long-space truncate">{{ country.title }}</td>
+          <td class="long-space truncate">{{ country.slug }}</td>
+          <td class="truncate">{{ country.description }}</td>
+          <td>{{ country.status }}</td>
           <td class="long-space">
             <div class="actions text-white">
               <router-link
                 :to="{
-                  name: 'category-update',
-                  params: { slug: category.slug },
+                  name: 'country-update',
+                  params: { slug: country.slug },
                 }"
               >
                 <button class="bg-orange-500">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </router-link>
-              <button @click="deleteItem(category.slug)" class="bg-red-500">
+              <button @click="deleteItem(country.slug)" class="bg-red-500">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -75,9 +75,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { categoryService } from "@/services/Category/category.js";
+import { countryService } from "@/services/Country/country.js";
 
-const categories = ref([]);
+const countries = ref([]);
 const linkNext = ref({});
 const linkPrev = ref({});
 const currentPage = ref({});
@@ -85,10 +85,10 @@ const pageFrom = ref({});
 const pageTo = ref({});
 const pageTotal = ref({});
 
-const fetchCategories = async (page = 1) => {
+const fetchCountries = async (page = 1) => {
   try {
-    const response = await categoryService.getAll(page);
-    categories.value = response.data.data;
+    const response = await countryService.getAll(page);
+    countries.value = response.data.data;
 
     currentPage.value = response.data.current_page;
     linkNext.value = response.data.next_page_url;
@@ -104,28 +104,28 @@ const fetchCategories = async (page = 1) => {
 const prevPage = () => {
   if (linkPrev) {
     currentPage.value--;
-    fetchCategories(currentPage.value);
+    fetchCountries(currentPage.value);
   }
 };
 
 const nextPage = () => {
   if (linkNext) {
     currentPage.value++;
-    fetchCategories(currentPage.value);
+    fetchCountries(currentPage.value);
   }
 };
 
 const deleteItem = async (slug) => {
   try {
-    const response = await categoryService.delete(slug);
-    alert("Category delete successfully!");
-    fetchCategories();
+    const response = await countryService.delete(slug);
+    alert("Country delete successfully!");
+    fetchCountries();
   } catch (error) {
     console.error(error);
   }
 };
 
 onMounted(() => {
-  fetchCategories();
+  fetchCountries();
 });
 </script>

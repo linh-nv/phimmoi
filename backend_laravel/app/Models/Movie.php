@@ -47,6 +47,8 @@ class Movie extends Model
         'is_copyright' => 'boolean',
         'sub_docquyen' => 'boolean',
         'chieurap' => 'boolean',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function getRouteKeyName()
@@ -75,6 +77,6 @@ class Movie extends Model
     public function episodes()
     {
 
-        return $this->hasMany(Episode::class);
+        return $this->hasMany(Episode::class, 'movie_slug', 'slug');
     }
 }

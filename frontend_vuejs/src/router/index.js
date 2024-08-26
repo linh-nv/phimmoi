@@ -23,20 +23,51 @@ const router = createRouter({
             },
             {
               path: "form",
-              name: "movie-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
               children: [
+                {
+                  path: "",
+                  name: "movie-create",
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
                 {
                   path: ":slug",
                   name: "movie-update",
-                }
-              ]
+                  component: () => import("@/views/Movies/MovieForm.vue"),
+                },
+              ],
             },
             {
               path: "detail/:slug",
               name: "movie-detail",
               component: () => import("@/views/Movies/MovieDetail.vue"),
-            }
+            },
+            
+            // Episode
+            {
+              path: "episode",
+              children: [
+                {
+                  path: ":slug",
+                  name: "episode",
+                  component: () => import("@/views/Episodes/EpisodeView.vue"),
+                },
+                {
+                  path: "form",
+                  children: [
+                    {
+                      path: ":slug",
+                      name: "episode-create",
+                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                    },
+                    {
+                      path: "update/:slug/:id",
+                      name: "episode-update",
+                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                    },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {
@@ -49,8 +80,20 @@ const router = createRouter({
             },
             {
               path: "form",
-              name: "category-form",
-              component: () => import("@/views/Categories/CategoryForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "category-create",
+                  component: () =>
+                    import("@/views/Categories/CategoryForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "category-update",
+                  component: () =>
+                    import("@/views/Categories/CategoryForm.vue"),
+                },
+              ],
             },
           ],
         },
@@ -60,12 +103,22 @@ const router = createRouter({
             {
               path: "",
               name: "genre",
-              component: () => import("@/views/Movies/MovieView.vue"),
+              component: () => import("@/views/Genres/GenreView.vue"),
             },
             {
               path: "form",
-              name: "genre-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "genre-create",
+                  component: () => import("@/views/Genres/GenreForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "genre-update",
+                  component: () => import("@/views/Genres/GenreForm.vue"),
+                },
+              ],
             },
           ],
         },
@@ -75,17 +128,29 @@ const router = createRouter({
             {
               path: "",
               name: "country",
-              component: () => import("@/views/Movies/MovieView.vue"),
+              component: () => import("@/views/Countries/CountryView.vue"),
             },
             {
               path: "form",
-              name: "country-form",
-              component: () => import("@/views/Movies/MovieForm.vue"),
+              children: [
+                {
+                  path: "",
+                  name: "country-create",
+                  component: () => import("@/views/Countries/CountryForm.vue"),
+                },
+                {
+                  path: ":slug",
+                  name: "country-update",
+                  component: () => import("@/views/Countries/CountryForm.vue"),
+                },
+              ],
             },
           ],
         },
       ],
     },
+
+    // Auth route
     {
       path: "/",
       component: () => import("@/layouts/AuthLayout.vue"),

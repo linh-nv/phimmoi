@@ -23,6 +23,20 @@ class EpisodeController extends Controller
     }
 
     /**
+     * Display a listing of episodes by movie_id.
+     */
+    public function getByMovie(string $movieSlug): JsonResponse
+    {
+        try {
+            $episodes = $this->episodeService->getEpisodesByMovie($movieSlug);
+
+            return $this->responseSuccess(Response::HTTP_OK, $episodes);
+        } catch (\Exception $e) {
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResponse

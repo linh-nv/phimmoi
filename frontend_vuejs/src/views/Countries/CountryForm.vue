@@ -1,12 +1,12 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>New Category</h1>
+    <h1>New Country</h1>
     <router-link
-      :to="{ name: 'category' }"
+      :to="{ name: 'country' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
     >
       <i class="fa-solid fa-rectangle-list"></i>
-      <span>List categories</span>
+      <span>List countries</span>
     </router-link>
   </section>
   <div class="line border border-gray-200"></div>
@@ -43,7 +43,7 @@
       <label for="status">Status:</label>
       <Field as="select" v-model.number="form.status" id="status" name="status">
         <option value="" disabled>Select Status</option>
-        <option v-for="[key, value] in categoryStatus" :value="key">
+        <option v-for="[key, value] in countryStatus" :value="key">
           {{ value }}
         </option>
       </Field>
@@ -61,11 +61,11 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { categoryService } from "@/services/Category/category";
+import { countryService } from "@/services/Country/country";
 import { enumService } from "@/services/Enum/enum.js";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
-import { formSchema } from "@/validation/Category/formSchema";
+import { formSchema } from "@/validation/Country/formSchema";
 
 const router = useRouter();
 const route = useRoute();
@@ -90,16 +90,16 @@ const errors = ref({});
 const handleSubmit = async () => {
   try {
     if (slug) {
-      await categoryService.update(slug, form);
+      await countryService.update(slug, form);
 
-      alert("Category updated successfully!");
+      alert("Country updated successfully!");
     } else {
-      await categoryService.create(form);
+      await countryService.create(form);
 
-      alert("Category added successfully!");
+      alert("Country added successfully!");
     }
 
-    router.push({ name: "category" });
+    router.push({ name: "country" });
   } catch (error) {
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
@@ -109,15 +109,15 @@ const handleSubmit = async () => {
   }
 };
 
-const categoryStatus = ref([]);
+const countryStatus = ref([]);
 
 onMounted(async () => {
   try {
     const enumResponse = await enumService.getStatus();
-    categoryStatus.value = Object.entries(enumResponse.data);
+    countryStatus.value = Object.entries(enumResponse.data);
 
     if (slug) {
-      const response = await categoryService.find(slug);
+      const response = await countryService.find(slug);
       Object.assign(form, { ...response.data });
     }
   } catch (error) {

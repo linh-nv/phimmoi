@@ -4,17 +4,26 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Repositories\Episode\EpisodeRepository;
+use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 use function App\Helpers\convert_to_slug;
 
 class EpisodeService
 {
     protected EpisodeRepository $episodeRepository;
+    protected MovieRepository $movieRepository;
 
-    public function __construct(EpisodeRepository $episodeRepository)
+    public function __construct(EpisodeRepository $episodeRepository, MovieRepository $movieRepository)
     {
         $this->episodeRepository = $episodeRepository;
+        $this->movieRepository = $movieRepository;
+    }
+
+    public function getEpisodesByMovie($movieSlug): LengthAwarePaginator
+    {
+
+        return $this->episodeRepository->getEpisodesByMovie($movieSlug);
     }
 
     public function getAll(?string $keyword = null)

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Movie;
 
 use App\Models\Movie;
@@ -14,13 +15,19 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
      */
     public function getModel(): string
     {
-        
+
         return \App\Models\Movie::class;
+    }
+
+    public function findBySlug($slug): Movie
+    {
+
+        return $this->where('slug', $slug);
     }
 
     public function getRelationship(): LengthAwarePaginator
     {
-        
+
         return $this->_model->with('category', 'genres', 'country', 'episodes')->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
     }
 
@@ -32,18 +39,21 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 
     public function getSearch(string $keyword): LengthAwarePaginator
     {
-        $searchFields = ['name', 'slug', 'origin_name', 'content', 'type', 'year', 'actor', 'director'];
+        $searchFields = ['name', 'slug', 'origin_name', 'year'];
 
-        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")
-        ->orWhereHas('category', function ($query) use ($keyword) {
-            $query->whereAny(['title', 'slug'], 'like', "%$keyword%");
-        })
-        ->orWhereHas('country', function ($query) use ($keyword) {
-            $query->whereAny(['title', 'slug'], 'like', "%$keyword%");
-        })
-        ->orWhereHas('genres', function ($query) use ($keyword) {
-            $query->whereAny(['title', 'slug'], 'like', "%$keyword%");
-        })->paginate(Constains::PER_PAGE);
+        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")->paginate(Constains::PER_PAGE);
+    }
+
+    public function getSearchActorAndDerector(string $keyword): LengthAwarePaginator
+    {
+        $searchFields = ['actor', 'director'];
+
+        $query = $this->_model->whereRaw(
+            "MATCH(" . implode(',', $searchFields) . ") AGAINST(? IN NATURAL LANGUAGE MODE)",
+            [$keyword]
+        );
+
+        return $query->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
     }
 
     public function attachGenres(Movie $movie, array $genreIds): void

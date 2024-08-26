@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Util;
 
 /**
@@ -15,7 +16,13 @@ class Constains
 
     /** @var string URL_API_DISTRICT/{province_id} */
     public const URL_API_DISTRICT = 'https://vapi.vnappmob.com/api/province/district/';
-    
+
     /** @var string URL_API_WARD/{ward_id} */
     public const URL_API_WARD = 'https://vapi.vnappmob.com/api/province/ward/';
+
+    /** @var string API_CRAWL_MOVIES/{page} */
+    public const API_CRAWL_MOVIES = 'https://phimapi.com/danh-sach/phim-moi-cap-nhat?page=';
+
+    /** @var string API_CRAWL_DETAILS_MOVIE/{slug} */
+    public const API_CRAWL_DETAILS_MOVIE = 'https://phimapi.com/phim/';
 }

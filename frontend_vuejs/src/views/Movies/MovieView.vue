@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Movies</h1>
     <router-link
-      :to="{ name: 'movie-form' }"
+      :to="{ name: 'movie-create' }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -21,7 +21,6 @@
           <th>Episode Total</th>
           <th>Episode Current</th>
           <th>Year</th>
-          <th>Status</th>
           <th>Views</th>
           <th class="long-space">Actions</th>
         </tr>
@@ -37,10 +36,16 @@
           <td>{{ movie.episode_total }}</td>
           <td>{{ movie.episode_current }}</td>
           <td>{{ movie.year }}</td>
-          <td>{{ movie.status }}</td>
           <td>{{ movie.view }}</td>
           <td class="long-space">
             <div class="actions text-white">
+              <router-link
+                :to="{ name: 'episode', params: { slug: movie.slug } }"
+              >
+                <button class="bg-sky-500">
+                  <i class="fa-regular fa-square-plus"></i>
+                </button>
+              </router-link>
               <router-link
                 :to="{ name: 'movie-detail', params: { slug: movie.slug } }"
               >
@@ -51,7 +56,7 @@
               <router-link
                 :to="{ name: 'movie-update', params: { slug: movie.slug } }"
               >
-                <button class="bg-sky-500">
+                <button class="bg-orange-500">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
               </router-link>
