@@ -27,7 +27,7 @@
           <td>{{ genre.id }}</td>
           <td class="long-space truncate">{{ genre.title }}</td>
           <td class="long-space truncate">{{ genre.slug }}</td>
-          <td class="truncate">{{ genre.description }}</td>
+          <td class="truncate">{{ genre.description ?? '' }}</td> 
           <td>{{ genre.status }}</td>
           <td class="long-space">
             <div class="actions text-white">
@@ -71,6 +71,7 @@
       </button>
     </div>
   </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>

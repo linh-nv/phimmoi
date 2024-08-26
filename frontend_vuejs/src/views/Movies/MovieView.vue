@@ -90,6 +90,7 @@
       </button>
     </div>
   </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>

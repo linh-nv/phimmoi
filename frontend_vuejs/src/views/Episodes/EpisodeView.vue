@@ -55,7 +55,7 @@
       </tbody>
     </table>
   </section>
-  <!-- <section class="paginate">
+  <section class="paginate">
     <span>Showing {{ pageFrom }}-{{ pageTo }} of {{ pageTotal }}</span>
     <div class="paginate-button">
       <button
@@ -75,7 +75,8 @@
         <i class="fa-solid fa-caret-right"></i>
       </button>
     </div>
-  </section> -->
+  </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>
@@ -88,43 +89,42 @@ const route = useRoute();
 const slug = route.params.slug;
 
 const episodes = ref([]);
-// const linkNext = ref({});
-// const linkPrev = ref({});
-// const currentPage = ref({});
-// const pageFrom = ref({});
-// const pageTo = ref({});
-// const pageTotal = ref({});
+const linkNext = ref({});
+const linkPrev = ref({});
+const currentPage = ref({});
+const pageFrom = ref({});
+const pageTo = ref({});
+const pageTotal = ref({});
 
-const fetchEpisodes = async () => {
+const fetchEpisodes = async (page = 1) => {
   try {
-    const response = await episodeService.getByMovie(slug);
-    episodes.value = response.data;
-    // episodes.value = response.data.data;
+    const response = await episodeService.getByMovie(slug, page);
+    episodes.value = response.data.data;
 
-    // currentPage.value = response.data.current_page;
-    // linkNext.value = response.data.next_page_url;
-    // linkPrev.value = response.data.prev_page_url;
-    // pageFrom.value = response.data.from;
-    // pageTo.value = response.data.to;
-    // pageTotal.value = response.data.total;
+    currentPage.value = response.data.current_page;
+    linkNext.value = response.data.next_page_url;
+    linkPrev.value = response.data.prev_page_url;
+    pageFrom.value = response.data.from;
+    pageTo.value = response.data.to;
+    pageTotal.value = response.data.total;
   } catch (error) {
     console.error(error);
   }
 };
 
-// const prevPage = () => {
-//   if (linkPrev) {
-//     currentPage.value--;
-//     fetchEpisodes(currentPage.value);
-//   }
-// };
+const prevPage = () => {
+  if (linkPrev) {
+    currentPage.value--;
+    fetchEpisodes(currentPage.value);
+  }
+};
 
-// const nextPage = () => {
-//   if (linkNext) {
-//     currentPage.value++;
-//     fetchEpisodes(currentPage.value);
-//   }
-// };
+const nextPage = () => {
+  if (linkNext) {
+    currentPage.value++;
+    fetchEpisodes(currentPage.value);
+  }
+};
 
 const deleteItem = async (id) => {
   try {

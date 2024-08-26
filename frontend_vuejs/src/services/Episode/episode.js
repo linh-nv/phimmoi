@@ -4,8 +4,8 @@ import { EPISODE_ENDPONIT, EPISODE_MOVIE_ENDPONIT } from "@/utils/apisDomain";
 const endpoint = EPISODE_ENDPONIT;
 
 export const episodeService = {
-  getByMovie(movieSlug) {
-    return apiService.get(EPISODE_MOVIE_ENDPONIT + movieSlug);
+  getByMovie(movieSlug, page) {
+    return apiService.getAll(EPISODE_MOVIE_ENDPONIT + movieSlug, page);
   },
 
   getAll(page) {
