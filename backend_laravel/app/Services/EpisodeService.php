@@ -22,9 +22,8 @@ class EpisodeService
 
     public function getEpisodesByMovie($movieSlug): LengthAwarePaginator
     {
-        $movie_id = $this->movieRepository->findBySlug($movieSlug);
 
-        return $this->episodeRepository->getEpisodesByMovie($movie_id->id);
+        return $this->episodeRepository->getEpisodesByMovie($movieSlug);
     }
 
     public function getAll(?string $keyword = null)

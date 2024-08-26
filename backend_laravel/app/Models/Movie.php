@@ -47,6 +47,8 @@ class Movie extends Model
         'is_copyright' => 'boolean',
         'sub_docquyen' => 'boolean',
         'chieurap' => 'boolean',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function getRouteKeyName()

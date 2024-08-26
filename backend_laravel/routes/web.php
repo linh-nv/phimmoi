@@ -11,5 +11,6 @@ Route::get('/', function () {
 });
 Route::get('/test', function () {
     $apiUrl = Constains::API_CRAWL_DETAILS_MOVIE . 'bay-nuot-mang';
-    return $response = Http::get($apiUrl);
+    $response = Http::get($apiUrl);
+    return $response['movie']['created']['time'];
 });

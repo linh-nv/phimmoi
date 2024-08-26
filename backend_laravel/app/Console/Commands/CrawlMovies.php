@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Movie;
 use App\Util\CategoryDataTemplate;
 use App\Util\Constains;
+use Carbon\Carbon;
 use Exception;
 
 class CrawlMovies extends Command
@@ -40,8 +41,8 @@ class CrawlMovies extends Command
 
         // Get initial page to determine total pages and items
         $initialResponse = $this->fetchDataWithRetries($apiUrl . 1);
-        $totalPages = $initialResponse['pagination']['totalPages'];
-        $totalItems = $initialResponse['pagination']['totalItems'];
+        $totalPages = 10; /*$initialResponse['pagination']['totalPages'];*/
+        $totalItems = $totalPages * 10;/*$initialResponse['pagination']['totalItems'];*/
 
         CategoryDataTemplate::setCategoryTemplate();
         $processedCount = 0;
@@ -49,7 +50,7 @@ class CrawlMovies extends Command
         $episodesData = [];
 
         // Crawl data from each page
-        for ($page = 1; $page <= 1; $page++) {
+        for ($page = 1; $page <= $totalPages; $page++) {
             $pageData = $this->fetchDataWithRetries($apiUrl . $page);
             if (!$pageData || empty($pageData['items'])) {
                 continue;
@@ -97,10 +98,9 @@ class CrawlMovies extends Command
     private function processMovies(array $movies, array &$moviesData, array &$episodesData, int &$processedCount, int $totalItems): void
     {
         foreach ($movies as $movieData) {
-            $this->info('Processing movie: ' . $movieData['slug']);
-
             $details = $this->getMovieDetails($movieData['slug']);
             if (!$details || strtolower($details['movie']['episode_current']) === 'trailer') {
+
                 continue;
             }
 
@@ -156,8 +156,8 @@ class CrawlMovies extends Command
             'category_id' => $category->id,
             'country_id' => $country->id,
             'genres' => $genreIds,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => Carbon::parse($movieDetails['created']['time']),
+            'updated_at' => Carbon::parse($movieDetails['modified']['time']),
         ];
     }
 
@@ -238,6 +238,7 @@ class CrawlMovies extends Command
                 'view',
                 'actor',
                 'director',
+                'created_at',
                 'updated_at'
             ]);
 
