@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Countries</h1>
     <router-link
-      :to="{ name: 'country-create' }"
+      :to="{ name: 'country-create', query: { page: currentPage } }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -71,21 +71,26 @@
       </button>
     </div>
   </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { countryService } from "@/services/Country/country.js";
+import { useRoute, useRouter } from "vue-router";
 
 const countries = ref([]);
 const linkNext = ref({});
 const linkPrev = ref({});
-const currentPage = ref({});
+const currentPage = ref(1);
 const pageFrom = ref({});
 const pageTo = ref({});
 const pageTotal = ref({});
 
-const fetchCountries = async (page = 1) => {
+const route = useRoute();
+const router = useRouter();
+
+const fetchCountries = async (page) => {
   try {
     const response = await countryService.getAll(page);
     countries.value = response.data.data;
@@ -104,6 +109,7 @@ const fetchCountries = async (page = 1) => {
 const prevPage = () => {
   if (linkPrev) {
     currentPage.value--;
+    updateQueryPage(currentPage.value);
     fetchCountries(currentPage.value);
   }
 };
@@ -111,21 +117,37 @@ const prevPage = () => {
 const nextPage = () => {
   if (linkNext) {
     currentPage.value++;
+    updateQueryPage(currentPage.value);
     fetchCountries(currentPage.value);
   }
 };
 
+const updateQueryPage = (page) => {
+  router.push({
+    name: "country",
+    query: { page },
+  });
+};
+
 const deleteItem = async (slug) => {
   try {
-    const response = await countryService.delete(slug);
+    await countryService.delete(slug);
     alert("Country delete successfully!");
-    fetchCountries();
+    fetchCountries(currentPage.value);
   } catch (error) {
     console.error(error);
   }
 };
 
 onMounted(() => {
-  fetchCountries();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchCountries(currentPage.value);
+});
+
+watch(route, (newRoute) => {
+  if (newRoute.query.page) {
+    currentPage.value = parseInt(newRoute.query.page);
+    fetchMovies(currentPage.value);
+  }
 });
 </script>

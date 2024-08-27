@@ -130,4 +130,22 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->_model->whereAny($searchFields, 'like', '%' . $keyword . '%')
             ->paginate(Constains::PER_PAGE);
     }
+
+    public function insert(array $data): bool
+    {
+
+        return $this->_model->insert($data);
+    }
+
+    public function upsert(array $data, array $uniqueBy, array $update): int
+    {
+
+        return $this->_model->upsert($data, $uniqueBy, $update);
+    }
+
+    public function firstOrCreate(array $attributes, array $values = []): ?Model
+    {
+
+        return $this->_model->firstOrCreate($attributes, $values);
+    }
 }

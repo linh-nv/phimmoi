@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Genres</h1>
     <router-link
-      :to="{ name: 'genre-create' }"
+      :to="{ name: 'genre-create', query: { page: currentPage } }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -27,7 +27,7 @@
           <td>{{ genre.id }}</td>
           <td class="long-space truncate">{{ genre.title }}</td>
           <td class="long-space truncate">{{ genre.slug }}</td>
-          <td class="truncate">{{ genre.description }}</td>
+          <td class="truncate">{{ genre.description ?? "" }}</td>
           <td>{{ genre.status }}</td>
           <td class="long-space">
             <div class="actions text-white">
@@ -71,21 +71,26 @@
       </button>
     </div>
   </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { genreService } from "@/services/Genre/genre.js";
+import { useRoute, useRouter } from "vue-router";
 
 const genres = ref([]);
 const linkNext = ref({});
 const linkPrev = ref({});
-const currentPage = ref({});
 const pageFrom = ref({});
 const pageTo = ref({});
 const pageTotal = ref({});
+const currentPage = ref(1);
 
-const fetchGenres = async (page = 1) => {
+const route = useRoute();
+const router = useRouter();
+
+const fetchGenres = async (page) => {
   try {
     const response = await genreService.getAll(page);
     genres.value = response.data.data;
@@ -104,6 +109,7 @@ const fetchGenres = async (page = 1) => {
 const prevPage = () => {
   if (linkPrev) {
     currentPage.value--;
+    updateQueryPage(currentPage.value);
     fetchGenres(currentPage.value);
   }
 };
@@ -111,21 +117,37 @@ const prevPage = () => {
 const nextPage = () => {
   if (linkNext) {
     currentPage.value++;
+    updateQueryPage(currentPage.value);
     fetchGenres(currentPage.value);
   }
 };
 
+const updateQueryPage = (page) => {
+  router.push({
+    name: "genre",
+    query: { page },
+  });
+};
+
 const deleteItem = async (slug) => {
   try {
-    const response = await genreService.delete(slug);
+    await genreService.delete(slug);
     alert("Genre delete successfully!");
-    fetchGenres();
+    fetchGenres(currentPage.value);
   } catch (error) {
     console.error(error);
   }
 };
 
 onMounted(() => {
-  fetchGenres();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchGenres(currentPage.value);
+});
+
+watch(route, (newRoute) => {
+  if (newRoute.query.page) {
+    currentPage.value = parseInt(newRoute.query.page);
+    fetchGenres(currentPage.value);
+  }
 });
 </script>

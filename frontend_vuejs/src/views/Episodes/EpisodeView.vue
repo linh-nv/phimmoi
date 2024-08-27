@@ -10,7 +10,11 @@
         <span>List movies</span>
       </router-link>
       <router-link
-        :to="{ name: 'episode-create', params: { slug: slug } }"
+        :to="{
+          name: 'episode-create',
+          params: { slug: slug },
+          query: { page: currentPage },
+        }"
         class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
       >
         <i class="fa-solid fa-circle-plus"></i>
@@ -55,7 +59,7 @@
       </tbody>
     </table>
   </section>
-  <!-- <section class="paginate">
+  <section class="paginate">
     <span>Showing {{ pageFrom }}-{{ pageTo }} of {{ pageTotal }}</span>
     <div class="paginate-button">
       <button
@@ -75,11 +79,12 @@
         <i class="fa-solid fa-caret-right"></i>
       </button>
     </div>
-  </section> -->
+  </section>
+  <div class="line border border-gray-200"></div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { episodeService } from "@/services/Episode/episode.js";
 import { useRouter, useRoute } from "vue-router";
 
@@ -88,43 +93,52 @@ const route = useRoute();
 const slug = route.params.slug;
 
 const episodes = ref([]);
-// const linkNext = ref({});
-// const linkPrev = ref({});
-// const currentPage = ref({});
-// const pageFrom = ref({});
-// const pageTo = ref({});
-// const pageTotal = ref({});
+const linkNext = ref({});
+const linkPrev = ref({});
+const currentPage = ref(1);
+const pageFrom = ref({});
+const pageTo = ref({});
+const pageTotal = ref({});
 
-const fetchEpisodes = async () => {
+const fetchEpisodes = async (page) => {
   try {
-    const response = await episodeService.getByMovie(slug);
-    episodes.value = response.data;
-    // episodes.value = response.data.data;
+    const response = await episodeService.getByMovie(slug, page);
+    episodes.value = response.data.data;
 
-    // currentPage.value = response.data.current_page;
-    // linkNext.value = response.data.next_page_url;
-    // linkPrev.value = response.data.prev_page_url;
-    // pageFrom.value = response.data.from;
-    // pageTo.value = response.data.to;
-    // pageTotal.value = response.data.total;
+    currentPage.value = response.data.current_page;
+    linkNext.value = response.data.next_page_url;
+    linkPrev.value = response.data.prev_page_url;
+    pageFrom.value = response.data.from;
+    pageTo.value = response.data.to;
+    pageTotal.value = response.data.total;
   } catch (error) {
     console.error(error);
   }
 };
 
-// const prevPage = () => {
-//   if (linkPrev) {
-//     currentPage.value--;
-//     fetchEpisodes(currentPage.value);
-//   }
-// };
+const prevPage = () => {
+  if (linkPrev) {
+    currentPage.value--;
+    updateQueryPage(currentPage.value);
+    fetchEpisodes(currentPage.value);
+  }
+};
 
-// const nextPage = () => {
-//   if (linkNext) {
-//     currentPage.value++;
-//     fetchEpisodes(currentPage.value);
-//   }
-// };
+const nextPage = () => {
+  if (linkNext) {
+    currentPage.value++;
+    updateQueryPage(currentPage.value);
+    fetchEpisodes(currentPage.value);
+  }
+};
+
+const updateQueryPage = (page) => {
+  router.push({
+    name: "episode",
+    params: { slug: slug },
+    query: { page },
+  });
+};
 
 const deleteItem = async (id) => {
   try {
@@ -137,6 +151,15 @@ const deleteItem = async (id) => {
 };
 
 onMounted(() => {
-  fetchEpisodes();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchEpisodes(currentPage.value);
 });
+
+watch(
+  () => route.query.page,
+  (newPage) => {
+    currentPage.value = parseInt(newPage) || 1;
+    fetchEpisodes(currentPage.value);
+  },
+);
 </script>
