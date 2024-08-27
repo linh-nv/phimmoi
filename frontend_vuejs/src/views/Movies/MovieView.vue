@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Movies</h1>
     <router-link
-      :to="{ name: 'movie-create' }"
+      :to="{ name: 'movie-create', query: { page: currentPage } }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -18,7 +18,6 @@
           <th>Poster</th>
           <th class="long-space">Title</th>
           <th class="long-space">Slug</th>
-          <th>Episode Total</th>
           <th>Episode Current</th>
           <th>Year</th>
           <th>Views</th>
@@ -33,7 +32,6 @@
           </td>
           <td class="long-space">{{ movie.name }}</td>
           <td class="long-space">{{ movie.slug }}</td>
-          <td>{{ movie.episode_total }}</td>
           <td>{{ movie.episode_current }}</td>
           <td>{{ movie.year }}</td>
           <td>{{ movie.view }}</td>
@@ -94,7 +92,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { movieService } from "@/services/Movie/movie.js";
 
 const movies = ref([]);
@@ -102,7 +101,10 @@ const links = ref({});
 const meta = ref({});
 const currentPage = ref(1);
 
-const fetchMovies = async (page = 1) => {
+const route = useRoute();
+const router = useRouter();
+
+const fetchMovies = async (page) => {
   try {
     const response = await movieService.getAll(page);
     movies.value = response.data.data;
@@ -116,6 +118,7 @@ const fetchMovies = async (page = 1) => {
 const prevPage = () => {
   if (links.value.prev) {
     currentPage.value -= 1;
+    updateQueryPage(currentPage.value);
     fetchMovies(currentPage.value);
   }
 };
@@ -123,20 +126,37 @@ const prevPage = () => {
 const nextPage = () => {
   if (links.value.next) {
     currentPage.value += 1;
+    updateQueryPage(currentPage.value);
     fetchMovies(currentPage.value);
   }
 };
 
+const updateQueryPage = (page) => {
+  router.push({
+    name: "movie",
+    query: { page },
+  });
+};
+
 const deleteItem = async (slug) => {
   try {
-    const response = await movieService.delete(slug);
+    await movieService.delete(slug);
     alert("Movie delete successfully!");
-    fetchMovies();
+    fetchMovies(currentPage.value);
   } catch (error) {
     console.error(error);
   }
 };
+
 onMounted(() => {
-  fetchMovies();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchMovies(currentPage.value);
+});
+
+watch(route, (newRoute) => {
+  if (newRoute.query.page) {
+    currentPage.value = parseInt(newRoute.query.page);
+    fetchMovies(currentPage.value);
+  }
 });
 </script>

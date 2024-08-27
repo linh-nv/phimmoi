@@ -2,7 +2,7 @@
   <section class="head flex items-center justify-between">
     <h1>List Categories</h1>
     <router-link
-      :to="{ name: 'category-create' }"
+      :to="{ name: 'category-create', query: { page: currentPage } }"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
     >
       <i class="fa-solid fa-circle-plus"></i>
@@ -75,18 +75,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { categoryService } from "@/services/Category/category.js";
+import { useRoute, useRouter } from "vue-router";
 
 const categories = ref([]);
 const linkNext = ref({});
 const linkPrev = ref({});
-const currentPage = ref({});
+const currentPage = ref(1);
 const pageFrom = ref({});
 const pageTo = ref({});
 const pageTotal = ref({});
 
-const fetchCategories = async (page = 1) => {
+const route = useRoute();
+const router = useRouter();
+
+const fetchCategories = async (page) => {
   try {
     const response = await categoryService.getAll(page);
     categories.value = response.data.data;
@@ -105,6 +109,7 @@ const fetchCategories = async (page = 1) => {
 const prevPage = () => {
   if (linkPrev) {
     currentPage.value--;
+    updateQueryPage(currentPage.value);
     fetchCategories(currentPage.value);
   }
 };
@@ -112,13 +117,21 @@ const prevPage = () => {
 const nextPage = () => {
   if (linkNext) {
     currentPage.value++;
+    updateQueryPage(currentPage.value);
     fetchCategories(currentPage.value);
   }
 };
 
+const updateQueryPage = (page) => {
+  router.push({
+    name: "category",
+    query: { page },
+  });
+};
+
 const deleteItem = async (slug) => {
   try {
-    const response = await categoryService.delete(slug);
+    await categoryService.delete(slug);
     alert("Category delete successfully!");
     fetchCategories();
   } catch (error) {
@@ -127,6 +140,14 @@ const deleteItem = async (slug) => {
 };
 
 onMounted(() => {
-  fetchCategories();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchCategories(currentPage.value);
+});
+
+watch(route, (newRoute) => {
+  if (newRoute.query.page) {
+    currentPage.value = parseInt(newRoute.query.page);
+    fetchCategories(currentPage.value);
+  }
 });
 </script>

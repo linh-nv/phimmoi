@@ -10,7 +10,11 @@
         <span>List movies</span>
       </router-link>
       <router-link
-        :to="{ name: 'episode-create', params: { slug: slug } }"
+        :to="{
+          name: 'episode-create',
+          params: { slug: slug },
+          query: { page: currentPage },
+        }"
         class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-400"
       >
         <i class="fa-solid fa-circle-plus"></i>
@@ -80,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { episodeService } from "@/services/Episode/episode.js";
 import { useRouter, useRoute } from "vue-router";
 
@@ -91,12 +95,12 @@ const slug = route.params.slug;
 const episodes = ref([]);
 const linkNext = ref({});
 const linkPrev = ref({});
-const currentPage = ref({});
+const currentPage = ref(1);
 const pageFrom = ref({});
 const pageTo = ref({});
 const pageTotal = ref({});
 
-const fetchEpisodes = async (page = 1) => {
+const fetchEpisodes = async (page) => {
   try {
     const response = await episodeService.getByMovie(slug, page);
     episodes.value = response.data.data;
@@ -115,6 +119,7 @@ const fetchEpisodes = async (page = 1) => {
 const prevPage = () => {
   if (linkPrev) {
     currentPage.value--;
+    updateQueryPage(currentPage.value);
     fetchEpisodes(currentPage.value);
   }
 };
@@ -122,8 +127,17 @@ const prevPage = () => {
 const nextPage = () => {
   if (linkNext) {
     currentPage.value++;
+    updateQueryPage(currentPage.value);
     fetchEpisodes(currentPage.value);
   }
+};
+
+const updateQueryPage = (page) => {
+  router.push({
+    name: "episode",
+    params: { slug: slug },
+    query: { page },
+  });
 };
 
 const deleteItem = async (id) => {
@@ -137,6 +151,15 @@ const deleteItem = async (id) => {
 };
 
 onMounted(() => {
-  fetchEpisodes();
+  currentPage.value = parseInt(route.query.page) || 1;
+  fetchEpisodes(currentPage.value);
 });
+
+watch(
+  () => route.query.page,
+  (newPage) => {
+    currentPage.value = parseInt(newPage) || 1;
+    fetchEpisodes(currentPage.value);
+  },
+);
 </script>

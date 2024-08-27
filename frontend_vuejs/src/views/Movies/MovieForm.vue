@@ -1,13 +1,13 @@
 <template>
   <section class="head flex items-center justify-between">
     <h1>{{ slug ? "Edit Movie" : "New Movie" }}</h1>
-    <router-link
-      :to="{ name: 'movie' }"
+    <button
+      @click="router.back()"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
     >
-      <i class="fa-solid fa-rectangle-list"></i>
-      <span>List movies</span>
-    </router-link>
+      <i class="fa-solid fa-circle-chevron-left"></i>
+      <span>Back</span>
+    </button>
   </section>
   <div class="line border border-gray-200"></div>
   <Form
