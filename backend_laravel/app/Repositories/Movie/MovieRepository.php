@@ -22,7 +22,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function findBySlug($slug): Movie
     {
 
-        return $this->where('slug', $slug);
+        return $this->where('slug', $slug)->firstOrFail();
     }
 
     public function getRelationship(): LengthAwarePaginator
