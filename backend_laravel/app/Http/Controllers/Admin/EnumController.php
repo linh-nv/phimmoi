@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Services\EnumService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\JsonResponse;

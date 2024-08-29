@@ -1,25 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MovieRequest;
-use App\Models\Movie;
-use App\Services\MovieService;
+use App\Http\Requests\EpisodeRequest;
+use App\Models\Episode;
+use App\Services\EpisodeService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class MovieController extends Controller
+class EpisodeController extends Controller
 {
     use ResponseHandler;
 
-    protected $movieService;
+    protected $episodeService;
 
-    public function __construct(MovieService $movieService)
+    public function __construct(EpisodeService $episodeService)
     {
-        $this->movieService = $movieService;
+        $this->episodeService = $episodeService;
+    }
+
+    /**
+     * Display a listing of episodes by movie_id.
+     */
+    public function getByMovie(string $movieSlug): JsonResponse
+    {
+        try {
+            $episodes = $this->episodeService->getEpisodesByMovie($movieSlug);
+
+            return $this->responseSuccess(Response::HTTP_OK, $episodes);
+        } catch (\Exception $e) {
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
     }
 
     /**
@@ -30,9 +44,9 @@ class MovieController extends Controller
         $keyword = $request->query('keyword');
 
         try {
-            $categories = $this->movieService->getPaginate($keyword);
+            $episodes = $this->episodeService->getPaginate($keyword);
 
-            return $this->responseSuccess(Response::HTTP_OK, $categories);
+            return $this->responseSuccess(Response::HTTP_OK, $episodes);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -42,12 +56,12 @@ class MovieController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(MovieRequest $request): JsonResponse
+    public function store(EpisodeRequest $request): JsonResponse
     {
         try {
-            $movie = $this->movieService->createMovie($request->all());
+            $episode = $this->episodeService->createEpisode($request->all());
 
-            return $this->responseSuccess(Response::HTTP_CREATED, $movie);
+            return $this->responseSuccess(Response::HTTP_CREATED, $episode);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -57,12 +71,12 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie): JsonResponse
+    public function show(Episode $episode): JsonResponse
     {
         try {
-            $movie = $this->movieService->getMovieById($movie);
+            $episode = $this->episodeService->getEpisodeById($episode);
 
-            return $this->responseSuccess(Response::HTTP_OK, $movie);
+            return $this->responseSuccess(Response::HTTP_OK, $episode);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -72,14 +86,14 @@ class MovieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $slug): JsonResponse
+    public function update(EpisodeRequest $request, Episode $episode): JsonResponse
     {
         try {
-            $movie = $this->movieService->updateMovie($slug, $request->all());
+            $episode = $this->episodeService->updateEpisode($episode, $request->all());
 
-            return $this->responseSuccess(Response::HTTP_OK, $movie);
+            return $this->responseSuccess(Response::HTTP_OK, $episode);
         } catch (\Exception $e) {
-            throw $e;
+
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
@@ -87,10 +101,10 @@ class MovieController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movie $movie): JsonResponse
+    public function destroy(Episode $episode): JsonResponse
     {
         try {
-            $this->movieService->deleteMovie($movie);
+            $this->episodeService->deleteEpisode($episode);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
@@ -107,7 +121,7 @@ class MovieController extends Controller
         $ids = $request->input('ids');
 
         try {
-            $this->movieService->destroyMultiple($ids);
+            $this->episodeService->destroyMultiple($ids);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {

@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GenreRequest;
-use App\Models\Genre;
-use App\Services\GenreService;
+use App\Http\Requests\AddressRequest;
+use App\Models\Address;
+use App\Services\AddressService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class GenreController extends Controller
+class AddressController extends Controller
 {
     use ResponseHandler;
 
-    protected $genreService;
+    protected $addressService;
 
-    public function __construct(GenreService $genreService)
+    public function __construct(AddressService $addressService)
     {
-        $this->genreService = $genreService;
+        $this->addressService = $addressService;
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         $keyword = $request->query('keyword');
 
         try {
-            $categories = $this->genreService->getPaginate($keyword);
+            $addresss = $this->addressService->getPaginate($keyword);
 
-            return $this->responseSuccess(Response::HTTP_OK, $categories);
+            return $this->responseSuccess(Response::HTTP_OK, $addresss);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -42,12 +42,12 @@ class GenreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GenreRequest $request): JsonResponse
+    public function store(AddressRequest $request): JsonResponse
     {
         try {
-            $genre = $this->genreService->createGenre($request->all());
+            $address = $this->addressService->createAddress($request->all());
 
-            return $this->responseSuccess(Response::HTTP_CREATED, $genre);
+            return $this->responseSuccess(Response::HTTP_CREATED, $address);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -57,12 +57,12 @@ class GenreController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Genre $genre): JsonResponse
+    public function show(Address $address): JsonResponse
     {
         try {
-            $genre = $this->genreService->getGenreById($genre);
+            $address = $this->addressService->getAddressById($address);
 
-            return $this->responseSuccess(Response::HTTP_OK, $genre);
+            return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -72,12 +72,12 @@ class GenreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(GenreRequest $request, Genre $genre): JsonResponse
+    public function update(AddressRequest $request, Address $address): JsonResponse
     {
         try {
-            $genre = $this->genreService->updateGenre($genre, $request->all());
+            $address = $this->addressService->updateAddress($address, $request->all());
 
-            return $this->responseSuccess(Response::HTTP_OK, $genre);
+            return $this->responseSuccess(Response::HTTP_OK, $address);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -87,10 +87,10 @@ class GenreController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Genre $genre): JsonResponse
+    public function destroy(Address $address): JsonResponse
     {
         try {
-            $this->genreService->deleteGenre($genre);
+            $this->addressService->deleteAddress($address);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
@@ -107,26 +107,11 @@ class GenreController extends Controller
         $ids = $request->input('ids');
 
         try {
-            $this->genreService->destroyMultiple($ids);
+            $this->addressService->destroyMultiple($ids);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
-
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
-        }
-    }
-
-    /**
-     * Pluck title of all category.
-     */
-    public function pluckTitle(): JsonResponse
-    {
-        try {
-            $titles = $this->genreService->pluckTitle();
-
-            return $this->responseSuccess(Response::HTTP_OK, $titles);
-        } catch (\Exception $e) {
-
+            
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }

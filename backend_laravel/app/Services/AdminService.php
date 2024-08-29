@@ -51,7 +51,7 @@ class AdminService
         JWTAuth::invalidate(JWTAuth::getToken());
     }
 
-    public function refresh(string $refreshToken): array
+    public function refresh(string $refreshToken): Collection
     {
         $payload = JWTAuth::setToken($refreshToken)->getPayload();
         $adminId = $payload['sub'];
