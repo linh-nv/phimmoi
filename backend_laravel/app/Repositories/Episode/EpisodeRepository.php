@@ -4,7 +4,7 @@ namespace App\Repositories\Episode;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Util\Constains;
+use App\Util\Constants;
 
 class EpisodeRepository extends BaseRepository implements EpisodeRepositoryInterface
 {
@@ -21,7 +21,7 @@ class EpisodeRepository extends BaseRepository implements EpisodeRepositoryInter
     public function getEpisodesByMovie(string $movieSlug): LengthAwarePaginator
     {
 
-        return $this->_model->where('movie_slug', $movieSlug)->paginate(Constains::PER_PAGE);
+        return $this->_model->where('movie_slug', $movieSlug)->paginate(Constants::PER_PAGE);
     }
 
     public function getSearch(string $keyword): LengthAwarePaginator

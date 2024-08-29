@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Movie;
 use App\Repositories\RepositoryInterface;
-use App\Util\Constains;
+use App\Util\Constants;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -121,14 +121,14 @@ abstract class BaseRepository implements RepositoryInterface
     public function getPaginate(): LengthAwarePaginator
     {
 
-        return $this->_model->latest('updated_at')->paginate(Constains::PER_PAGE);
+        return $this->_model->latest('updated_at')->paginate(Constants::PER_PAGE);
     }
 
     public function search(array $searchFields, string $keyword): LengthAwarePaginator
     {
 
         return $this->_model->whereAny($searchFields, 'like', '%' . $keyword . '%')
-            ->paginate(Constains::PER_PAGE);
+            ->paginate(Constants::PER_PAGE);
     }
 
     public function insert(array $data): bool

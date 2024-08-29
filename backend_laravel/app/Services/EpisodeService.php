@@ -32,7 +32,7 @@ class EpisodeService
         return $keyword ? $this->episodeRepository->getSearch($keyword) : $this->episodeRepository->getAll();
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): LengthAwarePaginator
     {
 
         return $keyword ? $this->episodeRepository->getSearch($keyword) : $this->episodeRepository->getPaginate();

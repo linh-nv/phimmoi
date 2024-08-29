@@ -4,7 +4,7 @@ namespace App\Repositories\Movie;
 
 use App\Models\Movie;
 use App\Repositories\BaseRepository;
-use App\Util\Constains;
+use App\Util\Constants;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class MovieRepository extends BaseRepository implements MovieRepositoryInterface
@@ -28,7 +28,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function getRelationship(): LengthAwarePaginator
     {
 
-        return $this->_model->with('category', 'genres', 'country', 'episodes')->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
+        return $this->_model->with('category', 'genres', 'country', 'episodes')->orderBy('updated_at', 'DESC')->paginate(Constants::PER_PAGE);
     }
 
     public function loadRelationship(Movie $movie): Movie
@@ -41,7 +41,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     {
         $searchFields = ['name', 'slug', 'origin_name', 'year'];
 
-        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")->latest('updated_at')->paginate(Constains::PER_PAGE);
+        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")->latest('updated_at')->paginate(Constants::PER_PAGE);
     }
 
     public function getSearchActorAndDerector(string $keyword): LengthAwarePaginator
@@ -53,7 +53,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             [$keyword]
         );
 
-        return $query->latest('updated_at')->paginate(Constains::PER_PAGE);
+        return $query->latest('updated_at')->paginate(Constants::PER_PAGE);
     }
 
     public function attachGenres(Movie $movie, array $genreIds): void

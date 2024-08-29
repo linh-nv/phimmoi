@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminService
@@ -24,7 +25,7 @@ class AdminService
     /**
      * ============== JWT service =============    
      * */
-    public function login($credentials): ?array
+    public function login($credentials): ?Collection
     {
         if (!$token = auth()->guard('admin-api')->attempt($credentials)) {
             
@@ -34,7 +35,9 @@ class AdminService
         /** @var Admin $admin */
         $admin = auth()->guard('admin-api')->user();
 
-        return $this->adminJWT->handleToken($token, $admin);
+        $data = $this->adminJWT->handleToken($token, $admin);
+
+        return collect($data);
     }
 
 

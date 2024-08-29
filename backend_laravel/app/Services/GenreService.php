@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Genre;
 use App\Repositories\Genre\GenreRepository;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 use function App\Helpers\convert_to_slug;
@@ -24,7 +25,7 @@ class GenreService
         return $keyword ? $this->genreRepository->getSearch($keyword) : $this->genreRepository->getAll();
     }
 
-    public function getPaginate(?string $keyword = null)
+    public function getPaginate(?string $keyword = null): LengthAwarePaginator
     {
 
         return $keyword ? $this->genreRepository->getSearch($keyword) : $this->genreRepository->getPaginate();
