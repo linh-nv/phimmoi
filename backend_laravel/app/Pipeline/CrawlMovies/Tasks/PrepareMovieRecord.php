@@ -5,7 +5,6 @@ namespace App\Pipeline\CrawlMovies\Tasks;
 use App\Enums\MovieQuality;
 use App\Enums\MovieStatus;
 use App\Enums\MovieType;
-use App\Models\Country;
 use Carbon\Carbon;
 
 class PrepareMovieRecord
