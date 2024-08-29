@@ -6,6 +6,7 @@ use App\Exceptions\RefreshTokenException;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Traits\ResponseHandler;
+use Illuminate\Support\Collection;
 
 abstract class JWTBase implements JWTInterface
 {
@@ -41,11 +42,13 @@ abstract class JWTBase implements JWTInterface
     /**
      * Handle create and save refresh token; respone detail user information, access, refresh token
      */
-    public function handleToken(string $token, Model $user): array
+    public function handleToken(string $token, Model $user): Collection
     {
         $refreshToken = $this->createRefreshToken($user);
 
-        return $this->responseWithToken($token, $refreshToken, $user);
+        $data = $this->responseWithToken($token, $refreshToken, $user);
+        
+        return collect($data);
     }
 
     /**
@@ -104,16 +107,16 @@ abstract class JWTBase implements JWTInterface
     /**
      * Response detail user, access token, refresh token, expires time
      */
-    public function responseWithToken(string $token, string $refreshToken, Model $user): array
+    public function responseWithToken(string $token, string $refreshToken, Model $user): Collection
     {
 
-        return [
+        return collect([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => config('jwt.ttl'),
             'refresh_token' => $refreshToken,
             'refresh_expires_in' => config('jwt.refresh_ttl'),
             'data' => $user,
-        ];
+        ]);
     }
 }

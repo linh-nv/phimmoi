@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
@@ -24,17 +25,18 @@ class UserService
     /**
      * ============== JWT service =============    
      * */
-    public function login($credentials): ?array
+    public function login($credentials): ?Collection
     {
         if (!$token = auth()->guard('api')->attempt($credentials)) {
-            
+
             return null;
         }
 
         /** @var User $user */
         $user = auth()->guard('api')->user();
+        $data = $this->userJWT->handleToken($token, $user);
 
-        return $this->userJWT->handleToken($token, $user);
+        return collect($data);
     }
 
 
@@ -48,7 +50,7 @@ class UserService
         JWTAuth::invalidate(JWTAuth::getToken());
     }
 
-    public function refresh(string $refreshToken): array
+    public function refresh(string $refreshToken): Collection
     {
         $payload = JWTAuth::setToken($refreshToken)->getPayload();
         $userId = $payload['sub'];
@@ -56,7 +58,7 @@ class UserService
         $this->userJWT->checkRefreshToken($user, $refreshToken);
         $accessToken = JWTAuth::fromUser($user);
 
-        return $this->userJWT->handleToken($accessToken, $user);
+        return collect($this->userJWT->handleToken($accessToken, $user));
     }
     /**
      * ====================================    

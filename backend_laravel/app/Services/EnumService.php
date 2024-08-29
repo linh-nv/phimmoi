@@ -6,41 +6,42 @@ use App\Enums\MovieQuality;
 use App\Enums\MovieStatus;
 use App\Enums\MovieType;
 use App\Enums\Status;
+use Illuminate\Support\Collection;
 
 class EnumService
 {
-    public function getAllEnums(): array
+    public function getAllEnums(): Collection
     {
 
-        return [
+        return collect([
             'quality' => $this->getMovieQuality(),
             'movie-status' => $this->getMovieStatus(),
             'type' => $this->getMovieType(),
             'status' => $this->getStatus()
-        ];
+        ]);
     }
 
-    public function getMovieQuality(): array
+    public function getMovieQuality(): Collection
     {
 
-        return MovieQuality::values();
+        return collect(MovieQuality::values());
     }
 
-    public function getMovieStatus(): array
+    public function getMovieStatus(): Collection
     {
 
-        return MovieStatus::values();
+        return collect(MovieStatus::values());
     }
 
-    public function getMovieType(): array
+    public function getMovieType(): Collection
     {
 
-        return MovieType::values();
+        return collect(MovieType::values());
     }
 
-    public function getStatus(): array
+    public function getStatus(): Collection
     {
 
-        return Status::values();
+        return collect(Status::values());
     }
 }

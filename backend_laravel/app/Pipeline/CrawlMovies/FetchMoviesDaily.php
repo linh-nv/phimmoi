@@ -7,20 +7,28 @@ use Closure;
 use App\Util\Constants;
 use Exception;
 
-class FetchMovies
+class FetchMoviesDaily
 {
+    protected $maxPages;
+
+    public function __construct($maxPages = 10)
+    {
+        $this->maxPages = $maxPages;
+    }
+
     public function handle($data, Closure $next)
     {
         $apiUrl = Constants::API_CRAWL_MOVIES;
 
         // Get initial page to determine total pages and items
         $initialResponse = $this->fetchDataWithRetries($apiUrl . 1);
-        $totalPages = $initialResponse['pagination']['totalPages'];
+        $totalPages = min($initialResponse['pagination']['totalPages'], $this->maxPages);
         $data['totalPages'] = $totalPages;
         $data['movies'] = [];
         $data['moviesData'] = [];
         $data['episodesData'] = [];
         $processedCount = 1;
+
         // Crawl data from each page
         for ($page = 1; $page <= $totalPages; $page++) {
             $pageData = $this->fetchDataWithRetries($apiUrl . $page);
@@ -45,7 +53,7 @@ class FetchMovies
                     return $response->json();
                 }
             } catch (Exception $e) {
-                echo ('Error: '. $e->getMessage());
+                echo ('Error: ' . $e->getMessage());
             }
             $retries--;
             sleep(rand(1, 5));

@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use App\Models\Province;
 use App\Models\District;
 use App\Models\Ward;
-use App\Util\Constains;
+use App\Util\Constants;
 
 class CrawlAddressData extends Command
 {
@@ -39,7 +39,7 @@ class CrawlAddressData extends Command
 
         // Crawl provinces
         $this->info('Crawling provinces...');
-        $provinceResponse = $client->get(Constains::URL_API_PROVINCE);
+        $provinceResponse = $client->get(Constants::URL_API_PROVINCE);
         $provinces = json_decode($provinceResponse->getBody(), true)['results'];
 
         $provinceData = [];
@@ -59,7 +59,7 @@ class CrawlAddressData extends Command
         $this->info('Crawling districts...');
         $districtData = [];
         foreach ($provinceIds as $provinceId) {
-            $districtResponse = $client->get(Constains::URL_API_DISTRICT . $provinceId);
+            $districtResponse = $client->get(Constants::URL_API_DISTRICT . $provinceId);
             $districts = json_decode($districtResponse->getBody(), true)['results'];
             foreach ($districts as $district) {
                 $districtData[] = [
@@ -80,7 +80,7 @@ class CrawlAddressData extends Command
         $wardData = [];
         foreach ($districtData as $district) {
             $districtId = $district['district_id'];
-            $wardResponse = $client->get(Constains::URL_API_WARD . $districtId);
+            $wardResponse = $client->get(Constants::URL_API_WARD . $districtId);
             $wards = json_decode($wardResponse->getBody(), true)['results'];
             foreach ($wards as $ward) {
                 $wardData[] = [
