@@ -1,39 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EpisodeRequest;
-use App\Models\Episode;
-use App\Services\EpisodeService;
+use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class EpisodeController extends Controller
+class CategoryController extends Controller
 {
     use ResponseHandler;
 
-    protected $episodeService;
+    protected $categoryService;
 
-    public function __construct(EpisodeService $episodeService)
+    public function __construct(CategoryService $categoryService)
     {
-        $this->episodeService = $episodeService;
-    }
-
-    /**
-     * Display a listing of episodes by movie_id.
-     */
-    public function getByMovie(string $movieSlug): JsonResponse
-    {
-        try {
-            $episodes = $this->episodeService->getEpisodesByMovie($movieSlug);
-
-            return $this->responseSuccess(Response::HTTP_OK, $episodes);
-        } catch (\Exception $e) {
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
-        }
+        $this->categoryService = $categoryService;
     }
 
     /**
@@ -44,9 +30,9 @@ class EpisodeController extends Controller
         $keyword = $request->query('keyword');
 
         try {
-            $episodes = $this->episodeService->getPaginate($keyword);
+            $categories = $this->categoryService->getPaginate($keyword);
 
-            return $this->responseSuccess(Response::HTTP_OK, $episodes);
+            return $this->responseSuccess(Response::HTTP_OK, $categories);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -56,12 +42,12 @@ class EpisodeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(EpisodeRequest $request): JsonResponse
+    public function store(CategoryRequest $request): JsonResponse
     {
         try {
-            $episode = $this->episodeService->createEpisode($request->all());
+            $category = $this->categoryService->createCategory($request->all());
 
-            return $this->responseSuccess(Response::HTTP_CREATED, $episode);
+            return $this->responseSuccess(Response::HTTP_CREATED, $category);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -71,12 +57,12 @@ class EpisodeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Episode $episode): JsonResponse
+    public function show(Category $category): JsonResponse
     {
         try {
-            $episode = $this->episodeService->getEpisodeById($episode);
+            $category = $this->categoryService->getCategoryById($category);
 
-            return $this->responseSuccess(Response::HTTP_OK, $episode);
+            return $this->responseSuccess(Response::HTTP_OK, $category);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -86,12 +72,12 @@ class EpisodeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EpisodeRequest $request, Episode $episode): JsonResponse
+    public function update(CategoryRequest $request, Category $category): JsonResponse
     {
         try {
-            $episode = $this->episodeService->updateEpisode($episode, $request->all());
+            $category = $this->categoryService->updateCategory($category, $request->all());
 
-            return $this->responseSuccess(Response::HTTP_OK, $episode);
+            return $this->responseSuccess(Response::HTTP_OK, $category);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -101,10 +87,10 @@ class EpisodeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Episode $episode): JsonResponse
+    public function destroy(Category $category): JsonResponse
     {
         try {
-            $this->episodeService->deleteEpisode($episode);
+            $this->categoryService->deleteCategory($category);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
@@ -121,9 +107,24 @@ class EpisodeController extends Controller
         $ids = $request->input('ids');
 
         try {
-            $this->episodeService->destroyMultiple($ids);
+            $this->categoryService->destroyMultiple($ids);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
+        } catch (\Exception $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    /**
+     * Pluck title of all category.
+     */
+    public function pluckTitle(): JsonResponse
+    {
+        try {
+            $titles = $this->categoryService->pluckTitle();
+
+            return $this->responseSuccess(Response::HTTP_OK, $titles);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());

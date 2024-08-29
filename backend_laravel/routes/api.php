@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AddressController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CountryController;
-use App\Http\Controllers\EpisodeController;
-use App\Http\Controllers\GenreController;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\EnumController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\EpisodeController;
+use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\EnumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ use App\Http\Controllers\EnumController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+// Admin routes
 Route::group(['prefix' => 'admin'], function () {
     Route::post('register', [AdminController::class, 'register']);
     Route::post('login', [AdminController::class, 'login']);
@@ -33,15 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
-Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login'])->name('login');
-Route::post('refresh', [UserController::class, 'refresh']);
-
 Route::group(['middleware' => 'jwt.verify'], function () {
-    Route::post('logout', [UserController::class, 'logout']);
-    Route::post('change-password', [UserController::class, 'changePassWord']);
-    Route::get('me', [UserController::class, 'userProfile']);
-
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('genre', GenreController::class);
     Route::apiResource('country', CountryController::class);
@@ -71,4 +63,15 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/enums/movie-quality', [EnumController::class, 'getMovieQuality']);
     Route::get('/enums/movie-status', [EnumController::class, 'getMovieStatus']);
     Route::get('/enums/movie-type', [EnumController::class, 'getMovieType']);
+});
+
+// Client routes
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login'])->name('login');
+Route::post('refresh', [UserController::class, 'refresh']);
+
+Route::group(['middleware' => 'jwt.verify'], function () {
+    Route::post('logout', [UserController::class, 'logout']);
+    Route::post('change-password', [UserController::class, 'changePassWord']);
+    Route::get('me', [UserController::class, 'userProfile']);
 });

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
-use App\Services\CategoryService;
+use App\Http\Requests\MovieRequest;
+use App\Models\Movie;
+use App\Services\MovieService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CategoryController extends Controller
+class MovieController extends Controller
 {
     use ResponseHandler;
 
-    protected $categoryService;
+    protected $movieService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(MovieService $movieService)
     {
-        $this->categoryService = $categoryService;
+        $this->movieService = $movieService;
     }
 
     /**
@@ -30,7 +30,7 @@ class CategoryController extends Controller
         $keyword = $request->query('keyword');
 
         try {
-            $categories = $this->categoryService->getPaginate($keyword);
+            $categories = $this->movieService->getPaginate($keyword);
 
             return $this->responseSuccess(Response::HTTP_OK, $categories);
         } catch (\Exception $e) {
@@ -42,12 +42,12 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CategoryRequest $request): JsonResponse
+    public function store(MovieRequest $request): JsonResponse
     {
         try {
-            $category = $this->categoryService->createCategory($request->all());
+            $movie = $this->movieService->createMovie($request->all());
 
-            return $this->responseSuccess(Response::HTTP_CREATED, $category);
+            return $this->responseSuccess(Response::HTTP_CREATED, $movie);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -57,12 +57,12 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category): JsonResponse
+    public function show(Movie $movie): JsonResponse
     {
         try {
-            $category = $this->categoryService->getCategoryById($category);
+            $movie = $this->movieService->getMovieById($movie);
 
-            return $this->responseSuccess(Response::HTTP_OK, $category);
+            return $this->responseSuccess(Response::HTTP_OK, $movie);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -72,14 +72,14 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryRequest $request, Category $category): JsonResponse
+    public function update(Request $request, $slug): JsonResponse
     {
         try {
-            $category = $this->categoryService->updateCategory($category, $request->all());
+            $movie = $this->movieService->updateMovie($slug, $request->all());
 
-            return $this->responseSuccess(Response::HTTP_OK, $category);
+            return $this->responseSuccess(Response::HTTP_OK, $movie);
         } catch (\Exception $e) {
-
+            throw $e;
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
     }
@@ -87,10 +87,10 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category): JsonResponse
+    public function destroy(Movie $movie): JsonResponse
     {
         try {
-            $this->categoryService->deleteCategory($category);
+            $this->movieService->deleteMovie($movie);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
         } catch (\Exception $e) {
@@ -107,24 +107,9 @@ class CategoryController extends Controller
         $ids = $request->input('ids');
 
         try {
-            $this->categoryService->destroyMultiple($ids);
+            $this->movieService->destroyMultiple($ids);
 
             return $this->responseSuccess(Response::HTTP_OK, null);
-        } catch (\Exception $e) {
-
-            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
-        }
-    }
-
-    /**
-     * Pluck title of all category.
-     */
-    public function pluckTitle(): JsonResponse
-    {
-        try {
-            $titles = $this->categoryService->pluckTitle();
-
-            return $this->responseSuccess(Response::HTTP_OK, $titles);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());

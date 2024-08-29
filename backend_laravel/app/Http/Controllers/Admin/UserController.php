@@ -1,45 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\AdminRequest;
-use App\Services\AdminService;
+use App\Http\Requests\UserRequest;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     use ResponseHandler;
 
-    protected AdminService $adminService;
+    protected UserService $userService;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(UserService $userService)
     {
-        $this->adminService = $adminService;
+        $this->userService = $userService;
     }
 
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
-        $admin = $this->adminService->login($credentials);
+        $user = $this->userService->login($credentials);
 
-        if (!$admin) {
+        if (!$user) {
 
             return $this->responseError(Response::HTTP_UNAUTHORIZED, 'UNAUTHORIZED', 'Unauthorized');
         }
 
-        return $this->responseSuccess(Response::HTTP_OK, $admin);
+        return $this->responseSuccess(Response::HTTP_OK, $user);
     }
 
-    public function register(AdminRequest $request): JsonResponse
+    public function register(UserRequest $request): JsonResponse
     {
         try {
-            $admin = $this->adminService->register($request->all());
+            $user = $this->userService->register($request->all());
 
-            return $this->responseSuccess(Response::HTTP_CREATED, $admin);
+            return $this->responseSuccess(Response::HTTP_CREATED, $user);
         } catch (\Throwable $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -49,9 +50,9 @@ class AdminController extends Controller
     public function logout(): JsonResponse
     {
         try {
-            $this->adminService->logout();
+            $this->userService->logout();
 
-            return $this->responseSuccess(Response::HTTP_OK, ['message' => 'Admin successfully signed out']);
+            return $this->responseSuccess(Response::HTTP_OK, ['message' => 'User successfully signed out']);
         } catch (\Throwable $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -62,7 +63,7 @@ class AdminController extends Controller
     {
         try {
             $refreshToken = $request->refresh_token;
-            $refresh = $this->adminService->refresh((string) $refreshToken);
+            $refresh = $this->userService->refresh((string) $refreshToken);
             
             return $this->responseSuccess(Response::HTTP_OK, $refresh);
         } catch (\Throwable $e) {
@@ -71,12 +72,12 @@ class AdminController extends Controller
         }
     }
 
-    public function adminProfile(): JsonResponse
+    public function userProfile(): JsonResponse
     {
         try {
-            $admin = $this->adminService->adminProfile();
+            $user = $this->userService->userProfile();
 
-            return $this->responseSuccess(Response::HTTP_OK, $admin);
+            return $this->responseSuccess(Response::HTTP_OK, $user);
         } catch (\Throwable $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
@@ -86,9 +87,9 @@ class AdminController extends Controller
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         try {
-            $updatedAdmin = $this->adminService->changePassword($request->new_password);
+            $updatedUser = $this->userService->changePassword($request->new_password);
 
-            return $this->responseSuccess(Response::HTTP_OK, $updatedAdmin);
+            return $this->responseSuccess(Response::HTTP_OK, $updatedUser);
         } catch (\Throwable $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
