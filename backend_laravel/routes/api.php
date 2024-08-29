@@ -46,7 +46,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('genre', GenreController::class);
     Route::apiResource('country', CountryController::class);
     Route::post('movie/{slug}', [MovieController::class, 'update']);
-    Route::apiResource('movie', MovieController::class);
+    Route::apiResource('movie', MovieController::class)->middleware('cacheResponse:600');
     Route::apiResource('episode', EpisodeController::class);
     Route::get('episode/movie/{slug}', [EpisodeController::class, 'getByMovie']);
     Route::apiResource('address', AddressController::class);

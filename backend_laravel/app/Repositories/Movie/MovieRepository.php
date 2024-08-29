@@ -41,7 +41,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     {
         $searchFields = ['name', 'slug', 'origin_name', 'year'];
 
-        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")->paginate(Constains::PER_PAGE);
+        return $this->_model->whereAny($searchFields, 'LIKE', "%$keyword%")->latest('updated_at')->paginate(Constains::PER_PAGE);
     }
 
     public function getSearchActorAndDerector(string $keyword): LengthAwarePaginator
@@ -49,11 +49,11 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         $searchFields = ['actor', 'director'];
 
         $query = $this->_model->whereRaw(
-            "MATCH(" . implode(',', $searchFields) . ") AGAINST(? IN NATURAL LANGUAGE MODE)",
+            "MATCH(" . implode(',', $searchFields) . ") AGAINST(? WITH QUERY EXPANSION)",
             [$keyword]
         );
 
-        return $query->orderBy('updated_at', 'DESC')->paginate(Constains::PER_PAGE);
+        return $query->latest('updated_at')->paginate(Constains::PER_PAGE);
     }
 
     public function attachGenres(Movie $movie, array $genreIds): void

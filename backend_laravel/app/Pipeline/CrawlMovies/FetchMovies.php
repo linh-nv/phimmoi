@@ -20,9 +20,9 @@ class FetchMovies
         $data['movies'] = [];
         $data['moviesData'] = [];
         $data['episodesData'] = [];
-        $processedCount = 0;
+        $processedCount = 1;
         // Crawl data from each page
-        for ($page = 1; $page <= 10; $page++) {
+        for ($page = 1; $page <= $totalPages; $page++) {
             $pageData = $this->fetchDataWithRetries($apiUrl . $page);
             if ($pageData && !empty($pageData['items'])) {
                 $data['movies'][] = $pageData['items'];

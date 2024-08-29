@@ -19,13 +19,15 @@ class DetermineCategory
     {
         if (strtolower($movieDetails['episode_current']) == 'full') {
 
-            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMLE_SLUG)->first();
+            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMLE_SLUG);
         } elseif ($movieDetails['chieurap']) {
 
-            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMCHIEURAP_SLUG)->first();
+            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMCHIEURAP_SLUG);
         } else {
 
-            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMBO_SLUG)->first();
+            return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMBO_SLUG);
         }
+
+        return $this->categoryRepository->where('slug', CategoryDataTemplate::PHIMMOI_SLUG); 
     }
 }
