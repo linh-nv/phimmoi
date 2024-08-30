@@ -26,6 +26,12 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         return $this->search($searchFields, $keyword);
     }
 
+    public function getBySlug(string $slug): Category
+    {
+
+        return $this->_model->where('slug', $slug)->firstOrFail();
+    }
+
     public function pluckTitle(): Collection
     {
 

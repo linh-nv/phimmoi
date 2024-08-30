@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Enums\MovieQuality;
 use App\Enums\MovieStatus;

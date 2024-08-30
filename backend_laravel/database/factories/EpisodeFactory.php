@@ -18,9 +18,10 @@ class EpisodeFactory extends Factory
      */
     public function definition(): array
     {
+        $movie = Movie::factory()->create();
 
         return [
-            'movie_id' => Movie::factory(),
+            'movie_slug' => $movie->slug,
             'name' => $this->faker->sentence,
             'slug' => Str::slug($this->faker->sentence),
             'link_embed' => $this->faker->url,

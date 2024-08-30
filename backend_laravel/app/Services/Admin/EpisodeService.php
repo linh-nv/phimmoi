@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Models\Episode;
 use App\Repositories\Episode\EpisodeRepository;

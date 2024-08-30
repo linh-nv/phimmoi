@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddressRequest;
 use App\Models\Address;
-use App\Services\AddressService;
+use App\Services\Admin\AddressService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;

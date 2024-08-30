@@ -5,7 +5,9 @@ namespace App\Repositories\Movie;
 use App\Models\Movie;
 use App\Repositories\BaseRepository;
 use App\Util\Constants;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SupportCollection;
 
 class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 {
@@ -64,5 +66,53 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function syncGenres(Movie $movie, array $genreIds): void
     {
         $movie->genres()->sync($genreIds);
+    }
+
+    /*
+    * =======================================
+    * Client repository
+    */
+    public function getMoviesByCategory(int $categoryId): ?Collection
+    {
+
+        return $this->movieSummaryInformation('category_id', $categoryId);
+    }
+
+    public function getMoviesByCountry(int $countryId): ?Collection
+    {
+
+        return $this->movieSummaryInformation('country_id', $countryId);
+    }
+
+    public function movieSummaryInformation(string $field, int $value): ?Collection
+    {
+        return $this->_model
+            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->where($field, $value)
+            ->latest('updated_at')
+            ->take(Constants::CLIENT_PAGE)
+            ->get();
+    }
+
+    public function moviesLatestByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
+    {
+        return $this->_model
+            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->whereIn('id', $movieIds)
+            ->latest('updated_at')
+            ->take($page)
+            ->get();
+    }
+
+    public function moviesByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
+    {
+        $idsOrdered = $movieIds->implode(',');
+    
+        return $this->_model
+            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->whereIn('id', $movieIds)
+            ->orderByRaw("FIELD(id, $idsOrdered)")
+            ->take($page)
+            ->get();
     }
 }

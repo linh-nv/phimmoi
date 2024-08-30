@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EpisodeRequest;
 use App\Models\Episode;
-use App\Services\EpisodeService;
+use App\Services\Admin\EpisodeService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;

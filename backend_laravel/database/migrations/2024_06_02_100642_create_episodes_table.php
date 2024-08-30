@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('movie_slug')->references('slug')->on('movies')->onDelete('cascade');
+            $table->unique(['movie_slug', 'slug'], 'movie_slug_slug_unique');
         });
     }
 
