@@ -11,7 +11,7 @@ const router = createRouter({
         {
           path: "/",
           name: "home",
-          component: () => import("@/views/HomeView.vue"),
+          component: () => import("@/views/Admin/HomeView.vue"),
         },
         {
           path: "/movie",
@@ -19,7 +19,7 @@ const router = createRouter({
             {
               path: "",
               name: "movie",
-              component: () => import("@/views/Movies/MovieView.vue"),
+              component: () => import("@/views/Admin/Movies/MovieView.vue"),
             },
             {
               path: "form",
@@ -27,19 +27,19 @@ const router = createRouter({
                 {
                   path: "",
                   name: "movie-create",
-                  component: () => import("@/views/Movies/MovieForm.vue"),
+                  component: () => import("@/views/Admin/Movies/MovieForm.vue"),
                 },
                 {
                   path: ":slug",
                   name: "movie-update",
-                  component: () => import("@/views/Movies/MovieForm.vue"),
+                  component: () => import("@/views/Admin/Movies/MovieForm.vue"),
                 },
               ],
             },
             {
               path: "detail/:slug",
               name: "movie-detail",
-              component: () => import("@/views/Movies/MovieDetail.vue"),
+              component: () => import("@/views/Admin/Movies/MovieDetail.vue"),
             },
             
             // Episode
@@ -49,7 +49,7 @@ const router = createRouter({
                 {
                   path: ":slug",
                   name: "episode",
-                  component: () => import("@/views/Episodes/EpisodeView.vue"),
+                  component: () => import("@/views/Admin/Episodes/EpisodeView.vue"),
                 },
                 {
                   path: "form",
@@ -57,12 +57,12 @@ const router = createRouter({
                     {
                       path: ":slug",
                       name: "episode-create",
-                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                      component: () => import("@/views/Admin/Episodes/EpisodeForm.vue"),
                     },
                     {
                       path: "update/:slug/:id",
                       name: "episode-update",
-                      component: () => import("@/views/Episodes/EpisodeForm.vue"),
+                      component: () => import("@/views/Admin/Episodes/EpisodeForm.vue"),
                     },
                   ],
                 },
@@ -76,7 +76,7 @@ const router = createRouter({
             {
               path: "",
               name: "category",
-              component: () => import("@/views/Categories/CategoryView.vue"),
+              component: () => import("@/views/Admin/Categories/CategoryView.vue"),
             },
             {
               path: "form",
@@ -85,13 +85,13 @@ const router = createRouter({
                   path: "",
                   name: "category-create",
                   component: () =>
-                    import("@/views/Categories/CategoryForm.vue"),
+                    import("@/views/Admin/Categories/CategoryForm.vue"),
                 },
                 {
                   path: ":slug",
                   name: "category-update",
                   component: () =>
-                    import("@/views/Categories/CategoryForm.vue"),
+                    import("@/views/Admin/Categories/CategoryForm.vue"),
                 },
               ],
             },
@@ -103,7 +103,7 @@ const router = createRouter({
             {
               path: "",
               name: "genre",
-              component: () => import("@/views/Genres/GenreView.vue"),
+              component: () => import("@/views/Admin/Genres/GenreView.vue"),
             },
             {
               path: "form",
@@ -111,12 +111,12 @@ const router = createRouter({
                 {
                   path: "",
                   name: "genre-create",
-                  component: () => import("@/views/Genres/GenreForm.vue"),
+                  component: () => import("@/views/Admin/Genres/GenreForm.vue"),
                 },
                 {
                   path: ":slug",
                   name: "genre-update",
-                  component: () => import("@/views/Genres/GenreForm.vue"),
+                  component: () => import("@/views/Admin/Genres/GenreForm.vue"),
                 },
               ],
             },
@@ -128,7 +128,7 @@ const router = createRouter({
             {
               path: "",
               name: "country",
-              component: () => import("@/views/Countries/CountryView.vue"),
+              component: () => import("@/views/Admin/Countries/CountryView.vue"),
             },
             {
               path: "form",
@@ -136,12 +136,12 @@ const router = createRouter({
                 {
                   path: "",
                   name: "country-create",
-                  component: () => import("@/views/Countries/CountryForm.vue"),
+                  component: () => import("@/views/Admin/Countries/CountryForm.vue"),
                 },
                 {
                   path: ":slug",
                   name: "country-update",
-                  component: () => import("@/views/Countries/CountryForm.vue"),
+                  component: () => import("@/views/Admin/Countries/CountryForm.vue"),
                 },
               ],
             },
@@ -158,12 +158,12 @@ const router = createRouter({
         {
           path: "/login",
           name: "login",
-          component: () => import("@/views/LoginView.vue"),
+          component: () => import("@/views/Admin/LoginView.vue"),
         },
         {
           path: "/register",
           name: "register",
-          component: () => import("@/views/RegisterView.vue"),
+          component: () => import("@/views/Admin/RegisterView.vue"),
         },
       ],
     },

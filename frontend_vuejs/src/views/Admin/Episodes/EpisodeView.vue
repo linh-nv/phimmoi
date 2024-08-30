@@ -2,13 +2,13 @@
   <section class="head flex items-center justify-between">
     <h1>List Episodes</h1>
     <div class="flex gap-4">
-      <router-link
-        :to="{ name: 'movie' }"
+      <button
+        @click="router.back()"
         class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
       >
-        <i class="fa-solid fa-circle-left"></i>
-        <span>List movies</span>
-      </router-link>
+        <i class="fa-solid fa-circle-chevron-left"></i>
+        <span>Back</span>
+      </button>
       <router-link
         :to="{
           name: 'episode-create',
