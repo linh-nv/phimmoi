@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Genre;
 
+use App\Models\Genre;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -29,5 +30,11 @@ class GenreRepository extends BaseRepository implements GenreRepositoryInterface
     {
 
         return $this->_model->pluck('title', 'id');
+    }
+
+    public function getBySlug(string $slug): Genre
+    {
+
+        return $this->_model->where('slug', $slug)->firstOrFail();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Country;
 
+use App\Models\Country;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -29,5 +30,11 @@ class CountryRepository extends BaseRepository implements CountryRepositoryInter
     {
 
         return $this->_model->pluck('title', 'id');
+    }
+
+    public function getBySlug(string $slug): Country
+    {
+
+        return $this->_model->where('slug', $slug)->firstOrFail();
     }
 }

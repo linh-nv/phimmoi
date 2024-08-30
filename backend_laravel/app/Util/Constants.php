@@ -10,6 +10,7 @@ class Constants
 {
     /** @var int PER_PAGE */
     public const PER_PAGE = 5;
+    public const CLIENT_PAGE = 20;
 
     /** @var string URL_API_PROVINCE */
     public const URL_API_PROVINCE = 'https://vapi.vnappmob.com/api/province/';

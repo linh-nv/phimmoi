@@ -10,9 +10,6 @@ use App\Models\Category;
  */
 class CategoryDataTemplate
 {
-    /** @var string PHIMMOI_SLUG */
-    public const PHIMMOI_SLUG = 'phim-moi';
-
     /** @var string PHIMBO_SLUG */
     public const PHIMBO_SLUG = 'phim-bo';
 
@@ -26,10 +23,6 @@ class CategoryDataTemplate
     {
 
         return [
-            [
-                'title' => 'Phim mới',
-                'slug' => 'phim-moi'
-            ],
             [
                 'title' => 'Phim bộ',
                 'slug' => 'phim-bo'

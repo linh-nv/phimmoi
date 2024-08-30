@@ -10,6 +10,13 @@ use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EnumController;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\Client\CountryController as ClientCountryController;
+use App\Http\Controllers\Client\GenreController as ClientGenreController;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\MovieController as ClientMovieController;
+use App\Http\Controllers\Client\MovieUserController;
+use App\Http\Controllers\Client\MovieViewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,4 +81,16 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);
+});
+Route::group(['prefix' => 'client'], function () {
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/category/{slug}', [ClientCategoryController::class, 'index']);
+    Route::get('/genre/{slug}', [ClientGenreController::class, 'index']);
+    Route::get('/country/{slug}', [ClientCountryController::class, 'index']);
+    Route::get('/movie/{slug}', [ClientMovieController::class, 'index']);
+    Route::get('/movie-top/day', [MovieViewController::class, 'moviesDay']);
+    Route::get('/movie-top/week', [MovieViewController::class, 'moviesWeek']);
+    Route::get('/movie-top/month', [MovieViewController::class, 'moviesMonth']);
+    Route::get('/movie-top/year', [MovieViewController::class, 'moviesYear']);
+    Route::get('/favorite/{id}', [MovieUserController::class, 'index'])->middleware('jwt.verify');
 });
