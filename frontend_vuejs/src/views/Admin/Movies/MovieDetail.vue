@@ -1,13 +1,22 @@
 <template>
   <section class="head flex items-center justify-between">
     <h1>Movie Details</h1>
-    <button
-      @click="router.back()"
-      class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
-    >
-      <i class="fa-solid fa-circle-chevron-left"></i>
-      <span>Back</span>
-    </button>
+    <div class="flex gap-2">
+      <button
+        @click="router.back()"
+        class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
+      >
+        <i class="fa-solid fa-circle-chevron-left"></i>
+        <span>Back</span>
+      </button>
+      <router-link
+        :to="{ name: 'movie-update', params: { slug: slug } }"
+        class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-400"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Update</span>
+      </router-link>
+    </div>
   </section>
   <div class="line border border-gray-200"></div>
 
@@ -66,6 +75,32 @@
         <h2>Content:</h2>
         <div class="flex flex-wrap">
           <p>{{ movie.content }}</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Episodes -->
+    <article class="form-box">
+      <div class="flex w-full flex-col gap-5">
+        <h2>Episodes:</h2>
+        <div
+          v-for="episode in movie.episodes.reverse().slice(0, 5)"
+          class="border-b border-gray-100 pb-3"
+        >
+          <span class="flex items-center gap-2">
+            <h3>Name:</h3>
+            <p>{{ episode.name }}</p>
+          </span>
+          <span class="flex items-center gap-2">
+            <h3>Slug:</h3>
+            <p>{{ episode.slug }}</p>
+          </span>
+          <span class="flex items-center gap-2 whitespace-nowrap">
+            <h3>Link_embed:</h3>
+            <a class="text-blue-500 underline truncate" :href="episode.link_embed">
+              {{ episode.link_embed }}
+            </a>
+          </span>
         </div>
       </div>
     </article>
@@ -173,7 +208,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { movieService } from "@/services/Movie/movie";
 
@@ -195,4 +230,12 @@ const fetchMovie = async () => {
 onMounted(() => {
   fetchMovie();
 });
+
+watch(
+  () => route.params.slug,
+  () => {
+    router.go(0);
+    fetchMovie();
+  },
+);
 </script>

@@ -61,18 +61,10 @@ axiosInstance.interceptors.response.use(
     const loadingStore = useLoadingStore();
 
     try {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status < 600
-      ) {
-        if (error.response.status == 401) {
-          await authService.refreshToken();
+      if (error.response.status == 401) {
+        await authService.refreshToken();
 
-          return axiosInstance(error.config);
-        }
-        cookieService.removeTokens();
-        window.location.href = "/login";
+        return axiosInstance(error.config);
       }
     } catch (refreshError) {
       cookieService.removeTokens();

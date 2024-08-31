@@ -8,6 +8,10 @@ export const movieService = {
     return apiService.getAll(endpoint, page);
   },
 
+  search(keyword) {
+    return apiService.search(endpoint, keyword);
+  },
+
   create(data) {
     return apiService.create(endpoint, data);
   },
