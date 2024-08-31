@@ -1,17 +1,31 @@
 import axios from "axios";
 import { cookieService } from "@/services/cookieService";
 import { AUTH_URL } from "@/utils/apisDomain";
-import { useUserStore } from "@/stores/userStore";
+import { useAdminStore } from "@/stores/adminStore";
+import axiosInstance from "./axiosInstance";
 
 export const authService = {
   async login(credentials) {
     const response = await axios.post(`${AUTH_URL}/login`, credentials);
     cookieService.setToken(response.data.data);
 
-    const userStore = useUserStore();
-    userStore.setUser(response.data.data.data);
+    const adminStore = useAdminStore();
+    adminStore.setAdmin(response.data.data.data);
 
     return response.data;
+  },
+
+  async logout() {
+    await axiosInstance.post(`${AUTH_URL}/logout`);
+    cookieService.removeTokens();
+
+    const adminStore = useAdminStore();
+    adminStore.clearAdmin();
+    window.location = "/login";
+  },
+
+  async changePassword(credentials) {
+    await axiosInstance.post(`${AUTH_URL}/change-password`, credentials);
   },
 
   async register(credentials) {

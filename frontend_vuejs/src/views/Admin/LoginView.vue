@@ -54,13 +54,13 @@
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { authService } from "@/services/authService";
-import { useUserStore } from "@/stores/userStore";
+import { useAdminStore } from "@/stores/adminStore";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 
 const router = useRouter();
 const route = useRoute();
-const userStore = useUserStore();
+const adminStore = useAdminStore();
 const email = ref("");
 const password = ref("");
 
@@ -83,7 +83,7 @@ const onSubmit = async () => {
       password: password.value,
     });
 
-    userStore.setUser(response.data.data);
+    adminStore.setAdmin(response.data.data);
 
     const redirectPath = route.query.redirect || "/";
     router.push(redirectPath);

@@ -43,8 +43,8 @@ export const apiService = {
   delete: (endpoint, slug) =>
     handleApiCall(() => axiosInstance.delete(`${endpoint}/${slug}`)),
 
-  search: (endpoint, params = {}) =>
-    handleApiCall(() => axiosInstance.get(endpoint, { params })),
+  search: (endpoint, keyword = '') =>
+    handleApiCall(() => axiosInstance.get(endpoint, { params: {keyword} })),
 
   pluck: (endpoint) =>
     handleApiCall(() => axiosInstance.get("/pluck" + endpoint)),
