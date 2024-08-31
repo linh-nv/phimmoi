@@ -45,7 +45,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::apiResource('genre', GenreController::class);
     Route::apiResource('country', CountryController::class);
     Route::post('movie/{slug}', [MovieController::class, 'update']);
-    Route::apiResource('movie', MovieController::class)->middleware('cacheResponse:600');
+    Route::apiResource('movie', MovieController::class);
     Route::apiResource('episode', EpisodeController::class);
     Route::get('episode/movie/{slug}', [EpisodeController::class, 'getByMovie']);
     Route::apiResource('address', AddressController::class);
@@ -82,7 +82,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);
 });
-Route::group(['prefix' => 'client'], function () {
+Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/category/{slug}', [ClientCategoryController::class, 'index']);
     Route::get('/genre/{slug}', [ClientGenreController::class, 'index']);

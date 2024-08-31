@@ -28,7 +28,7 @@ class AdminService
     public function login($credentials): ?Collection
     {
         if (!$token = auth()->guard('admin-api')->attempt($credentials)) {
-            
+
             return null;
         }
 
@@ -83,13 +83,18 @@ class AdminService
         ]);
     }
 
-    public function changePassword(string $newPassword): Admin
+    public function changePassword(string $oldPassword, string $newPassword): ?Admin
     {
         /** @var Admin $admin */
         $admin = Auth::guard('admin-api')->user();
 
+        if (!Hash::check($oldPassword, $admin->password)) {
+
+            return null;
+        }
+
         return $this->adminRepository->update($admin, [
-            'password' => bcrypt($newPassword)
+            'password' => Hash::make($newPassword)
         ]);
     }
 }

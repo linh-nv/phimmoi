@@ -213,7 +213,7 @@ class CrawlMovies extends Command
 
     private function saveMovies(array $moviesData): void
     {
-        $chunkSize = 1000;
+        $chunkSize = Constants::CHUNK_SIZE;
         foreach (array_chunk($moviesData, $chunkSize) as $index => $chunk) {
             $this->info('Saving movie chunk ' . ($index + 1));
             $chunkWithoutGenres = array_map(fn($movie) => array_diff_key($movie, ['genres' => '']), $chunk);
@@ -260,10 +260,15 @@ class CrawlMovies extends Command
 
     private function saveEpisodes(array $episodesData): void
     {
-        $chunkSize = 1000;
+        $chunkSize = Constants::CHUNK_SIZE;
         foreach (array_chunk($episodesData, $chunkSize) as $index => $chunk) {
             $this->info('Saving episode chunk ' . ($index + 1));
-            Episode::insert($chunk);
+
+            Episode::upsert(
+                $chunk,
+                ['movie_slug', 'slug'],
+                ['name', 'link_embed', 'updated_at']
+            );
         }
     }
 

@@ -13,20 +13,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ProvinceSeeder::class,
-            DistrictSeeder::class,
-            WardSeeder::class,
-            CategorySeeder::class,
-            GenreSeeder::class,
-            CountrySeeder::class,
+            // ProvinceSeeder::class,
+            // DistrictSeeder::class,
+            // WardSeeder::class,
+            // CategorySeeder::class,
+            // GenreSeeder::class,
+            // CountrySeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
-            AddressSeeder::class,
-            MovieSeeder::class,
-            EpisodeSeeder::class,
-            MovieGenreSeeder::class,
-            MovieViewSeeder::class,
-            MovieUserSeeder::class,
+            // AddressSeeder::class,
+            // MovieSeeder::class,
+            // EpisodeSeeder::class,
+            // MovieGenreSeeder::class,
+            // MovieViewSeeder::class,
+            // MovieUserSeeder::class,
         ]);
     }
 }
