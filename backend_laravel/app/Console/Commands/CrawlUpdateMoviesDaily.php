@@ -39,7 +39,7 @@ class CrawlUpdateMoviesDaily extends Command
     {
         $apiUrl = Constants::API_CRAWL_MOVIES;
 
-        $totalPages = 1;
+        $totalPages = 10;
         $totalItems = $totalPages * 10;
 
         CategoryDataTemplate::setCategoryTemplate();
@@ -211,7 +211,7 @@ class CrawlUpdateMoviesDaily extends Command
 
     private function saveMovies(array $moviesData): void
     {
-        $chunkSize = 1000;
+        $chunkSize = Constants::CHUNK_SIZE;
         foreach (array_chunk($moviesData, $chunkSize) as $index => $chunk) {
             $this->info('Saving movie chunk ' . ($index + 1));
             $chunkWithoutGenres = array_map(fn($movie) => array_diff_key($movie, ['genres' => '']), $chunk);
@@ -258,7 +258,7 @@ class CrawlUpdateMoviesDaily extends Command
 
     private function saveEpisodes(array $episodesData): void
     {
-        $chunkSize = 1000;
+        $chunkSize = Constants::CHUNK_SIZE;
         foreach (array_chunk($episodesData, $chunkSize) as $index => $chunk) {
             $this->info('Saving episode chunk ' . ($index + 1));
 

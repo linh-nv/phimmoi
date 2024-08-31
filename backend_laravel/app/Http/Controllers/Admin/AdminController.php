@@ -64,7 +64,7 @@ class AdminController extends Controller
         try {
             $refreshToken = $request->refresh_token;
             $refresh = $this->adminService->refresh((string) $refreshToken);
-            
+
             return $this->responseSuccess(Response::HTTP_OK, $refresh);
         } catch (\Throwable $e) {
 
@@ -87,7 +87,11 @@ class AdminController extends Controller
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         try {
-            $updatedAdmin = $this->adminService->changePassword($request->new_password);
+            $updatedAdmin = $this->adminService->changePassword($request->old_password, $request->new_password);
+            if (!$updatedAdmin) {
+
+                return $this->responseError(Response::HTTP_UNPROCESSABLE_ENTITY, 'UNPROCESSABLE_ENTITY', 'Wrong old password!');
+            }
 
             return $this->responseSuccess(Response::HTTP_OK, $updatedAdmin);
         } catch (\Throwable $e) {
