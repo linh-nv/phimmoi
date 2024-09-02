@@ -22,8 +22,8 @@
 
 <script setup>
 import { ref } from "vue";
-import TheHeader from "@/components/TheHeader.vue";
-import TheSidebar from "@/components/TheSidebar.vue";
+import TheHeader from "@/components/Admin/TheHeader.vue";
+import TheSidebar from "@/components/Admin/TheSidebar.vue";
 
 const isSidebarCollapsed = ref(false);
 

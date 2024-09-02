@@ -31,5 +31,5 @@
   </section>
 </template>
 <script setup>
-import BarChart from "@/components/Dashboard/BarChart.vue";
+import BarChart from "@/components/Admin/Dashboard/BarChart.vue";
 </script>

@@ -94,7 +94,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { movieService } from "@/services/Movie/movie.js";
+import { movieService } from "@/services/Admin/Movie/movie.js";
 
 const movies = ref([]);
 const links = ref({});

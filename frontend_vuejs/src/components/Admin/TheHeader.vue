@@ -83,25 +83,29 @@ const admin = adminStore.admin;
 
 // Khai báo các service và routeName trong đối tượng ánh xạ
 const serviceMap = {
-  "/movie": {
-    service: () => import("@/services/Movie/movie").then((m) => m.movieService),
+  "/admin/movie": {
+    service: () =>
+      import("@/services/Admin/Movie/movie").then((m) => m.movieService),
     routeName: "movie-detail",
     labelKey: "name",
   },
-  "/category": {
+  "/admin/category": {
     service: () =>
-      import("@/services/Category/category").then((m) => m.categoryService),
+      import("@/services/Admin/Category/category").then(
+        (m) => m.categoryService,
+      ),
     routeName: "category-update",
     labelKey: "title",
   },
-  "/country": {
+  "/admin/country": {
     service: () =>
-      import("@/services/Country/country").then((m) => m.countryService),
+      import("@/services/Admin/Country/country").then((m) => m.countryService),
     routeName: "country-update",
     labelKey: "name",
   },
-  "/genre": {
-    service: () => import("@/services/Genre/genre").then((m) => m.genreService),
+  "/admin/genre": {
+    service: () =>
+      import("@/services/Admin/Genre/genre").then((m) => m.genreService),
     routeName: "genre-update",
     labelKey: "name",
   },
@@ -174,6 +178,8 @@ const closeSearch = () => {
 const logout = async () => {
   try {
     await authService.logout();
+
+    router.push({ name: "login" });
   } catch (error) {
     console.log("Error: ", error);
   }

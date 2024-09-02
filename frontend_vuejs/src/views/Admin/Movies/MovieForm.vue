@@ -353,11 +353,11 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { categoryService } from "@/services/Category/category";
-import { countryService } from "@/services/Country/country";
-import { genreService } from "@/services/Genre/genre";
-import { movieService } from "@/services/Movie/movie.js";
-import { enumService } from "@/services/Enum/enum.js";
+import { categoryService } from "@/services/Admin/Category/category";
+import { countryService } from "@/services/Admin/Country/country";
+import { genreService } from "@/services/Admin/Genre/genre";
+import { movieService } from "@/services/Admin/Movie/movie.js";
+import { enumService } from "@/services/Admin/Enum/enum.js";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import { createSchema } from "@/validation/Movie/createSchema";

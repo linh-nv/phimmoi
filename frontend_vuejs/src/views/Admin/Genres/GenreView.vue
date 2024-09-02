@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { genreService } from "@/services/Genre/genre.js";
+import { genreService } from "@/services/Admin/Genre/genre.js";
 import { useRoute, useRouter } from "vue-router";
 
 const genres = ref([]);

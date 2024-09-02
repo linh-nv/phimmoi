@@ -85,7 +85,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { episodeService } from "@/services/Episode/episode.js";
+import { episodeService } from "@/services/Admin/Episode/episode.js";
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();

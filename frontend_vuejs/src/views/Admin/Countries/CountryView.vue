@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { countryService } from "@/services/Country/country.js";
+import { countryService } from "@/services/Admin/Country/country.js";
 import { useRoute, useRouter } from "vue-router";
 
 const countries = ref([]);
@@ -147,7 +147,7 @@ onMounted(() => {
 watch(route, (newRoute) => {
   if (newRoute.query.page) {
     currentPage.value = parseInt(newRoute.query.page);
-    fetchMovies(currentPage.value);
+    fetchCountries(currentPage.value);
   }
 });
 </script>

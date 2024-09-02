@@ -61,8 +61,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { genreService } from "@/services/Genre/genre";
-import { enumService } from "@/services/Enum/enum.js";
+import { genreService } from "@/services/Admin/Genre/genre";
+import { enumService } from "@/services/Admin/Enum/enum.js";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import { formSchema } from "@/validation/Genre/formSchema";
