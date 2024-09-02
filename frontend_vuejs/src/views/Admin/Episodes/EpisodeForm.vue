@@ -49,8 +49,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { episodeService } from "@/services/Episode/episode";
-import { movieService } from "@/services/Movie/movie";
+import { episodeService } from "@/services/Admin/Episode/episode";
+import { movieService } from "@/services/Admin/Movie/movie";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import { formSchema } from "@/validation/Episode/formSchema";

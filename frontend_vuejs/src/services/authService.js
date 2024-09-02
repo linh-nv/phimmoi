@@ -18,10 +18,8 @@ export const authService = {
   async logout() {
     await axiosInstance.post(`${AUTH_URL}/logout`);
     cookieService.removeTokens();
-
     const adminStore = useAdminStore();
     adminStore.clearAdmin();
-    window.location = "/login";
   },
 
   async changePassword(credentials) {

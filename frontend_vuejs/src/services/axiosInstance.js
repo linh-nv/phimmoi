@@ -3,6 +3,9 @@ import { cookieService } from "@/services/cookieService";
 import { authService } from "@/services/authService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useLoadingStore } from "@/stores/loadingStore";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -28,7 +31,7 @@ axiosInstance.interceptors.request.use(
         accessToken = response.data.access_token;
       } catch (error) {
         cookieService.removeTokens();
-        window.location.href = "/login";
+        router.push({ name: "login" });
 
         loadingStore.stopLoading();
 
@@ -68,7 +71,7 @@ axiosInstance.interceptors.response.use(
       }
     } catch (refreshError) {
       cookieService.removeTokens();
-      window.location.href = "/login";
+      router.push({ name: "login" });
 
       return Promise.reject(refreshError);
     } finally {

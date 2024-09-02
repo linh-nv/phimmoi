@@ -61,8 +61,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { countryService } from "@/services/Country/country";
-import { enumService } from "@/services/Enum/enum.js";
+import { countryService } from "@/services/Admin/Country/country";
+import { enumService } from "@/services/Admin/Enum/enum.js";
 import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import { formSchema } from "@/validation/Country/formSchema";

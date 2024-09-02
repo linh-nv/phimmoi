@@ -85,7 +85,7 @@ const onSubmit = async () => {
 
     adminStore.setAdmin(response.data.data);
 
-    const redirectPath = route.query.redirect || "/";
+    const redirectPath = route.query.redirect || router.resolve({ name: "home" });
     router.push(redirectPath);
   } catch (error) {
     alert("An unexpected error occurred. Please try again.");

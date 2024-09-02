@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { categoryService } from "@/services/Category/category.js";
+import { categoryService } from "@/services/Admin/Category/category.js";
 import { useRoute, useRouter } from "vue-router";
 
 const categories = ref([]);

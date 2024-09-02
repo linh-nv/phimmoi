@@ -210,7 +210,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { movieService } from "@/services/Movie/movie";
+import { movieService } from "@/services/Admin/Movie/movie";
 
 const movie = ref(null);
 const route = useRoute();
