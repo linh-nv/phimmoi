@@ -55,10 +55,6 @@ class CrawlUpdateMoviesDaily extends Command
             }
 
             $this->processMovies($pageData['items'], $moviesData, $episodesData, $processedCount, $totalItems);
-
-            // Calculate and display progress percentage
-            $progress = round(($processedCount / $totalItems) * 100, 2);
-            $this->info("Progress: {$progress}% ({$processedCount} / {$totalItems} movies processed)");
         }
 
         // Save the crawled data to the database
@@ -97,7 +93,7 @@ class CrawlUpdateMoviesDaily extends Command
     {
         foreach ($movies as $movieData) {
             $details = $this->getMovieDetails($movieData['slug']);
-            if (!$details || strtolower($details['movie']['episode_current']) === 'trailer') {
+            if (!is_array($details) || !isset($details['movie']['episode_current']) || strtolower($details['movie']['episode_current']) === 'trailer') {
 
                 continue;
             }
