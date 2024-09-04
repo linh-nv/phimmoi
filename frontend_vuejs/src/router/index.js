@@ -221,7 +221,7 @@ router.beforeEach((to, from, next) => {
 
     if (token) {
       if (to.name === "login") {
-        next("/");
+        next({ name: "home" });
       } else {
         next();
       }
