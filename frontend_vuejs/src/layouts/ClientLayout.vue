@@ -18,11 +18,10 @@ import TheHeader from "@/components/Client/TheHeader.vue";
     content: '';
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 103%;
     pointer-events: none;
 }
 .backgound-poster-movie::before {
-    /* background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); */
-    box-shadow: 0px 0px 15px 25px #111111 inset;
+    box-shadow: 0px -3px 15px 25px #111111 inset;
 }
 </style>

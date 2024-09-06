@@ -196,12 +196,27 @@ const router = createRouter({
       children: [
         {
           path: "login",
-          name: "login-client",
+          name: "dangnhap",
           component: () => import("@/views/Client/HomePage.vue"),
         },
         {
           path: "",
-          name: "index",
+          name: "trangchu",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "the-loai/:slug",
+          name: "theloai",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "danh-muc/:slug",
+          name: "danhmuc",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "quoc-gia/:slug",
+          name: "quocgia",
           component: () => import("@/views/Client/HomePage.vue"),
         },
       ],

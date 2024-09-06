@@ -84,6 +84,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 });
 Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function () {
     Route::get('/', [HomeController::class, 'index']);
+    Route::get('/header', [HomeController::class, 'header']);
     Route::get('/category/{slug}', [ClientCategoryController::class, 'index']);
     Route::get('/genre/{slug}', [ClientGenreController::class, 'index']);
     Route::get('/country/{slug}', [ClientCountryController::class, 'index']);

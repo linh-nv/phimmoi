@@ -11,3 +11,7 @@ export const ENUM_STATUS_ENDPONIT = "/enums/status";
 export const ENUM_MOVIE_QUALITY_ENDPONIT = "/enums/movie-quality";
 export const ENUM_MOVIE_STATUS_ENDPONIT = "/enums/movie-status";
 export const ENUM_MOVIE_TYPE_ENDPONIT = "/enums/movie-type";
+
+// Client url
+export const CLIENT_API_BASE_URL = "http://127.0.0.1:8000/api/client";
+export const HEADER_ENDPONIT = "/header";
