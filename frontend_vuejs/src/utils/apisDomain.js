@@ -15,3 +15,4 @@ export const ENUM_MOVIE_TYPE_ENDPONIT = "/enums/movie-type";
 // Client url
 export const CLIENT_API_BASE_URL = "http://127.0.0.1:8000/api/client";
 export const HEADER_ENDPONIT = "/header";
+export const SEARCH_ENDPONIT = "/search";

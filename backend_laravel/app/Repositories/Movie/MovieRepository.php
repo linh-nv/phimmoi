@@ -24,7 +24,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function findBySlug($slug): Movie
     {
 
-        return $this->where('slug', $slug)->firstOrFail();
+        return $this->_model->where('slug', $slug)->firstOrFail();
     }
 
     public function getRelationship(): LengthAwarePaginator
@@ -72,6 +72,18 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     * =======================================
     * Client repository
     */
+    public function clientSearch(string $keyword): ?Collection
+    {
+        $searchFields = ['name', 'slug', 'origin_name', 'year', 'actor', 'director'];
+
+        return $this->_model
+            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->whereAny($searchFields, 'LIKE', "%$keyword%")
+            ->latest('updated_at')
+            ->take(Constants::PER_PAGE)
+            ->get();
+    }
+
     public function getMoviesByCategory(int $categoryId): ?Collection
     {
 
@@ -107,7 +119,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function moviesByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
     {
         $idsOrdered = $movieIds->implode(',');
-    
+
         return $this->_model
             ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
             ->whereIn('id', $movieIds)
