@@ -23,7 +23,25 @@
         </button>
       </div>
     </div>
-    <div class="search-result"></div>
+    <div class="search-result p-5">
+      <router-link
+        v-for="item in searchResults"
+        :to="{ name: 'phim', params: { slug: item.slug } }"
+        class="search__item flex gap-4 border-t border-gray-600 py-2"
+      >
+        <div class="item-image w-1/5">
+          <img
+            :src="item.poster_url"
+            alt="item_poster"
+            class="object-contain"
+          />
+        </div>
+        <div class="item-name">
+          <strong>{{ item.name }}</strong>
+          <p>{{ item.origin_name }}</p>
+        </div>
+      </router-link>
+    </div>
   </nav>
 </template>
 <script setup>
