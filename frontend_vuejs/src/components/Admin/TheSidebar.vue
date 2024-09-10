@@ -103,9 +103,9 @@ watch(
   () => route.path,
   (newPath) => {
     menuItems.value.forEach((item) => {
-      if (item.link === "/admin") {
+      if (item.link === "/admin" || item.link === "/admin/") {
         // Xử lý đặc biệt cho route gốc
-        item.isActive = newPath === "/admin";
+        item.isActive = newPath === "/admin/";
       } else {
         item.isActive = newPath.startsWith(item.link);
       }

@@ -1,16 +1,16 @@
 import axios from "axios";
 import { cookieService } from "@/services/cookieService";
-import { AUTH_URL } from "@/utils/apisDomain";
-import { useAdminStore } from "@/stores/adminStore";
+import { API_BASE_URL } from "@/utils/apisDomain";
+import { useClientStore } from "@/stores/clientStore";
 import axiosInstance from "./axiosInstance";
 
-export const authService = {
+export const clientAuthService = {
   async login(credentials) {
-    const response = await axiosInstance.post(`${AUTH_URL}/login`, credentials);
+    const response = await axiosInstance.post(`${API_BASE_URL}/login`, credentials);
     cookieService.setToken(response.data.data);
 
-    const adminStore = useAdminStore();
-    adminStore.setAdmin(response.data.data.data);
+    const clientStore = useClientStore();
+    clientStore.setClient(response.data.data.data);
 
     return response.data;
   },
@@ -18,8 +18,8 @@ export const authService = {
   async logout() {
     await axiosInstance.post(`${AUTH_URL}/logout`);
     cookieService.removeTokens();
-    const adminStore = useAdminStore();
-    adminStore.clearAdmin();
+    const clientStore = useClientStore();
+    clientStore.clearClient();
   },
 
   async changePassword(credentials) {

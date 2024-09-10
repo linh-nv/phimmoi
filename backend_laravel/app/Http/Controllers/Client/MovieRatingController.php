@@ -7,7 +7,7 @@ use App\Services\Client\MovieViewService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Response;
 
-class MovieViewController extends Controller
+class MovieRatingController extends Controller
 {
     use ResponseHandler;
 

@@ -195,13 +195,38 @@ const router = createRouter({
       component: () => import("@/layouts/ClientLayout.vue"),
       children: [
         {
-          path: "login",
-          name: "login-client",
+          path: "dangnhap",
+          name: "dangnhap",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "dangky",
+          name: "dangky",
           component: () => import("@/views/Client/HomePage.vue"),
         },
         {
           path: "",
-          name: "index",
+          name: "trangchu",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "the-loai/:slug",
+          name: "theloai",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "danh-muc/:slug",
+          name: "danhmuc",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "quoc-gia/:slug",
+          name: "quocgia",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+        {
+          path: "phim/:slug",
+          name: "phim",
           component: () => import("@/views/Client/HomePage.vue"),
         },
       ],
@@ -221,7 +246,7 @@ router.beforeEach((to, from, next) => {
 
     if (token) {
       if (to.name === "login") {
-        next("/");
+        next({ name: "home" });
       } else {
         next();
       }

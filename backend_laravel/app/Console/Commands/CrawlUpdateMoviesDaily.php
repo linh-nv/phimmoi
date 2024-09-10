@@ -98,7 +98,10 @@ class CrawlUpdateMoviesDaily extends Command
                 continue;
             }
 
-            $movieRecord = $this->prepareMovieRecord($details['movie']);
+            if (!$movieRecord = $this->prepareMovieRecord($details['movie'])) {
+
+                continue;
+            }
             $moviesData[] = $movieRecord;
 
             $episodeRecords = $this->prepareEpisodeRecords($details['episodes'][0]['server_data'], $movieRecord['slug']);
@@ -117,11 +120,20 @@ class CrawlUpdateMoviesDaily extends Command
         return $this->fetchDataWithRetries($apiUrl);
     }
 
-    private function prepareMovieRecord(array $movieDetails): array
+    private function prepareMovieRecord(array $movieDetails): ?array
     {
-        $genreIds = $this->getGenreIds($movieDetails['category']);
-        $country = $this->getOrCreateCountry($movieDetails['country'][0]);
-        $category = $this->determineCategory($movieDetails);
+        if (!$genreIds = $this->getGenreIds($movieDetails['category'])) {
+
+            return null;
+        }
+        if (!$country = $this->getOrCreateCountry($movieDetails['country'][0])) {
+
+            return null;
+        }
+        if (!$category = $this->determineCategory($movieDetails)) {
+
+            return null;
+        }
 
         return [
             'slug' => $movieDetails['slug'],
@@ -155,7 +167,7 @@ class CrawlUpdateMoviesDaily extends Command
         ];
     }
 
-    private function getGenreIds(array $genres): array
+    private function getGenreIds(array $genres): ?array
     {
         $genreIds = [];
         foreach ($genres as $genreData) {
@@ -168,10 +180,14 @@ class CrawlUpdateMoviesDaily extends Command
         return $genreIds;
     }
 
-    private function getOrCreateCountry(array $countryData): Country
+    private function getOrCreateCountry(array $countryData): ?Country
     {
+        if ($countryData['slug']) {
 
-        return Country::firstOrCreate(['slug' => $countryData['slug']], ['title' => $countryData['name']]);
+            return Country::firstOrCreate(['slug' => $countryData['slug']], ['title' => $countryData['name']]);
+        }
+
+        return null;
     }
 
     private function determineCategory(array $movieDetails): ?Category

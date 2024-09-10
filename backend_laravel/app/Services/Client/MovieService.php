@@ -25,4 +25,11 @@ class MovieService
 
         return $this->resourceSingleton->getResource(MovieResource::class, $movie);
     }
+
+    public function search(string $keyword): ?Collection
+    {
+        $movie = $this->movieRepository->clientSearch($keyword);
+
+        return $movie;
+    }
 }

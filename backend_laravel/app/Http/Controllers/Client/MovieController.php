@@ -31,4 +31,17 @@ class MovieController extends Controller
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
         }
     }
+
+    public function search(Request $request)
+    {
+        try {
+            $keyword = $request->keyword;
+            $movies = $this->movieService->search($keyword);
+
+            return $this->responseSuccess(Response::HTTP_OK, $movies);
+        } catch (\Throwable $th) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
+        }
+    }
 }

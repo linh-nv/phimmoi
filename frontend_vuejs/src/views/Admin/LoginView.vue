@@ -83,8 +83,6 @@ const onSubmit = async () => {
       password: password.value,
     });
 
-    adminStore.setAdmin(response.data.data);
-
     const redirectPath = route.query.redirect || router.resolve({ name: "home" });
     router.push(redirectPath);
   } catch (error) {

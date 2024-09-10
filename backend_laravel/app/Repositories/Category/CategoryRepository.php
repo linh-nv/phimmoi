@@ -37,4 +37,10 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
 
         return $this->_model->pluck('title', 'id');
     }
+
+    public function pluckSlugTitle(): Collection
+    {
+
+        return $this->_model->pluck('title', 'slug');
+    }
 }

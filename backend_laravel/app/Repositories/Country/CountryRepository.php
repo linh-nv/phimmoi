@@ -37,4 +37,10 @@ class CountryRepository extends BaseRepository implements CountryRepositoryInter
 
         return $this->_model->where('slug', $slug)->firstOrFail();
     }
+
+    public function pluckSlugTitle(): Collection
+    {
+
+        return $this->_model->pluck('title', 'slug');
+    }
 }

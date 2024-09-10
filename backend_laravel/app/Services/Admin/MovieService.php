@@ -8,6 +8,7 @@ use App\Http\Resources\MovieResourceCollection;
 use App\Models\Movie;
 use App\Repositories\Movie\MovieRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Resources\Json\JsonResource;
 use function App\Helpers\convert_to_slug;
 use function App\Helpers\deleteFile;
 use function App\Helpers\uploadFile;
@@ -30,7 +31,7 @@ class MovieService
         return $this->resourceSingleton->getResource(MovieResource::class, $movies);
     }
 
-    public function getPaginate(?string $keyword = null): MovieResourceCollection
+    public function getPaginate(?string $keyword = null): JsonResource
     {
         $movies = $keyword ? $this->movieRepository->getSearch($keyword) : $this->movieRepository->getRelationship();
 
@@ -97,7 +98,7 @@ class MovieService
 
     public function updateMovie($slug, array $data): MovieResource
     {
-        $movie = $this->movieRepository->where('slug', $slug);
+        $movie = $this->movieRepository->findBySlug($slug);
         $slug = convert_to_slug($data['slug']);
 
         // Upload poster
