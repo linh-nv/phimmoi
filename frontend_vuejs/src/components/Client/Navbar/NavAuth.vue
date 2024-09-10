@@ -75,6 +75,9 @@
         </Form>
       </div>
       <span class="text-sm">Phương thức khác</span>
+      <div class="social-auth">
+
+      </div>
     </div>
   </nav>
 </template>
@@ -109,7 +112,6 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits();
 
 const onSubmit = async () => {
   try {
@@ -118,10 +120,7 @@ const onSubmit = async () => {
       password: password.value,
     });
 
-    const redirectPath =
-      route.query.redirect || router.resolve({ name: "trangchu" });
-    router.push(redirectPath);
-    emit("closeAuth");
+    window.location.reload();
   } catch (error) {
     alert("An unexpected error occurred. Please try again.");
   }

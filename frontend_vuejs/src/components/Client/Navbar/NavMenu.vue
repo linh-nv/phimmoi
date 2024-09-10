@@ -11,16 +11,8 @@
         </button>
       </div>
       <div class="nav__body">
-        <ul class="logged border-b border-b-gray-800 py-5">
-          <li>
-            <router-link
-              :to="{ name: 'dangnhap' }"
-              class="flex gap-3 font-medium"
-            >
-              <span><i class="fa-solid fa-circle-user fa-xl"></i></span>
-              <span>Đăng nhập</span>
-            </router-link>
-          </li>
+        <ul class="logged border-b border-b-gray-800 h-16">
+          <img class="object-contain h-full" src="/src/assets/images/netflix-logo.png" alt="">
         </ul>
 
         <!-- Nav body -->
