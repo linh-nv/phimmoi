@@ -41,4 +41,16 @@ class HomeController extends Controller
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
         }
     }
+
+    public function slider()
+    {
+        try {
+            $slider = $this->homeService->slider();
+
+            return $this->responseSuccess(Response::HTTP_OK, $slider);
+        } catch (\Throwable $th) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
+        }
+    }
 }

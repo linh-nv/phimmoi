@@ -6,6 +6,7 @@ use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Country\CountryRepository;
 use App\Repositories\Genre\GenreRepository;
 use App\Repositories\Movie\MovieRepository;
+use App\Util\Constants;
 use Illuminate\Support\Collection;
 
 class HomeService
@@ -45,6 +46,12 @@ class HomeService
         return $header;
     }
 
+    public function slider(): ?Collection
+    {
+        $slider = $this->movieRepository->movieSummaryInformation(Constants::SIDER_ITEMS);
+
+        return $slider;
+    }
 
     public function getMovies(): ?Collection
     {
