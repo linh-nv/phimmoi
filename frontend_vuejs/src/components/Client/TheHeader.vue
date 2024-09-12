@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed top-0 z-50 flex h-12 w-full items-center justify-between border-b border-b-gray-500 bg-[#111111E6] px-4 text-white"
+    class="container fixed top-0 z-50 flex h-16 w-full items-center justify-between border-b border-b-gray-500 bg-[#111111E6] px-4 text-white md:px-8"
   >
     <div class="top-bar-left flex h-full items-center gap-2">
       <!-- Button Menu -->

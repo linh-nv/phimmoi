@@ -96,7 +96,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         return $this->movieSummaryInformation('country_id', $countryId);
     }
 
-    public function movieSummaryInformation( int $num = Constants::CLIENT_PAGE, string $field = null, int $value = null): ?Collection
+    public function movieSummaryInformation(string $field = null, int $value = null, int $num = Constants::SIDER_ITEMS): ?Collection
     {
         return $this->_model
             ->select(['name', 'slug', 'origin_name', 'year', 'poster_url', 'thumb_url'])

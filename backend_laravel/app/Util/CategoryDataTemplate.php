@@ -16,9 +16,6 @@ class CategoryDataTemplate
     /** @var string PHIMLE_SLUG */
     public const PHIMLE_SLUG = 'phim-le';
 
-    /** @var string PHIMCHIEURAP_SLUG */
-    public const PHIMCHIEURAP_SLUG = 'phim-rap';
-
     public static function categoryDataTemplate()
     {
 
@@ -30,10 +27,6 @@ class CategoryDataTemplate
             [
                 'title' => 'Phim lẻ',
                 'slug' => 'phim-le'
-            ],
-            [
-                'title' => 'Phim chiếu rạp',
-                'slug' => 'phim-chieu-rap'
             ],
         ];
     }

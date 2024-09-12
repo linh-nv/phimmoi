@@ -8,7 +8,6 @@ html {
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 main {
-  font-size: 0.8rem;
   color: #fff;
   background-color: #111111;
 }
@@ -158,4 +157,45 @@ tbody {
   gap: 0.2rem;
   flex: 1; /* Chiếm đều không gian trống */
   min-width: 200px; /* Đảm bảo kích thước tối thiểu cho các form-group */
+}
+
+/* Client */
+.list-movie {
+  &:hover .item-movie {
+    opacity: 0.5;
+  }
+  .item-movie {
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+.item-movie {
+  scroll-snap-align: start;
+}
+.trending-list-items {
+  &:hover .trending-item {
+    opacity: 0.5;
+  }
+  .trending-item {
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.hot-movie {
+  scroll-behavior: smooth;
+  scroll-snap-type: both;
+}
+.hot-movie::-webkit-scrollbar {
+  display: none;
+}
+
+.category-title {
+  border-left: 5px solid red;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  margin-bottom: 10px;
 }

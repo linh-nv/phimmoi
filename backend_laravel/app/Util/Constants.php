@@ -15,7 +15,7 @@ class Constants
     public const CLIENT_PAGE = 20;
 
     /** @var int SIDER_ITEMS */
-    public const SIDER_ITEMS = 10;
+    public const SIDER_ITEMS = 12;
 
     /** @var int CHUNK_SIZE */
     public const CHUNK_SIZE = 100;

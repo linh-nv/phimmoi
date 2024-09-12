@@ -48,7 +48,7 @@ class HomeService
 
     public function slider(): ?Collection
     {
-        $slider = $this->movieRepository->movieSummaryInformation(Constants::SIDER_ITEMS);
+        $slider = $this->movieRepository->movieSummaryInformation();
 
         return $slider;
     }
