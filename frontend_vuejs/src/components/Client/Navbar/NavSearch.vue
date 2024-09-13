@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed right-0 top-0 flex h-screen w-full flex-col justify-start bg-black transition-transform duration-300"
+    class="fixed right-0 top-0 z-50 flex h-screen w-full flex-col justify-start bg-black transition-transform duration-300"
     :class="{
       'translate-x-full': !isSearchOpen,
       'translate-x-0': isSearchOpen,
@@ -31,6 +31,7 @@
       >
         <div class="item-image w-1/5">
           <img
+            loading="lazy"
             :src="item.poster_url"
             alt="item_poster"
             class="object-contain"

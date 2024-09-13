@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed left-0 top-0 h-full w-full bg-[#000000aa] transition-transform duration-300"
+    class="fixed left-0 top-0 z-50 h-full w-full bg-[#000000aa] transition-transform duration-300"
     :class="{ '-translate-x-full': !isNavOpen, 'translate-x-0': isNavOpen }"
   >
     <div class="nav__wrap flex h-full w-3/4 flex-col gap-2 bg-black px-5 py-2">
@@ -11,8 +11,13 @@
         </button>
       </div>
       <div class="nav__body">
-        <ul class="logged border-b border-b-gray-800 h-16">
-          <img class="object-contain h-full" src="/src/assets/images/netflix-logo.png" alt="">
+        <ul class="logged h-16 border-b border-b-gray-800">
+          <img
+            loading="lazy"
+            class="h-full object-contain"
+            src="/src/assets/images/netflix-logo.png"
+            alt=""
+          />
         </ul>
 
         <!-- Nav body -->

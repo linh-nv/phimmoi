@@ -16,7 +16,7 @@ use App\Http\Controllers\Client\GenreController as ClientGenreController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\MovieController as ClientMovieController;
 use App\Http\Controllers\Client\MovieUserController;
-use App\Http\Controllers\Client\MovieRatingController;
+use App\Http\Controllers\Client\MovieViewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,9 +91,10 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/genre/{slug}', [ClientGenreController::class, 'index']);
     Route::get('/country/{slug}', [ClientCountryController::class, 'index']);
     Route::get('/movie/{slug}', [ClientMovieController::class, 'index']);
-    Route::get('/movie-top/day', [MovieRatingController::class, 'moviesDay']);
-    Route::get('/movie-top/week', [MovieRatingController::class, 'moviesWeek']);
-    Route::get('/movie-top/month', [MovieRatingController::class, 'moviesMonth']);
-    Route::get('/movie-top/year', [MovieRatingController::class, 'moviesYear']);
+    Route::get('/movie-top', [MovieViewController::class, 'getAll']);
+    Route::get('/movie-top/day', [MovieViewController::class, 'moviesDay']);
+    Route::get('/movie-top/week', [MovieViewController::class, 'moviesWeek']);
+    Route::get('/movie-top/month', [MovieViewController::class, 'moviesMonth']);
+    Route::get('/movie-top/year', [MovieViewController::class, 'moviesYear']);
     Route::get('/favorite/{id}', [MovieUserController::class, 'index'])->middleware('jwt.verify');
 });

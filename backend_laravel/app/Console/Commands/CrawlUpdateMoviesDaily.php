@@ -192,16 +192,8 @@ class CrawlUpdateMoviesDaily extends Command
 
     private function determineCategory(array $movieDetails): ?Category
     {
-        if ($movieDetails['episode_current'] == 'Full') {
 
-            return Category::where('slug', CategoryDataTemplate::PHIMLE_SLUG)->first();
-        } elseif ($movieDetails['chieurap']) {
-
-            return Category::where('slug', CategoryDataTemplate::PHIMCHIEURAP_SLUG)->first();
-        } else {
-
-            return Category::where('slug', CategoryDataTemplate::PHIMBO_SLUG)->first();
-        }
+        return Category::where('slug', $movieDetails['episode_current'] == 'Full' ?  CategoryDataTemplate::PHIMLE_SLUG : CategoryDataTemplate::PHIMBO_SLUG)->first();
     }
 
     private function prepareEpisodeRecords(array $episodes, string $movieSlug): array

@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed right-0 top-0 flex h-screen w-full flex-col justify-start bg-black transition-transform duration-300"
+    class="fixed right-0 top-0 z-50 flex h-screen w-full flex-col justify-start bg-black transition-transform duration-300"
     :class="{
       'translate-x-full': !isAuthOpen,
       'translate-x-0': isAuthOpen,
@@ -11,6 +11,7 @@
         <i class="fa-solid fa-angle-left fa-xl"></i>
       </button>
       <img
+        loading="lazy"
         src="/src/assets/images/netflix-logo.png"
         alt="Netflix Logo"
         class="h-10 w-auto"
@@ -75,9 +76,7 @@
         </Form>
       </div>
       <span class="text-sm">Phương thức khác</span>
-      <div class="social-auth">
-
-      </div>
+      <div class="social-auth"></div>
     </div>
   </nav>
 </template>

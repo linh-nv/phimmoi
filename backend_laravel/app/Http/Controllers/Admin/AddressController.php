@@ -9,7 +9,7 @@ use App\Services\Admin\AddressService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddressController extends Controller
 {
@@ -25,7 +25,7 @@ class AddressController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $keyword = $request->query('keyword');
 

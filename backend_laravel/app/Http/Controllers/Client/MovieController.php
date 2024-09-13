@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Services\Client\MovieService;
 use App\Traits\ResponseHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -19,7 +20,7 @@ class MovieController extends Controller
         $this->movieService = $movieService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         try {
             $slug = $request->slug;
@@ -32,7 +33,7 @@ class MovieController extends Controller
         }
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         try {
             $keyword = $request->keyword;

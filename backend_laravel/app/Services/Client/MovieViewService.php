@@ -17,7 +17,25 @@ class MovieViewService
         $this->movieViewRepository = $movieViewRepository;
     }
 
-    public function moviesDay(): Collection
+    public function getAll(): ?Collection
+    {
+        $moviesDay = $this->moviesDay();
+        $moviesWeek = $this->moviesWeek();
+        $moviesMonth = $this->moviesMonth();
+        $moviesYear = $this->moviesYear();
+
+
+        $movies = collect([
+            'day' => $moviesDay,
+            'week' => $moviesWeek,
+            'month' => $moviesMonth,
+            'year' => $moviesYear,
+        ]);
+
+        return $movies;
+    }
+
+    public function moviesDay(): ?Collection
     {
         $movieIds = $this->movieViewRepository->getMoviesDay();
         $movie = $this->movieRepository->moviesByIds($movieIds);
@@ -25,7 +43,7 @@ class MovieViewService
         return $movie;
     }
 
-    public function moviesWeek(): Collection
+    public function moviesWeek(): ?Collection
     {
         $movieIds = $this->movieViewRepository->getMoviesWeek();
         $movie = $this->movieRepository->moviesByIds($movieIds);
@@ -33,7 +51,7 @@ class MovieViewService
         return $movie;
     }
 
-    public function moviesMonth(): Collection
+    public function moviesMonth(): ?Collection
     {
         $movieIds = $this->movieViewRepository->getMoviesMonth();
         $movie = $this->movieRepository->moviesByIds($movieIds);
@@ -41,7 +59,7 @@ class MovieViewService
         return $movie;
     }
 
-    public function moviesYear(): Collection
+    public function moviesYear(): ?Collection
     {
         $movieIds = $this->movieViewRepository->getMoviesYear();
         $movie = $this->movieRepository->moviesByIds($movieIds);

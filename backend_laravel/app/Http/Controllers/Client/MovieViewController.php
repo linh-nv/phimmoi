@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Services\Client\MovieViewService;
 use App\Traits\ResponseHandler;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class MovieRatingController extends Controller
+class MovieViewController extends Controller
 {
     use ResponseHandler;
 
@@ -18,7 +19,19 @@ class MovieRatingController extends Controller
         $this->movieViewService = $movieViewService;
     }
 
-    public function moviesDay()
+    public function getAll(): JsonResponse
+    {
+        try {
+            $movies = $this->movieViewService->getAll();
+
+            return $this->responseSuccess(Response::HTTP_OK, $movies);
+        } catch (\Throwable $th) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
+        }
+    }
+
+    public function moviesDay(): JsonResponse
     {
         try {
             $movies = $this->movieViewService->moviesDay();
@@ -30,7 +43,7 @@ class MovieRatingController extends Controller
         }
     }
 
-    public function moviesWeek()
+    public function moviesWeek(): JsonResponse
     {
         try {
             $movies = $this->movieViewService->moviesWeek();
@@ -42,7 +55,7 @@ class MovieRatingController extends Controller
         }
     }
 
-    public function moviesMonth()
+    public function moviesMonth(): JsonResponse
     {
         try {
             $movies = $this->movieViewService->moviesMonth();
@@ -54,7 +67,7 @@ class MovieRatingController extends Controller
         }
     }
 
-    public function moviesYear()
+    public function moviesYear(): JsonResponse
     {
         try {
             $movies = $this->movieViewService->moviesYear();
