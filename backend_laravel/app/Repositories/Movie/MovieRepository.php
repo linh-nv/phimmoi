@@ -18,7 +18,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function getModel(): string
     {
 
-        return \App\Models\Movie::class;
+        return Movie::class;
     }
 
     public function findBySlug($slug): Movie
@@ -109,7 +109,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     public function moviesLatestByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
     {
         return $this->_model
-            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->select(['name', 'slug', 'origin_name', 'year', 'poster_url', 'thumb_url'])
             ->whereIn('id', $movieIds)
             ->latest('updated_at')
             ->take($page)
@@ -118,10 +118,15 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 
     public function moviesByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
     {
+        if ($movieIds->isEmpty()) {
+
+            return null;
+        }
+
         $idsOrdered = $movieIds->implode(',');
 
         return $this->_model
-            ->select(['name', 'slug', 'origin_name', 'poster_url', 'thumb_url'])
+            ->select(['name', 'slug', 'origin_name', 'year', 'view', 'poster_url', 'thumb_url'])
             ->whereIn('id', $movieIds)
             ->orderByRaw("FIELD(id, $idsOrdered)")
             ->take($page)

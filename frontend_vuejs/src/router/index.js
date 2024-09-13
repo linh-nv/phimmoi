@@ -192,6 +192,18 @@ const router = createRouter({
     {
       path: "/",
       meta: { requiresAuth: false, title: "Linhflix" },
+      component: () => import("@/layouts/HomeLayout.vue"),
+      children: [
+        {
+          path: "",
+          name: "trangchu",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
+      ],
+    },
+    {
+      path: "/",
+      meta: { requiresAuth: false, title: "Linhflix" },
       component: () => import("@/layouts/ClientLayout.vue"),
       children: [
         {
@@ -204,11 +216,7 @@ const router = createRouter({
           name: "dangky",
           component: () => import("@/views/Client/HomePage.vue"),
         },
-        {
-          path: "",
-          name: "trangchu",
-          component: () => import("@/views/Client/HomePage.vue"),
-        },
+
         {
           path: "the-loai/:slug",
           name: "theloai",

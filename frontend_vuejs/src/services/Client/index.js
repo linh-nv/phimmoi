@@ -22,4 +22,7 @@ export const clientService = {
   getSilier() {
     return apiService.get(endpoint + '/slider');
   },
+  getTrending() {
+    return apiService.get(endpoint + '/movie-top');
+  },
 };

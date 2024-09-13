@@ -19,7 +19,7 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
         return \App\Models\MovieView::class;
     }
 
-    public function getMoviesDay(): Collection
+    public function getMoviesDay(): ?Collection
     {
         $startOfYesterday = Carbon::yesterday()->startOfDay();
         $endOfToday = Carbon::today()->endOfDay();
@@ -27,7 +27,7 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
         return $this->getMoviesTop($startOfYesterday, $endOfToday);
     }
 
-    public function getMoviesWeek(): Collection
+    public function getMoviesWeek(): ?Collection
     {
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
@@ -35,7 +35,7 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
         return $this->getMoviesTop($startOfWeek, $endOfWeek);
     }
 
-    public function getMoviesMonth(): Collection
+    public function getMoviesMonth(): ?Collection
     {
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
@@ -43,7 +43,7 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
         return $this->getMoviesTop($startOfMonth, $endOfMonth);
     }
 
-    public function getMoviesYear(): Collection
+    public function getMoviesYear(): ?Collection
     {
         $startOfYear = Carbon::now()->startOfYear();
         $endOfYear = Carbon::now()->endOfYear();
@@ -51,7 +51,7 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
         return $this->getMoviesTop($startOfYear, $endOfYear);
     }
 
-    public function getMoviesTop(Carbon $start, Carbon $end): Collection
+    public function getMoviesTop(Carbon $start, Carbon $end): ?Collection
     {
 
         return $this->_model

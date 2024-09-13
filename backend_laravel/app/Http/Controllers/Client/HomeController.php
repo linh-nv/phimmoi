@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Services\Client\HomeService;
 use App\Traits\ResponseHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class HomeController extends Controller
@@ -18,7 +19,7 @@ class HomeController extends Controller
         $this->homeService = $homeService;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $home = $this->homeService->index();
@@ -30,7 +31,7 @@ class HomeController extends Controller
         }
     }
 
-    public function header()
+    public function header(): JsonResponse
     {
         try {
             $header = $this->homeService->header();
@@ -42,7 +43,7 @@ class HomeController extends Controller
         }
     }
 
-    public function slider()
+    public function slider(): JsonResponse
     {
         try {
             $slider = $this->homeService->slider();
