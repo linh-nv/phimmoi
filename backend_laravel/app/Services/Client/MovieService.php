@@ -5,6 +5,7 @@ namespace App\Services\Client;
 use App\Http\Resources\MovieResource;
 use App\Repositories\Movie\MovieRepository;
 use App\Singletons\ResourceSingleton;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class MovieService
@@ -31,5 +32,21 @@ class MovieService
         $movie = $this->movieRepository->clientSearch($keyword);
 
         return $movie;
+    }
+
+    public function filter(Collection $data): LengthAwarePaginator
+    {
+        $filters = collect([
+            'view' => $data['view'] ?? null,
+            'update' => $data['update'] ?? null,
+            'year' => $data['year'] ?? null,
+            'category_id' => $data['category_id'] ?? null,
+            'genre_id' => $data['genre_id'] ?? null,
+            'country_id' => $data['country_id'] ?? null,
+            'keyword' => $data['keyword'] ?? null,
+        ]);
+        $movies = $this->movieRepository->filterMovies($filters);
+
+        return $movies;
     }
 }

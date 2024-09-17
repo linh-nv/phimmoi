@@ -8,6 +8,7 @@ use App\Util\Constants;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Database\Eloquent\Builder;
 
 class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 {
@@ -131,5 +132,47 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             ->orderByRaw("FIELD(id, $idsOrdered)")
             ->take($page)
             ->get();
+    }
+
+    public function filterMovies(SupportCollection $filters, int $page = Constants::CLIENT_PAGE): LengthAwarePaginator
+    {
+        $query = $this->_model->query();
+
+        if (!empty($filters['year'])) {
+            $query->where('year', $filters['year'])->latest('updated_at');
+        }
+
+        if (!empty($filters['view'])) {
+            $query->latest('view');
+        }
+
+        if (!empty($filters['update'])) {
+            $query->latest('updated_at');
+        }
+
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id'])->latest('updated_at');
+        }
+
+        if (!empty($filters['genre_id'])) {
+            $query->whereHas('genres', function (Builder $query) use ($filters) {
+                $query->where('genres.id', $filters['genre_id'])->latest('movies.updated_at');
+            });
+        }
+
+        if (!empty($filters['country_id'])) {
+            $query->where('country_id', $filters['country_id'])->latest('updated_at');
+        }
+
+        if (!empty($filters['keyword'])) {
+            $query->where(function ($query) use ($filters) {
+                $query->where('name', 'like', '%' . $filters['keyword'] . '%')
+                    ->orWhere('slug', 'like', '%' . $filters['keyword'] . '%')
+                    ->orWhere('origin_name', 'like', '%' . $filters['keyword'] . '%')
+                    ->latest('updated_at');
+            });
+        }
+
+        return $query->paginate($page);
     }
 }
