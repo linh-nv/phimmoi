@@ -7,7 +7,7 @@ use App\Services\Client\CategoryService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {

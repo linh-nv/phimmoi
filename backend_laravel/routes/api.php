@@ -85,6 +85,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/search', [ClientMovieController::class, 'search']);
+    Route::get('/filter', [ClientMovieController::class, 'filter']);
     Route::get('/header', [HomeController::class, 'header']);
     Route::get('/slider', [HomeController::class, 'slider']);
     Route::get('/category/{slug}', [ClientCategoryController::class, 'index']);

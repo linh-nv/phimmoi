@@ -7,7 +7,7 @@ use App\Services\Client\MovieUserService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class MovieUserController extends Controller
 {

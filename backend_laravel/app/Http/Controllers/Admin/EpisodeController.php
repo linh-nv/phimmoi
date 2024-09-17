@@ -9,7 +9,7 @@ use App\Services\Admin\EpisodeService;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class EpisodeController extends Controller
 {

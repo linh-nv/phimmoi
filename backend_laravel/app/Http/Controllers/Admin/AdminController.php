@@ -7,7 +7,7 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\AdminRequest;
 use App\Services\Admin\AdminService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
 

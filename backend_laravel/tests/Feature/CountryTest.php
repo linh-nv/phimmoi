@@ -6,7 +6,7 @@ use App\Enums\Status;
 use App\Http\Middleware\JwtMiddleware;
 use App\Models\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
