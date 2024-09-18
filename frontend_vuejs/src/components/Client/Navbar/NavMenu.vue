@@ -1,17 +1,19 @@
 <template>
   <nav
-    class="fixed left-0 top-0 z-50 h-full w-full bg-[#000000aa] transition-transform duration-300"
+    class="fixed left-0 top-0 z-50 h-full w-full bg-[#000000aa] transition-transform duration-300 md:relative md:translate-x-0 md:bg-transparent"
     :class="{ '-translate-x-full': !isNavOpen, 'translate-x-0': isNavOpen }"
   >
-    <div class="nav__wrap flex h-full w-3/4 flex-col gap-2 bg-black px-5 py-2">
-      <div class="nav__header flex justify-end">
+    <div
+      class="nav__wrap flex h-full w-3/4 flex-col gap-2 bg-black px-5 py-2 md:w-fit md:bg-transparent md:my-auto"
+    >
+      <div class="nav__header flex justify-end md:hidden">
         <!-- Close Button -->
         <button @click="$emit('closeNav')" class="py-2 pl-2">
           <i class="fa-solid fa-xmark fa-xl"></i>
         </button>
       </div>
       <div class="nav__body">
-        <ul class="logged h-16 border-b border-b-gray-800">
+        <ul class="logged h-16 border-b border-b-gray-800 md:hidden">
           <img
             loading="lazy"
             class="h-full object-contain"
@@ -21,7 +23,7 @@
         </ul>
 
         <!-- Nav body -->
-        <ul id="main-menu" class="flex flex-col text-[#ffffffcc]">
+        <ul id="main-menu" class="flex flex-col text-[#ffffffcc] md:flex-row md:gap-5">
           <!-- Category -->
           <NavItem
             title="Thể loại"

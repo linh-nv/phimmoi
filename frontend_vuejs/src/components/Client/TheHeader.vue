@@ -4,7 +4,7 @@
   >
     <div class="top-bar-left flex h-full items-center gap-2">
       <!-- Button Menu -->
-      <button @click="isNavOpen = true" class="button-menu py-2 pr-2">
+      <button @click="isNavOpen = true" class="button-menu py-2 pr-2 md:hidden">
         <i class="fa-solid fa-bars-staggered"></i>
       </button>
       <!-- Logo -->
@@ -21,14 +21,16 @@
     </div>
 
     <!-- Right Side -->
-    <div class="top-bar-right">
-      <button @click="isSearchOpen = true" class="button-search px-3">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
-      <NavSearch
-        :isSearchOpen="isSearchOpen"
-        @closeSearch="isSearchOpen = false"
-      />
+    <div class="top-bar-right relative flex">
+      <div class="mobile-search">
+        <button @click="isSearchOpen = true" class="button-search px-3">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <NavSearch
+          :isSearchOpen="isSearchOpen"
+          @closeSearch="isSearchOpen = false"
+        />
+      </div>
       <!-- Logged button -->
       <button
         v-if="user"
