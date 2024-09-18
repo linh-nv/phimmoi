@@ -19,6 +19,9 @@ export const clientService = {
   getHome() {
     return apiService.get(endpoint);
   },
+  getCategory(slug) {
+    return apiService.find(endpoint + '/category', slug);
+  },
   getSilier() {
     return apiService.get(endpoint + '/slider');
   },
