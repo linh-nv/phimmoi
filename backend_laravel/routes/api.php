@@ -88,6 +88,7 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/filter', [ClientMovieController::class, 'filter']);
     Route::get('/header', [HomeController::class, 'header']);
     Route::get('/slider', [HomeController::class, 'slider']);
+    Route::get('/filter-option', [HomeController::class, 'filterOption']);
     Route::get('/category/{slug}', [ClientCategoryController::class, 'index']);
     Route::get('/genre/{slug}', [ClientGenreController::class, 'index']);
     Route::get('/country/{slug}', [ClientCountryController::class, 'index']);
