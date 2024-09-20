@@ -33,7 +33,7 @@ class HomeService
 
     public function header(): Collection
     {
-        $categories = $this->categoryRepository->pluckSlugTitle();
+        $categories = $this->categoryRepository->pluckTitle();
         $genres = $this->genreRepository->pluckSlugTitle();
         $countries = $this->countryRepository->pluckSlugTitle();
 
@@ -63,5 +63,20 @@ class HomeService
         }
 
         return collect($movies);
+    }
+
+    public function filterOption(): Collection
+    {
+        $categories = $this->categoryRepository->pluckTitle();
+        $genres = $this->genreRepository->pluckTitle();
+        $countries = $this->countryRepository->pluckTitle();
+
+        $filters = collect([
+            'categories' => $categories,
+            'genres' => $genres,
+            'countries' => $countries,
+        ]);
+
+        return $filters;
     }
 }

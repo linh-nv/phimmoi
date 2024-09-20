@@ -54,4 +54,16 @@ class HomeController extends Controller
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
         }
     }
+
+    public function filterOption(): JsonResponse
+    {
+        try {
+            $filters = $this->homeService->filterOption();
+
+            return $this->responseSuccess(Response::HTTP_OK, $filters);
+        } catch (\Throwable $th) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
+        }
+    }
 }
