@@ -26,6 +26,7 @@
           v-for="(itemTitle, slug) in items"
           :key="slug"
           :to="{ name: routeName, params: { slug } }"
+          @click="updateBreadcrumb(itemTitle)"
           class="flex w-full hover:text-red-400 md:justify-center"
         >
           {{ itemTitle }}
@@ -36,6 +37,7 @@
 </template>
 
 <script setup>
+import { useBreadcrumbStore } from "@/stores/breadcrumbStore";
 import { computed } from "vue";
 const props = defineProps({
   items: {
@@ -69,6 +71,12 @@ const isActive = computed(() => props.activeSection === props.sectionKey);
 const emit = defineEmits(["update:activeSection"]);
 const toggleSection = () => {
   emit("update:activeSection", isActive.value ? null : props.sectionKey);
+};
+
+const breadcrumbStore = useBreadcrumbStore();
+const updateBreadcrumb = (itemTitle) => {
+  emit("update:activeSection", null);
+  breadcrumbStore.setItemTitle(itemTitle);
 };
 </script>
 

@@ -4,7 +4,7 @@
 </template>
 <script setup>
 import MoviesDisplay from "@/components/Client/ListMovie/MoviesDisplay.vue";
-import MovieFilter from "@/components/Client/ListMovie/MovieFilter.vue";
+import MovieFilter from "@/components/Client/MovieFilter/MovieFilter.vue";
 import { clientService } from "@/services/Client";
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
