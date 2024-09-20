@@ -207,11 +207,6 @@ const router = createRouter({
       component: () => import("@/layouts/ClientLayout.vue"),
       children: [
         {
-          path: "dangnhap",
-          name: "dangnhap",
-          component: () => import("@/views/Client/HomePage.vue"),
-        },
-        {
           path: "dangky",
           name: "dangky",
           component: () => import("@/views/Client/HomePage.vue"),
@@ -220,22 +215,22 @@ const router = createRouter({
         {
           path: "the-loai/:slug",
           name: "theloai",
-          component: () => import("@/views/Client/HomePage.vue"),
+          component: () => import("@/views/Client/CategoryPage.vue"),
         },
         {
           path: "danh-muc/:slug",
           name: "danhmuc",
-          component: () => import("@/views/Client/HomePage.vue"),
+          component: () => import("@/views/Client/GenrePage.vue"),
         },
         {
           path: "quoc-gia/:slug",
           name: "quocgia",
-          component: () => import("@/views/Client/HomePage.vue"),
+          component: () => import("@/views/Client/CountryPage.vue"),
         },
         {
           path: "phim/:slug",
           name: "phim",
-          component: () => import("@/views/Client/HomePage.vue"),
+          component: () => import("@/views/Client/MoviePage.vue"),
         },
       ],
     },
