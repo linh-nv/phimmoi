@@ -4,7 +4,7 @@ namespace App\Services\Client;
 
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Movie\MovieRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {
@@ -17,10 +17,10 @@ class CategoryService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function index(string $slug): Collection
+    public function index(string $slug): LengthAwarePaginator
     {
         $category = $this->categoryRepository->getBySlug($slug);
-        $movies = $this->movieRepository->getMoviesByCategory($category->id);
+        $movies = $this->movieRepository->getMoviesByCategoryPaginate($category->id);
 
         return $movies;
     }

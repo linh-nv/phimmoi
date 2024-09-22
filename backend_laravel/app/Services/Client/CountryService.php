@@ -4,7 +4,7 @@ namespace App\Services\Client;
 
 use App\Repositories\Country\CountryRepository;
 use App\Repositories\Movie\MovieRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CountryService
 {
@@ -17,7 +17,7 @@ class CountryService
         $this->countryRepository = $countryRepository;
     }
 
-    public function index(string $slug): Collection
+    public function index(string $slug): LengthAwarePaginator
     {
         $country = $this->countryRepository->getBySlug($slug);
         $movies = $this->movieRepository->getMoviesByCountry($country->id);

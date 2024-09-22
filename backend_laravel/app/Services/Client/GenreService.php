@@ -5,7 +5,8 @@ namespace App\Services\Client;
 use App\Repositories\Genre\GenreRepository;
 use App\Repositories\Movie\MovieRepository;
 use App\Repositories\MovieGenre\MovieGenreRepository;
-use Illuminate\Support\Collection;
+use App\Util\Constants;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GenreService
 {
@@ -20,11 +21,11 @@ class GenreService
         $this->movieGenreRepository = $movieGenreRepository;
     }
 
-    public function index(string $slug): Collection
+    public function index(string $slug): LengthAwarePaginator
     {
         $genre = $this->genreRepository->getBySlug($slug);
         $movieIds = $this->movieGenreRepository->getMovies($genre->id);
-        $movies = $this->movieRepository->moviesLatestByIds($movieIds);
+        $movies = $this->movieRepository->moviesLatestByIds($movieIds, Constants::SIDER_ITEMS);
 
         return $movies;
     }

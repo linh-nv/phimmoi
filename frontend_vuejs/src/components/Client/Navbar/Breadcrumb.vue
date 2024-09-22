@@ -24,9 +24,6 @@
       </li>
     </ol>
   </nav>
-  <h1 class="py-2 text-center text-2xl font-normal uppercase text-gray-200 border-b border-gray-500">
-    {{ itemTitle }}
-  </h1>
 </template>
 
 <script setup>

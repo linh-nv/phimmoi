@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import ItemList from "./TrendingList/ItemList.vue";
+import ItemList from "./ItemList.vue";
 import { ref, onMounted } from "vue";
 import { clientService } from "@/services/Client";
 
