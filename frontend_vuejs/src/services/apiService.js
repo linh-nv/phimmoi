@@ -1,4 +1,5 @@
 import axiosInstance from "@/services/axiosInstance";
+import axios from "axios";
 
 const handleApiCall = async (apiCall) => {
   try {
@@ -16,7 +17,8 @@ export const apiService = {
   getAll: (endpoint, page = 1) =>
     handleApiCall(() => axiosInstance.get(`${endpoint}`, { params: { page } })),
 
-  get: (endpoint) => handleApiCall(() => axiosInstance.get(`${endpoint}`)),
+  get: (endpoint, params = "") =>
+    handleApiCall(() => axiosInstance.get(`${endpoint}`, { params })),
 
   create: (endpoint, data, headers = {}) =>
     handleApiCall(() =>
@@ -43,9 +45,12 @@ export const apiService = {
   delete: (endpoint, slug) =>
     handleApiCall(() => axiosInstance.delete(`${endpoint}/${slug}`)),
 
-  search: (endpoint, keyword = '') =>
-    handleApiCall(() => axiosInstance.get(endpoint, { params: {keyword} })),
+  search: (endpoint, keyword = "") =>
+    handleApiCall(() => axiosInstance.get(endpoint, { params: { keyword } })),
 
   pluck: (endpoint) =>
     handleApiCall(() => axiosInstance.get("/pluck" + endpoint)),
+  getByUrl(url) {
+    return handleApiCall(() => axios.get(url));
+  },
 };

@@ -19,8 +19,11 @@ export const clientService = {
   getHome() {
     return apiService.get(endpoint);
   },
-  getCategory(slug) {
-    return apiService.find(endpoint + '/category', slug);
+  getMovieFilter(params) {
+    return apiService.get(endpoint + '/filter', params);
+  },
+  getFilterOption() {
+    return apiService.get(endpoint + '/filter-option');
   },
   getSilier() {
     return apiService.get(endpoint + '/slider');
@@ -28,4 +31,16 @@ export const clientService = {
   getTrending() {
     return apiService.get(endpoint + '/movie-top');
   },
+  getCategory(slug) {
+    return apiService.find(endpoint + '/category', slug);
+  },
+  getCountry(slug) {
+    return apiService.find(endpoint + '/country', slug);
+  },
+  getGenre(slug) {
+    return apiService.find(endpoint + '/genre', slug);
+  },
+  getPaginate(url) {
+    return apiService.getByUrl(url);
+  }
 };

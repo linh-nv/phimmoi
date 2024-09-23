@@ -4,7 +4,7 @@ namespace App\Services\Client;
 
 use App\Repositories\Movie\MovieRepository;
 use App\Repositories\MovieUser\MovieUserRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MovieUserService
 {
@@ -17,7 +17,7 @@ class MovieUserService
         $this->movieUserRepository = $movieUserRepository;
     }
 
-    public function getMovies(int $userId): ?Collection
+    public function getMovies(int $userId): ?LengthAwarePaginator
     {
         $movieIds = $this->movieUserRepository->getMovies($userId);
         $movies = $this->movieRepository->moviesLatestByIds($movieIds);

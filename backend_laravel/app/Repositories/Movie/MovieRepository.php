@@ -91,10 +91,25 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         return $this->movieSummaryInformation('category_id', $categoryId);
     }
 
-    public function getMoviesByCountry(int $countryId): ?Collection
+    public function getMoviesByCategoryPaginate(int $categoryId): ?LengthAwarePaginator
     {
 
-        return $this->movieSummaryInformation('country_id', $countryId);
+        return $this->movieSummaryInformationPaginate('category_id', $categoryId);
+    }
+
+    public function getMoviesByCountry(int $countryId): ?LengthAwarePaginator
+    {
+
+        return $this->movieSummaryInformationPaginate('country_id', $countryId);
+    }
+
+    public function movieSummaryInformationPaginate(string $field = null, int $value = null, int $num = Constants::SIDER_ITEMS): ?LengthAwarePaginator
+    {
+        return $this->_model
+            ->select(['name', 'slug', 'origin_name', 'year', 'poster_url', 'thumb_url'])
+            ->where($field, $value)
+            ->latest('updated_at')
+            ->paginate($num);
     }
 
     public function movieSummaryInformation(string $field = null, int $value = null, int $num = Constants::SIDER_ITEMS): ?Collection
@@ -107,14 +122,13 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             ->get();
     }
 
-    public function moviesLatestByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
+    public function moviesLatestByIds(SupportCollection $movieIds, int $page = Constants::SIDER_ITEMS): ?LengthAwarePaginator
     {
         return $this->_model
             ->select(['name', 'slug', 'origin_name', 'year', 'poster_url', 'thumb_url'])
             ->whereIn('id', $movieIds)
             ->latest('updated_at')
-            ->take($page)
-            ->get();
+            ->paginate($page);
     }
 
     public function moviesByIds(SupportCollection $movieIds, int $page = Constants::CLIENT_PAGE): ?Collection
@@ -134,7 +148,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             ->get();
     }
 
-    public function filterMovies(SupportCollection $filters, int $page = Constants::CLIENT_PAGE): LengthAwarePaginator
+    public function filterMovies(SupportCollection $filters, int $page = Constants::SIDER_ITEMS): LengthAwarePaginator
     {
         $query = $this->_model->query();
 

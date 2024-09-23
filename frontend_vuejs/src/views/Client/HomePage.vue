@@ -20,7 +20,7 @@
 <script setup>
 import TheSlider from "@/components/Client/TheSlider.vue";
 import MoviesDisplay from "@/components/Client/ListMovie/MoviesDisplay.vue";
-import TrendingMovie from "@/components/Client/TrendingMovie.vue";
+import TrendingMovie from "@/components/Client/TrendingList/TrendingMovie.vue";
 import { onMounted, ref } from "vue";
 import { clientService } from "@/services/Client";
 

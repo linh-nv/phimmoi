@@ -33,9 +33,9 @@ class HomeService
 
     public function header(): Collection
     {
-        $categories = $this->categoryRepository->pluckTitle();
-        $genres = $this->genreRepository->pluckSlugTitle();
-        $countries = $this->countryRepository->pluckSlugTitle();
+        $categories = $this->categoryRepository->pluckSLugTitle();
+        $genres = $this->genreRepository->pluckSLugTitle();
+        $countries = $this->countryRepository->pluckSLugTitle();
 
         $header = collect([
             'categories' => $categories,

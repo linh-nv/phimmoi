@@ -15,7 +15,7 @@
         >
           <div
             :class="{ 'bg-zinc-700': isDay, 'bg-transparent': !isDay }"
-            class="block px-3 py-1 text-[14px] font-medium text-gray-100"
+            class="block lg:px-3 lg:py-1 text-[14px] font-medium text-gray-100"
           >
             Ngày
           </div>
@@ -26,7 +26,7 @@
         >
           <div
             :class="{ 'bg-zinc-700': isWeek, 'bg-transparent': !isWeek }"
-            class="block px-3 py-1 text-[14px] font-medium text-gray-100"
+            class="block lg:px-3 lg:py-1 text-[14px] font-medium text-gray-100"
           >
             Tuần
           </div>
@@ -37,7 +37,7 @@
         >
           <div
             :class="{ 'bg-zinc-700': isMonth, 'bg-transparent': !isMonth }"
-            class="block px-3 py-1 text-[14px] font-medium text-gray-100"
+            class="block lg:px-3 lg:py-1 text-[14px] font-medium text-gray-100"
           >
             Tháng
           </div>
@@ -46,14 +46,14 @@
     </div>
 
     <!-- Display ItemList based on the active boolean flag -->
-    <ItemList v-if="isDay" :movies="movies.day" />
-    <ItemList v-if="isWeek" :movies="movies.week" />
-    <ItemList v-if="isMonth" :movies="movies.month" />
+    <ItemList v-if="isDay && movies.day" :movies="movies.day" />
+    <ItemList v-if="isWeek && movies.week" :movies="movies.week" />
+    <ItemList v-if="isMonth && movies.month" :movies="movies.month" />
   </div>
 </template>
 
 <script setup>
-import ItemList from "./TrendingList/ItemList.vue";
+import ItemList from "./ItemList.vue";
 import { ref, onMounted } from "vue";
 import { clientService } from "@/services/Client";
 

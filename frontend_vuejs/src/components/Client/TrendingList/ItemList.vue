@@ -9,7 +9,7 @@
             :to="{ name: 'phim', params: { slug: movie.slug } }"
             v-for="(movie, key) in movies"
             :title="movie.name"
-            class="over:shadow-xl gapx-3 group grid transform grid-cols-12 items-center pb-2 duration-300 hover:scale-105 hover:opacity-80"
+            class="over:shadow-xl gap-3 group grid transform grid-cols-12 items-center pb-2 duration-300 hover:scale-105 hover:opacity-80"
           >
             <div class="col-span-2">
               <div class="font-medium text-gray-200 hover:shadow-lg">
@@ -20,7 +20,7 @@
                 </span>
               </div>
             </div>
-            <div class="col-span-10 ml-1">
+            <div class="col-span-10 ml-1 text-sm lg:text-lg">
               <span class="text-md block truncate capitalize text-gray-200">
                 {{ movie.name }}
               </span>
