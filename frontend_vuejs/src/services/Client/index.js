@@ -4,7 +4,6 @@ import {
   HEADER_ENDPONIT,
   SEARCH_ENDPONIT,
 } from "@/utils/apisDomain";
-import axios from "axios";
 
 const endpoint = CLIENT_API_BASE_URL;
 const headerEndponit = HEADER_ENDPONIT;
@@ -41,7 +40,7 @@ export const clientService = {
   getGenre(slug) {
     return apiService.find(endpoint + '/genre', slug);
   },
-  getByUrl(url) {
-    return axios.get(url);
-  },
+  getPaginate(url) {
+    return apiService.getByUrl(url);
+  }
 };

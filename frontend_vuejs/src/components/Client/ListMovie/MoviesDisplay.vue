@@ -5,15 +5,16 @@
     <router-link
       :to="{ name: 'phim', params: { slug: movie.slug } }"
       v-for="movie in movies"
+      :key="movie.id"
       class="item-movie relative aspect-[2/3] overflow-hidden rounded-lg"
     >
       <!-- Img -->
       <img
         loading="lazy"
+        :key="movie.poster_url"
         class="h-full w-full rounded-lg transition-all duration-300 ease-linear hover:scale-110"
-        :src="movie.poster_url"
+        :src="`${movie.poster_url}`"
         :alt="movie.name"
-        @load="imageLoaded = true"
       />
       <!-- Caption -->
       <div

@@ -1,9 +1,5 @@
 <template>
   <div class="pagination-bar">
-    <!-- Phần điều hướng Previous -->
-
-
-    <!-- Hiển thị các trang -->
     <button
       v-for="link in pagination.links"
       :key="link.label"
@@ -11,11 +7,8 @@
       @click="link.url ? goToPage(link.url) : null"
       :disabled="!link.url || link.active"
     >
-      {{ link.label }}
+      <span v-html="link.label"></span>
     </button>
-
-    <!-- Phần điều hướng Next -->
-
   </div>
 </template>
 
@@ -29,6 +22,7 @@ const props = defineProps({
     required: true,
   },
 });
+console.log(props.pagination);
 
 // Phát sự kiện paginate khi người dùng chuyển trang
 const emit = defineEmits(["paginate"]);

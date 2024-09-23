@@ -25,14 +25,13 @@ const pagination = ref({});
 const fetchMovies = async (url = null) => {
   try {
     const response = url
-      ? await clientService.getByUrl(url)
+      ? await clientService.getPaginate(url)
       : await clientService.getCategory(route.params.slug);
-
-    movies.value = response.data.data;
-    pagination.value = response.data;
 
     console.log(response);
     
+    movies.value = response.data.data;
+    pagination.value = response.data;
   } catch (error) {
     console.error("Error: ", error);
   }
@@ -59,8 +58,8 @@ watch(
 );
 
 const updateMovies = (response) => {
-  movies.value = response.data.data;
-  pagination.value = response.data;
+  movies.value = response.data;
+  pagination.value = response;
 };
 
 itemTitle.value = breadcrumbStore.itemTitle;
