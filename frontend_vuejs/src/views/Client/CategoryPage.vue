@@ -28,15 +28,12 @@ const fetchMovies = async (url = null) => {
       ? await clientService.getPaginate(url)
       : await clientService.getCategory(route.params.slug);
 
-    console.log(response);
-    
     movies.value = response.data.data;
     pagination.value = response.data;
   } catch (error) {
     console.error("Error: ", error);
   }
 };
-
 
 onMounted(() => {
   fetchMovies();

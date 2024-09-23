@@ -1,57 +1,67 @@
 <template>
-  <div class="pagination-bar">
-    <button
-      v-for="link in pagination.links"
-      :key="link.label"
-      :class="['pagination-button', { active: link.active }]"
-      @click="link.url ? goToPage(link.url) : null"
-      :disabled="!link.url || link.active"
-    >
-      <span v-html="link.label"></span>
-    </button>
+  <div class="pagination-bar border-b border-gray-400 md:border-none">
+    <div class="pagination-content">
+      Showing page <span>{{ pagination.current_page }}</span> of
+      {{ pagination.last_page }}
+    </div>
+    <div class="pagination-button">
+      <button
+        @click="
+          pagination.prev_page_url ? goToPage(pagination.prev_page_url) : null
+        "
+        :disabled="!pagination.prev_page_url"
+      >
+        <span><i class="fa-solid fa-caret-left"></i></span>
+      </button>
+      <button
+        @click="
+          pagination.next_page_url ? goToPage(pagination.next_page_url) : null
+        "
+        :disabled="!pagination.next_page_url"
+      >
+        <span><i class="fa-solid fa-caret-right"></i></span>
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { defineEmits, defineProps } from "vue";
 
-// Nhận props từ component cha
 const props = defineProps({
   pagination: {
     type: Object,
     required: true,
   },
 });
-console.log(props.pagination);
 
-// Phát sự kiện paginate khi người dùng chuyển trang
 const emit = defineEmits(["paginate"]);
 
 function goToPage(url) {
   emit("paginate", url);
 }
 </script>
-
 <style scoped>
 .pagination-bar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 5px;
-  margin-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
-
+.pagination-content span {
+  font-weight: 600;
+  color: #60a5fa;
+}
 .pagination-button {
+  display: flex;
+  gap: 10px;
+}
+.pagination-button button {
   padding: 5px 10px;
-  border: 1px solid #ccc;
   cursor: pointer;
   border-radius: 5px;
-}
-
-.pagination-button.active {
-  background-color: #007bff;
-  color: white;
-  cursor: default;
+  background-color: #414144;
 }
 
 .pagination-button:disabled {
