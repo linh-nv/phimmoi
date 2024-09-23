@@ -187,6 +187,6 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
             });
         }
 
-        return $query->paginate($page);
+        return $query->paginate($page)->appends($filters->toArray());
     }
 }
