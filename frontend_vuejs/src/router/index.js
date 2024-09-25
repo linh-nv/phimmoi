@@ -232,6 +232,11 @@ const router = createRouter({
           name: "phim",
           component: () => import("@/views/Client/MoviePage.vue"),
         },
+        {
+          path: "xem-phim/:movie/:slug",
+          name: "xemphim",
+          component: () => import("@/views/Client/HomePage.vue"),
+        },
       ],
     },
   ],
