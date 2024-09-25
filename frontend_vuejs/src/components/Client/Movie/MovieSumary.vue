@@ -1,0 +1,101 @@
+<template>
+  <div class="mx-auto flex gap-x-4 border-b border-zinc-800 py-3 md:gap-x-8">
+    <div class="flex aspect-[2/3] h-full w-5/12 md:w-4/12">
+      <img
+        :src="movie.poster_url"
+        :alt="movie.name"
+        class="mx-auto w-full rounded-md object-contain object-center md:block"
+      />
+    </div>
+    <div class="w-7/12 lg:w-11/12">
+      <h2
+        class="text-md mb-1 font-bold uppercase text-gray-300 md:pt-0 md:text-xl"
+      >
+        {{ movie.name }}
+      </h2>
+      <h3 class="font-medium text-gray-400">{{ movie.origin_name }}</h3>
+      <time
+        class="block pt-2 text-sm font-medium text-zinc-500"
+        :datetime="movie.year"
+      >
+        {{ movie.year }}
+      </time>
+      <div class="pt-2 shadow md:rounded-lg">
+        <span class="bg-red-500 px-2 py-1 text-[14px] font-medium">
+          {{ movie.episode_current }}
+        </span>
+        <div class="mt-2 flex flex-col gap-2 pt-4 text-sm">
+          <!-- Category -->
+          <div class="flex gap-2" v-if="category">
+            <span class="text-nowrap text-zinc-400">Thể loại:</span>
+            <span>
+              <router-link
+                :to="{
+                  name: 'theloai',
+                  params: { slug: category?.slug },
+                  query: { title: category?.title },
+                }"
+                class="hover:text-red-300"
+                :title="category?.title"
+              >
+                {{ category?.title }}
+              </router-link>
+            </span>
+          </div>
+          <!-- Genre -->
+          <div class="flex gap-2" v-if="genres && genres.length">
+            <span class="text-nowrap text-zinc-400">Danh mục:</span>
+            <span>
+              <router-link
+                v-for="genre in genres"
+                :key="genre.slug"
+                :to="{
+                  name: 'danhmuc',
+                  params: { slug: genre?.slug },
+                  query: { title: genre?.title },
+                }"
+                class="mr-2 hover:text-red-300"
+                :title="genre?.title"
+              >
+                {{ genre?.title }}
+              </router-link>
+            </span>
+          </div>
+          <!-- Country -->
+          <div class="flex gap-2" v-if="country">
+            <span class="text-nowrap text-zinc-400">Quốc gia:</span>
+            <span>
+              <router-link
+                :to="{
+                  name: 'quocgia',
+                  params: { slug: country?.slug },
+                  query: { title: country?.title },
+                }"
+                class="hover:text-red-300"
+                :title="country?.title"
+              >
+                {{ country?.title }}
+              </router-link>
+            </span>
+          </div>
+          <div class="mt-1 max-w-[180px] text-center">
+            <a
+              title="Xem Phim"
+              class="mx-auto mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#d9534f] px-3 py-[8px] font-medium text-white hover:opacity-90"
+            >
+              <span class="">Xem Ngay</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+const props = defineProps({
+  movie: { type: Object, required: true },
+  category: { type: Object, required: true },
+  genres: { type: Object, required: true },
+  country: { type: Object, required: true },
+});
+</script>
