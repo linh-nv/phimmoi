@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex truncate rounded-md border border-zinc-900 bg-[#181818] px-3 py-2 text-gray-700 shadow-lg"
+    class="flex truncate rounded-md border border-zinc-900 bg-[#181818] px-3 py-2 text-gray-700 shadow-lg mb-5"
     aria-label="Breadcrumb"
   >
     <ol class="inline-flex flex-wrap items-center space-x-1 md:space-x-3">
@@ -10,7 +10,7 @@
           :to="{ name: 'trangchu' }"
           class="inline-flex items-center whitespace-nowrap text-sm font-medium text-zinc-400 hover:text-red-500"
         >
-          <i class="fa-solid fa-house mr-2 fa-xs"></i>
+          <i class="fa-solid fa-house fa-xs mr-2"></i>
           Linhphim
         </router-link>
       </li>
@@ -19,7 +19,7 @@
           class="inline-flex items-center whitespace-nowrap text-sm font-medium text-gray-200 hover:text-white"
         >
           <i class="fa-solid fa-chevron-right fa-xs mr-2"></i>
-          {{ itemTitle }}
+          {{ title }}
         </span>
       </li>
     </ol>
@@ -27,23 +27,13 @@
 </template>
 
 <script setup>
-import { useBreadcrumbStore } from "@/stores/breadcrumbStore";
-import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
 
-const breadcrumbStore = useBreadcrumbStore();
 const route = useRoute();
-const itemTitle = ref("");
+const title = ref(route.query.title);
 
-watch(
-  () => route.params.slug,
-  (newSlug) => {
-    if (!newSlug) {
-      breadcrumbStore.clearItemTitle();
-    }
-    itemTitle.value = breadcrumbStore.itemTitle;
-  },
-);
-
-itemTitle.value = breadcrumbStore.itemTitle;
+watch(route, (newRoute) => {
+  title.value = newRoute.query.title;
+});
 </script>

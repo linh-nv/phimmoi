@@ -20,27 +20,30 @@ export const clientService = {
     return apiService.get(endpoint);
   },
   getMovieFilter(params) {
-    return apiService.get(endpoint + '/filter', params);
+    return apiService.get(endpoint + "/filter", params);
   },
   getFilterOption() {
-    return apiService.get(endpoint + '/filter-option');
+    return apiService.get(endpoint + "/filter-option");
   },
   getSilier() {
-    return apiService.get(endpoint + '/slider');
+    return apiService.get(endpoint + "/slider");
   },
   getTrending() {
-    return apiService.get(endpoint + '/movie-top');
+    return apiService.get(endpoint + "/movie-top");
   },
   getCategory(slug) {
-    return apiService.find(endpoint + '/category', slug);
+    return apiService.find(endpoint + "/category", slug);
   },
   getCountry(slug) {
-    return apiService.find(endpoint + '/country', slug);
+    return apiService.find(endpoint + "/country", slug);
   },
   getGenre(slug) {
-    return apiService.find(endpoint + '/genre', slug);
+    return apiService.find(endpoint + "/genre", slug);
   },
   getPaginate(url) {
     return apiService.getByUrl(url);
-  }
+  },
+  getMovie(slug) {
+    return apiService.find(endpoint + "/movie", slug);
+  },
 };
