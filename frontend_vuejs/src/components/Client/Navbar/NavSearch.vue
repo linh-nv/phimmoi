@@ -26,7 +26,11 @@
     <div class="search-result mt-3">
       <router-link
         v-for="item in searchResults"
-        :to="{ name: 'phim', params: { slug: item.slug } }"
+        :to="{
+          name: 'phim',
+          params: { slug: item.slug },
+          query: { title: item.name },
+        }"
         class="search__item flex gap-4 border-t border-gray-600 py-2"
       >
         <div class="item-image w-1/5">

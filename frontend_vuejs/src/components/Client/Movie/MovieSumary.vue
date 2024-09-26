@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto flex gap-x-4 border-b border-zinc-800 py-3 md:gap-x-8">
-    <div class="flex aspect-[2/3] h-full w-5/12 md:w-4/12">
+    <div class="flex h-full w-5/12 md:w-4/12">
       <img
         :src="movie.poster_url"
         :alt="movie.name"

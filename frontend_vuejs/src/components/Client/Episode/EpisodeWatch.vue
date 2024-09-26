@@ -1,15 +1,18 @@
 <template>
   <div>
     <!-- Nút quay lại -->
-    <button
-      v-if="selectedEpisode"
-      @click="exitEpisode"
-      class="fixed left-4 top-4 z-[99] flex items-center justify-center gap-2 rounded-full bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-600"
+    <div
+      class="fixed left-0 top-0 z-[99] w-full bg-gradient-to-b from-black to-transparent pb-20"
     >
-      <i class="fa-solid fa-chevron-left"></i>
-      Quay lại
-    </button>
-
+      <button
+        v-if="selectedEpisode"
+        @click="exitEpisode"
+        class="mx-4 my-4 flex items-center justify-center gap-2 rounded-full bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-600"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+        Quay lại
+      </button>
+    </div>
     <!-- Thông tin tập phim -->
     <transition name="fade" mode="out-in">
       <div
@@ -43,10 +46,18 @@
 
     <!-- Video -->
     <transition name="fade" mode="out-in">
-      <div v-if="showIframe" class="relative">
+      <div v-if="showIframe" class="fixed inset-0 z-50 h-full w-full">
+        <div
+          class="absolute inset-0 z-10 bg-black opacity-50"
+          :style="{
+            backgroundImage: `url(${movie.thumb_url})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }"
+        ></div>
         <iframe
           :src="selectedEpisode.link_embed"
-          class="fixed inset-0 z-50 h-full w-full"
+          class="relative z-50 h-full w-full"
           frameborder="0"
           allowfullscreen
           allow="autoplay"

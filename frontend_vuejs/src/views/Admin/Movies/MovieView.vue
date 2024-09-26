@@ -37,6 +37,7 @@
           <td>{{ movie.view }}</td>
           <td class="long-space">
             <div class="actions text-white">
+              <!-- Episode list -->
               <router-link
                 :to="{ name: 'episode', params: { slug: movie.slug } }"
               >
@@ -44,6 +45,7 @@
                   <i class="fa-regular fa-square-plus"></i>
                 </button>
               </router-link>
+              <!-- Movie detail -->
               <router-link
                 :to="{ name: 'movie-detail', params: { slug: movie.slug } }"
               >
@@ -51,6 +53,7 @@
                   <i class="fa-solid fa-circle-info"></i>
                 </button>
               </router-link>
+              <!-- Update movie -->
               <router-link
                 :to="{ name: 'movie-update', params: { slug: movie.slug } }"
               >

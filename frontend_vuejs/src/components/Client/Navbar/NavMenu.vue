@@ -77,7 +77,6 @@ const categories = ref({});
 const genres = ref({});
 const countries = ref({});
 
-// Lấy dữ liệu cho các mục menu
 onMounted(async () => {
   const response = await clientService.getHeader();
   categories.value = response.data.categories;

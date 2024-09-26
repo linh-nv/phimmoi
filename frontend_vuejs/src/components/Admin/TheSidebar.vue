@@ -1,5 +1,6 @@
 <template>
   <nav
+    id="side_bar"
     :class="collapsed ? 'w-24' : 'w-64'"
     class="relative h-full pt-24 transition-all duration-300"
   >
