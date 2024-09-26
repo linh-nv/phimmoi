@@ -10,6 +10,7 @@
       }"
       v-for="movie in movies"
       :key="movie.id"
+      :title="movie.name"
       class="item-movie relative aspect-[2/3] overflow-hidden rounded-lg"
     >
       <!-- Img -->

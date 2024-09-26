@@ -74,7 +74,7 @@
       <div class="flex w-full flex-col gap-5">
         <h2>Content:</h2>
         <div class="flex flex-wrap">
-          <p>{{ movie.content }}</p>
+          <p v-html="movie.content"></p>
         </div>
       </div>
     </article>
@@ -97,11 +97,23 @@
           </span>
           <span class="flex items-center gap-2 whitespace-nowrap">
             <h3>Link_embed:</h3>
-            <a class="text-blue-500 underline truncate" :href="episode.link_embed">
+            <a
+              class="truncate text-blue-500 underline"
+              :href="episode.link_embed"
+            >
               {{ episode.link_embed }}
             </a>
           </span>
         </div>
+      </div>
+      <div class="w-full">
+        <router-link :to="{ name: 'episode', params: { slug: movie.slug } }">
+          <button
+            class="rounded-lg bg-sky-500 px-5 py-2 text-white hover:opacity-75"
+          >
+            View more ...
+          </button>
+        </router-link>
       </div>
     </article>
 

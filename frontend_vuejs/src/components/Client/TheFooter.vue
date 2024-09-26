@@ -4,8 +4,8 @@
       class="flex flex-col justify-between gap-10 space-y-8 px-6 py-10 lg:flex-row lg:space-y-0"
     >
       <div class="lg:w-1/3">
-        <a href="/" class="flex justify-center space-x-3 lg:justify-start"
-          ><div class="flex items-center justify-center pb-2">
+        <a href="/" class="flex justify-center space-x-3 lg:justify-start">
+          <div class="flex items-center justify-center pb-2">
             <img
               src="/src/assets/images/netflix-logo.png"
               onerror="this.setAttribute('data-error', 1)"
@@ -13,14 +13,18 @@
               height="35"
               alt="Linhphim"
               loading="lazy"
-              data-nuxt-img=""
-            /></div
-        ></a>
+            />
+          </div>
+        </a>
         <div class="pt-2">
           <p class="text-sm text-gray-300">
-            <a class="text-red-400 hover:opacity-90" href="/"
-              ><strong>Linhphim</strong></a
+            <router-link
+              :to="{ name: 'trangchu' }"
+              class="text-red-400 hover:opacity-90"
+              title="Linhphim"
             >
+              <strong>Linhphim</strong>
+            </router-link>
             - Trang web xem phim trực tuyến miễn phí chất lượng cao với giao
             diện trực quan, tốc độ tải trang nhanh, cùng kho phim với hơn
             10.000+ phim mới, phim hay, luôn cập nhật phim nhanh, hứa hẹn sẽ đem
@@ -34,74 +38,36 @@
         <div class="space-y-3">
           <span class="uppercase tracking-wide text-gray-50">Danh Mục</span>
           <ul class="space-y-1">
-            <li>
-              <a
+            <li v-for="category in categories">
+              <router-link
+                :to="{
+                  name: 'theloai',
+                  params: { slug: category[0] },
+                  query: { title: category[1] },
+                }"
                 class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Mới"
-                href="/phim-moi"
-                >Phim Mới</a
+                :title="category"
               >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Chiếu Rạp"
-                href="/phim-chieu-rap"
-                >Phim Chiếu Rạp</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Bộ"
-                href="/phim-bo"
-                >Phim Bộ</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Lẻ"
-                href="/phim-le"
-                >Phim Lẻ</a
-              >
+                {{ category[1] }}
+              </router-link>
             </li>
           </ul>
         </div>
         <div class="space-y-3">
           <span class="uppercase text-gray-50">Thể Loại</span>
           <ul class="space-y-1">
-            <li>
-              <a
+            <li v-for="genre in genres">
+              <router-link
+                :to="{
+                  name: 'danhmuc',
+                  params: { slug: genre[0] },
+                  query: { title: genre[1] },
+                }"
                 class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Cổ Trang"
-                href="/the-loai/co-trang"
-                >Phim Cổ Trang</a
+                :title="genre"
               >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Đam Mỹ"
-                href="/the-loai/phim-bl"
-                >Phim Đam Mỹ</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Bách Hợp"
-                href="/the-loai/bach-hop"
-                >Phim Bách Hợp</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Phim Viễn Tưởng"
-                href="/the-loai/vien-tuong"
-                >Phim Viễn Tưởng</a
-              >
+                {{ genre[1] }}
+              </router-link>
             </li>
           </ul>
         </div>
@@ -129,8 +95,8 @@
                 class="text-sm text-gray-400 hover:text-blue-600"
                 title="Tô Văn Quân "
                 href="https://www.facebook.com/tovan.quan.9847"
-                >Tô Văn Quân </a
-              >
+                >Tô Văn Quân
+              </a>
             </li>
             <li>
               <a
@@ -154,3 +120,16 @@
     </div>
   </footer>
 </template>
+<script setup>
+import { clientService } from "@/services/Client";
+import { onMounted, ref } from "vue";
+
+const categories = ref({});
+const genres = ref({});
+
+onMounted(async () => {
+  const response = await clientService.getHeader();
+  categories.value = Object.entries(response.data.categories).slice(0, 5);
+  genres.value = Object.entries(response.data.genres).slice(0, 5);
+});
+</script>

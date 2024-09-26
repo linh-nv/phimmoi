@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen overflow-hidden">
+  <div id="admin_app" class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside
       :class="isSidebarCollapsed ? 'w-24' : 'w-64'"

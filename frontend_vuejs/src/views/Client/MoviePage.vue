@@ -105,9 +105,10 @@ import EpisodeCast from "@/components/Client/Episode/EpisodeCast.vue";
 import MovieSumary from "@/components/Client/Movie/MovieSumary.vue";
 import MovieComment from "@/components/Client/Movie/MovieComment.vue";
 import { clientService } from "@/services/Client";
-import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
+const router = useRouter();
 const route = useRoute();
 const slug = route.params.slug;
 const movie = ref({});
@@ -117,7 +118,7 @@ const country = ref({});
 const episodes = ref({});
 const firstEpisode = ref({});
 
-onMounted(async () => {
+const fetchMovies = async (slug) => {
   const response = await clientService.getMovie(slug);
   movie.value = response.data;
   category.value = response.data.category;
@@ -125,8 +126,20 @@ onMounted(async () => {
   country.value = response.data.country;
   episodes.value = response.data.episodes;
   firstEpisode.value = episodes.value[0];
+};
+
+onMounted(() => {
+  fetchMovies(slug);
 });
 
+watch(route, () => {
+  try {
+    router.go(0);
+    fetchMovies(slug);
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+});
 const activeTab = ref("episodes");
 
 const setActiveTab = (tab) => {

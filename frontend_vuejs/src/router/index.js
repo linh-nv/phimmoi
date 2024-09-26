@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { cookieService } from "@/services/cookieService";
+import { updateMetaTitle } from "@/utils/updateMetaTitle";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -241,9 +242,8 @@ const router = createRouter({
 });
 
 router.afterEach((to) => {
-  const title = to.meta.title || "Default Title";
-
-  document.title = title;
+  const newTitle = to.query.title;
+  updateMetaTitle(newTitle);
 });
 
 router.beforeEach((to, from, next) => {
