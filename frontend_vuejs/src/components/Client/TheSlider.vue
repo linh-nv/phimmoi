@@ -6,7 +6,11 @@
       >
         <!-- Items -->
         <router-link
-          :to="{ name: 'phim', params: { slug: movie.slug } }"
+          :to="{
+            name: 'phim',
+            params: { slug: movie.slug },
+            query: { title: movie.name },
+          }"
           v-for="movie in movieData"
           class="item-movie relative aspect-[2/3] w-[45vw] scale-100 scroll-smooth transition-all duration-300 ease-linear hover:scale-110 sm:w-[190px] md:w-[160px] lg:w-[175px] xl:w-[225px] 2xl:w-[228px]"
         >

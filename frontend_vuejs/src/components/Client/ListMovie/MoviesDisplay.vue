@@ -3,7 +3,11 @@
     class="movies-display mb-5 grid grid-cols-2 justify-between gap-4 border-b border-neutral-400 pb-10 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6"
   >
     <router-link
-      :to="{ name: 'phim', params: { slug: movie.slug } }"
+      :to="{
+        name: 'phim',
+        params: { slug: movie.slug },
+        query: { title: movie.name },
+      }"
       v-for="movie in movies"
       :key="movie.id"
       class="item-movie relative aspect-[2/3] overflow-hidden rounded-lg"
