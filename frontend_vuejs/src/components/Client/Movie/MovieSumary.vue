@@ -79,12 +79,14 @@
             </span>
           </div>
           <div class="mt-1 max-w-[180px] text-center">
-            <a
+            <button
+              @click="handleWatchNow"
               title="Xem Phim"
-              class="mx-auto mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#d9534f] px-3 py-[8px] font-medium text-white hover:opacity-90"
+              class="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#d9534f] px-5 py-2 font-medium text-white hover:opacity-90"
             >
-              <span class="">Xem Ngay</span>
-            </a>
+              <i class="fa-solid fa-play"></i>
+              <span class="">Xem ngay</span>
+            </button>
           </div>
         </div>
       </div>
@@ -97,5 +99,11 @@ const props = defineProps({
   category: { type: Object, required: true },
   genres: { type: Object, required: true },
   country: { type: Object, required: true },
+  firstEpisode: { type: Object, required: true },
 });
+
+const emit = defineEmits(["showEpisodeInfo"]);
+const handleWatchNow = () => {
+  emit("showEpisodeInfo", props.firstEpisode);
+};
 </script>

@@ -191,7 +191,7 @@ const router = createRouter({
     },
     {
       path: "/",
-      meta: { requiresAuth: false, title: "Linhflix" },
+      meta: { requiresAuth: false, title: "Linhphim" },
       component: () => import("@/layouts/HomeLayout.vue"),
       children: [
         {
@@ -203,7 +203,7 @@ const router = createRouter({
     },
     {
       path: "/",
-      meta: { requiresAuth: false, title: "Linhflix" },
+      meta: { requiresAuth: false, title: "Linhphim" },
       component: () => import("@/layouts/ClientLayout.vue"),
       children: [
         {
@@ -211,31 +211,29 @@ const router = createRouter({
           name: "dangky",
           component: () => import("@/views/Client/HomePage.vue"),
         },
-
         {
           path: "the-loai/:slug",
           name: "theloai",
           component: () => import("@/views/Client/CategoryPage.vue"),
+          meta: { title: "Thể loại" },
         },
         {
           path: "danh-muc/:slug",
           name: "danhmuc",
           component: () => import("@/views/Client/GenrePage.vue"),
+          meta: { title: "Danh mục" },
         },
         {
           path: "quoc-gia/:slug",
           name: "quocgia",
           component: () => import("@/views/Client/CountryPage.vue"),
+          meta: { title: "Quốc gia" },
         },
         {
           path: "phim/:slug",
           name: "phim",
           component: () => import("@/views/Client/MoviePage.vue"),
-        },
-        {
-          path: "xem-phim/:movie/:slug",
-          name: "xemphim",
-          component: () => import("@/views/Client/HomePage.vue"),
+          meta: { title: "Xem phim" },
         },
       ],
     },
