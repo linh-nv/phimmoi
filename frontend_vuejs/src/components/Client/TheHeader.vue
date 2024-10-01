@@ -50,16 +50,20 @@
             </div>
             <ul class="flex flex-col text-sm">
               <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
-                Thông tin
-              </li>
-              <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
                 Tủ phim
               </li>
               <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
-                Đổi mật khẩu
+                <router-link
+                  :to="{
+                    name: 'changepassword',
+                    query: { title: 'Đổi mật khẩu' },
+                  }"
+                >
+                  Đổi mật khẩu
+                </router-link>
               </li>
               <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
-                Đăng xuất
+                <button @click="logout">Đăng xuất</button>
               </li>
             </ul>
           </div>
@@ -81,6 +85,7 @@ import NavMenu from "./Navbar/NavMenu.vue";
 import NavSearch from "./Navbar/NavSearch.vue";
 import NavAuth from "./Navbar/NavAuth.vue";
 import { useClientStore } from "@/stores/clientStore";
+import { clientAuthService } from "@/services/Client/clientAuthService";
 
 const clientStore = useClientStore();
 
@@ -93,6 +98,17 @@ const user = clientStore.getClient ?? null;
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
+};
+
+const logout = async () => {
+  try {
+    await clientAuthService.logout();
+
+    alert("Đăng xuất thành công!!");
+    window.location.href = "/";
+  } catch (error) {
+    console.log("Error: ", error);
+  }
 };
 </script>
 <style scoped>

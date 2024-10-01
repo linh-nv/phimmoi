@@ -1,13 +1,14 @@
 import axios from "axios";
-import { cookieService } from "@/services/cookieService";
+import { clientCookieService } from "./clientCookieService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useClientStore } from "@/stores/clientStore";
-import axiosInstance from "./axiosInstance";
+import clientAxiosInstance from "./clientAxiosInstance";
 
 export const clientAuthService = {
   async login(credentials) {
-    const response = await axiosInstance.post(`${API_BASE_URL}/login`, credentials);
-    cookieService.setToken(response.data.data);
+    const response = await clientAxiosInstance.post(`${API_BASE_URL}/login`, credentials);
+    
+    clientCookieService.setToken(response.data.data);
 
     const clientStore = useClientStore();
     clientStore.setClient(response.data.data.data);
@@ -16,30 +17,30 @@ export const clientAuthService = {
   },
 
   async logout() {
-    await axiosInstance.post(`${AUTH_URL}/logout`);
-    cookieService.removeTokens();
+    await clientAxiosInstance.post(`/logout`);
+    clientCookieService.removeTokens();
     const clientStore = useClientStore();
     clientStore.clearClient();
   },
 
   async changePassword(credentials) {
-    await axiosInstance.post(`${AUTH_URL}/change-password`, credentials);
+    await clientAxiosInstance.post(`/change-password`, credentials);
   },
 
   async register(credentials) {
-    const response = await axios.post(`${AUTH_URL}/register`, credentials);
+    const response = await axios.post(`/register`, credentials);
 
     return response.data;
   },
 
   async refreshToken() {
-    const refreshToken = cookieService.getRefreshToken();
+    const refreshToken = clientCookieService.getRefreshToken();
     if (!refreshToken) throw new Error("No refresh token available");
 
-    const response = await axios.post(`${AUTH_URL}/refresh`, {
+    const response = await axios.post(`/refresh`, {
       refresh_token: refreshToken,
     });
-    cookieService.setToken(response.data.data);
+    clientCookieService.setToken(response.data.data);
 
     return response.data;
   },

@@ -213,6 +213,12 @@ const router = createRouter({
           component: () => import("@/views/Client/HomePage.vue"),
         },
         {
+          path: "change-password",
+          name: "changepassword",
+          component: () => import("@/views/Client/ChangePassword.vue"),
+          meta: { title: "Cập nhật thông tin" },
+        },
+        {
           path: "the-loai/:slug",
           name: "theloai",
           component: () => import("@/views/Client/CategoryPage.vue"),
