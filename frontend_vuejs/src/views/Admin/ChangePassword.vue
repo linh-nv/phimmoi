@@ -66,6 +66,7 @@ import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { useRouter } from "vue-router";
 import { authService } from "@/services/authService";
+import { AUTH_URL } from "@/utils/apisDomain";
 
 const router = useRouter();
 
@@ -97,7 +98,7 @@ const form = reactive({
 
 const handleSubmit = async () => {
   try {
-    await authService.changePassword(form);
+    await authService.changePassword(form, AUTH_URL);
     alert("Password changed successfully!");
     router.push({ name: "home" });
   } catch (error) {

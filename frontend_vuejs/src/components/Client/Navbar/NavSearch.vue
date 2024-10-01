@@ -6,11 +6,11 @@
       'translate-x-0 md:visible': isSearchOpen,
     }"
   >
-    <div class="flex w-full items-center gap-2">
+    <div class="flex w-full items-center gap-2 mt-2">
       <button @click="$emit('closeSearch')" class="h-full px-4">
         <i class="fa-solid fa-angle-left fa-xl"></i>
       </button>
-      <div class="flex w-full border border-white text-white">
+      <div class="flex w-full border border-white p-1 text-white">
         <input
           v-model="searchQuery"
           @input="onSearchInput"
