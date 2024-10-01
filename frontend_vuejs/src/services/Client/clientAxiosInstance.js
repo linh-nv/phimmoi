@@ -3,6 +3,7 @@ import { clientCookieService } from "@/services/Client/clientCookieService";
 import { authService } from "@/services/authService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useLoadingStore } from "@/stores/loadingStore";
+import { useClientStore } from "@/stores/clientStore";
 
 const clientAxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -31,6 +32,7 @@ clientAxiosInstance.interceptors.request.use(
   async (config) => {
     const loadingStore = useLoadingStore();
     loadingStore.startLoading();
+    const clientStore = useClientStore();
 
     let accessToken = clientCookieService.getAccessToken();
     const accessTokenExpires = clientCookieService.getAccessTokenExpires();
@@ -48,6 +50,8 @@ clientAxiosInstance.interceptors.request.use(
         } catch (error) {
           processQueue(error, null);
           clientCookieService.removeTokens();
+          clientStore.clearClient();
+
           window.location.href = "/";
           alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!!");
           return Promise.reject(error);
@@ -91,6 +95,7 @@ clientAxiosInstance.interceptors.response.use(
   },
   async (error) => {
     const loadingStore = useLoadingStore();
+    const clientStore = useClientStore();
 
     if (
       error.response &&
@@ -108,6 +113,8 @@ clientAxiosInstance.interceptors.response.use(
         return clientAxiosInstance(error.config);
       } catch (refreshError) {
         clientCookieService.removeTokens();
+        clientStore.clearClient();
+
         window.location.href = "/";
         alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!!");
 
