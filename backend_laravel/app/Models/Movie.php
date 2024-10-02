@@ -7,6 +7,9 @@ use App\Enums\MovieStatus;
 use App\Enums\MovieType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Movie extends Model
 {
@@ -51,32 +54,37 @@ class Movie extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
 
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(related: Category::class, foreignKey: 'category_id', ownerKey: 'id');
     }
 
-    public function genres()
+    public function genres(): BelongsToMany
     {
 
-        return $this->belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
+        return $this->belongsToMany(related: Genre::class, table: 'movie_genre', foreignPivotKey: 'movie_id', relatedPivotKey: 'genre_id');
     }
 
-    public function country()
+    public function country(): BelongsTo
     {
 
-        return $this->belongsTo(Country::class, 'country_id', 'id');
+        return $this->belongsTo(related: Country::class, foreignKey: 'country_id', ownerKey: 'id');
     }
 
-    public function episodes()
+    public function episodes(): HasMany
     {
 
-        return $this->hasMany(Episode::class, 'movie_slug', 'slug');
+        return $this->hasMany(Episode::class, foreignKey: 'movie_slug', localKey: 'slug');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(related: MovieComment::class);
     }
 }

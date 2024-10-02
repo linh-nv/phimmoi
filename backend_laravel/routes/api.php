@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\Client\CountryController as ClientCountryController;
 use App\Http\Controllers\Client\GenreController as ClientGenreController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\MovieCommentController;
 use App\Http\Controllers\Client\MovieController as ClientMovieController;
 use App\Http\Controllers\Client\MovieUserController;
 use App\Http\Controllers\Client\MovieViewController;
@@ -81,7 +82,11 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);
+    Route::post('comment', [MovieCommentController::class, 'create']);
+    Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
 });
+Route::get('/comment/{movie_id}', [MovieCommentController::class, 'getAll']);
+
 Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/search', [ClientMovieController::class, 'search']);
