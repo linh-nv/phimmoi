@@ -32,11 +32,11 @@ class MovieUserController extends Controller
         }
     }
 
-    public function create(MovieUserRequest $request): JsonResponse
+    public function insertOrRemove(MovieUserRequest $request): JsonResponse
     {
         try {
             $movieId = $request->movie_id;
-            $movieUser = $this->movieUserService->create($movieId);
+            $movieUser = $this->movieUserService->insertOrRemove($movieId);
 
             return $this->responseSuccess(Response::HTTP_OK, $movieUser);
         } catch (\Throwable $th) {

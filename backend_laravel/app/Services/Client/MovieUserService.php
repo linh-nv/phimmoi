@@ -5,6 +5,7 @@ namespace App\Services\Client;
 use App\Models\MovieUser;
 use App\Repositories\Movie\MovieRepository;
 use App\Repositories\MovieUser\MovieUserRepository;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +28,7 @@ class MovieUserService
         return $movies;
     }
 
-    public function create(int $movieId): MovieUser
+    public function insertOrRemove(int $movieId): ?Model
     {
         $user = Auth::guard('api')->user();
 
@@ -36,7 +37,7 @@ class MovieUserService
             'user_id' => $user->id,
         ];
 
-        return $this->movieUserRepository->updateOrCreate(conditions: ['movie_id' => $movieId], value: $movieUser);
+        return $this->movieUserRepository->insertOrRemove(['movie_id' => $movieId], $movieUser);
     }
 
     public function exist(int $movieId): bool
