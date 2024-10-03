@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -64,13 +66,13 @@ class UserService
      * ====================================    
      * */
 
-    public function userProfile(): User
+    public function userProfile(): Authenticatable|null
     {
 
         return Auth::guard('api')->user();
     }
 
-    public function register(array $data): User
+    public function register(array $data): Model
     {
 
         return $this->userRepository->create([
@@ -82,7 +84,7 @@ class UserService
         ]);
     }
 
-    public function changePassword(string $newPassword): User
+    public function changePassword(string $newPassword): Model
     {
         /** @var User $user */
         $user = Auth::guard('api')->user();

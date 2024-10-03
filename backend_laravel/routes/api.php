@@ -82,10 +82,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);
-    Route::post('comment', [MovieCommentController::class, 'create']);
-    Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
 });
-Route::get('/comment/{movie_id}', [MovieCommentController::class, 'getAll']);
 
 Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function () {
     Route::get('/', [HomeController::class, 'index']);
@@ -104,4 +101,10 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/movie-top/month', [MovieViewController::class, 'moviesMonth']);
     Route::get('/movie-top/year', [MovieViewController::class, 'moviesYear']);
     Route::get('/favorite/{id}', [MovieUserController::class, 'index'])->middleware('jwt.verify');
+    Route::get('/comment/{slug}', [MovieCommentController::class, 'getAll']);
+
+    Route::group(['middleware' => 'jwt.verify'], function () {
+        Route::post('comment', [MovieCommentController::class, 'create']);
+        Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
+    });
 });

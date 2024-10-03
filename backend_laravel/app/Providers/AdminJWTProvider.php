@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\JWT\Admin\AdminJWT;
 use App\JWT\Admin\AdminJWTInterface;
 use App\Repositories\Admin\AdminRepositoryInterface;
-use App\Services\AdminService;
+use App\Services\Admin\AdminService;
 use Illuminate\Support\ServiceProvider;
 
 

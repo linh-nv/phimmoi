@@ -17,10 +17,10 @@ class MovieCommentService
         $this->movieCommentRepository = $movieCommentRepository;
     }
 
-    public function getPaginate(int $movieId): LengthAwarePaginator
+    public function getPaginate(string $slug): LengthAwarePaginator
     {
 
-        return $comments = $this->movieCommentRepository->getComments($movieId);
+        return $comments = $this->movieCommentRepository->getComments($slug);
     }
 
     public function createComment(Collection $data): MovieComment

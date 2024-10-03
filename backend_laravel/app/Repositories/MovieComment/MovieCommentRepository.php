@@ -2,6 +2,7 @@
 
 namespace App\Repositories\MovieComment;
 
+use App\Models\Movie;
 use App\Models\MovieComment;
 use App\Repositories\BaseRepository;
 use App\Util\Constants;
@@ -19,10 +20,13 @@ class MovieCommentRepository extends BaseRepository implements MovieCommentRepos
         return MovieComment::class;
     }
 
-    public function getComments(int $movieId): LengthAwarePaginator
+    public function getComments(string $slug): LengthAwarePaginator
     {
-        return $this->_model->where('movie_id', $movieId)
+        $movie = Movie::where('slug', $slug)->firstOrFail();
+
+        return $this->_model->where('movie_id', $movie->id)
             ->with(relations: 'user')
+            ->latest()
             ->paginate(perPage: Constants::PER_PAGE);
     }
 

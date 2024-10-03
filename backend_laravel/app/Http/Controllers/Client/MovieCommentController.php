@@ -23,10 +23,10 @@ class MovieCommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getAll($movie_id): JsonResponse
+    public function getAll($slug): JsonResponse
     {
         try {
-            $comments = $this->movieCommentService->getPaginate($movie_id);
+            $comments = $this->movieCommentService->getPaginate($slug);
 
             return $this->responseSuccess(Response::HTTP_OK, $comments);
         } catch (\Exception $e) {

@@ -63,7 +63,13 @@ abstract class BaseRepository implements RepositoryInterface
     public function findByIds(array $ids): Collection
     {
 
-        return Movie::whereIn('id', $ids)->get();
+        return $this->_model->whereIn('id', $ids)->get();
+    }
+
+    public function findBySlug(string $slug): Model
+    {
+
+        return $this->_model->where('slug', $slug)->firstOrFail();
     }
     /**
      * Create

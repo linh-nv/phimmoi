@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Movie\MovieRepository;
 use App\Repositories\Movie\MovieRepositoryInterface;
-use App\Services\MovieService;
+use App\Services\Admin\MovieService;
 use Illuminate\Support\ServiceProvider;
 
 

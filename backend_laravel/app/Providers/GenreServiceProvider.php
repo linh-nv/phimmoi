@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Genre\GenreRepository;
 use App\Repositories\Genre\GenreRepositoryInterface;
-use App\Services\GenreService;
+use App\Services\Admin\GenreService;
 use Illuminate\Support\ServiceProvider;
 
 

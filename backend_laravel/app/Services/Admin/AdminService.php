@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -65,13 +67,13 @@ class AdminService
      * ====================================    
      * */
 
-    public function adminProfile(): Admin
+    public function adminProfile(): Authenticatable|null
     {
 
         return Auth::guard('admin-api')->user();
     }
 
-    public function register(array $data): Admin
+    public function register(array $data): Model
     {
 
         return $this->adminRepository->create([
@@ -83,7 +85,7 @@ class AdminService
         ]);
     }
 
-    public function changePassword(string $oldPassword, string $newPassword): ?Admin
+    public function changePassword(string $oldPassword, string $newPassword): ?Model
     {
         /** @var Admin $admin */
         $admin = Auth::guard('admin-api')->user();
