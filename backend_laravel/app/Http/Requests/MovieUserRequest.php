@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class MovieCommentRequest extends FormRequest
+class MovieUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,16 +33,6 @@ class MovieCommentRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-            ],
-            'comment' => [
-                'required',
-                'string',
-                'max:1000'
-            ],
-            'parent_id' => [
-                'nullable',
-                'integer',
-                Rule::exists('movie_comments', 'id')
             ]
         ];
     }
@@ -62,13 +52,6 @@ class MovieCommentRequest extends FormRequest
             'user_id.required' => 'The user id is required.',
             'user_id.integer' => 'The user id must be a int.',
             'user_id.exists' => 'The user not exists.',
-
-            'comment.required' => 'The comment id is required.',
-            'comment.string' => 'The movie id must be a string.',
-            'comment.max' => 'The comment may not be greater than 1000 characters.',
-
-            'parent_id.integer' => 'The comment parent id must be a int.',
-            'parent_id.exists' => 'The comment parent not exists.'
         ];
     }
 }

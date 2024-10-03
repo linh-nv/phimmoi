@@ -100,10 +100,12 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/movie-top/week', [MovieViewController::class, 'moviesWeek']);
     Route::get('/movie-top/month', [MovieViewController::class, 'moviesMonth']);
     Route::get('/movie-top/year', [MovieViewController::class, 'moviesYear']);
-    Route::get('/favorite/{id}', [MovieUserController::class, 'index'])->middleware('jwt.verify');
     Route::get('/comment/{slug}', [MovieCommentController::class, 'getAll']);
 
     Route::group(['middleware' => 'jwt.verify'], function () {
+        Route::get('/favorite/{id}', [MovieUserController::class, 'getAll']);
+        Route::post('/favorite', [MovieUserController::class, 'create']);
+        Route::get('/favorite/exist/{movieId}', [MovieUserController::class, 'exist']);
         Route::post('comment', [MovieCommentController::class, 'create']);
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
     });

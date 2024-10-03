@@ -20,10 +20,9 @@ class MovieController extends Controller
         $this->movieService = $movieService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index($slug): JsonResponse
     {
         try {
-            $slug = $request->slug;
             $movies = $this->movieService->index($slug);
 
             return $this->responseSuccess(Response::HTTP_OK, $movies);

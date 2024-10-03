@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\Client\GenreService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class GenreController extends Controller
@@ -20,10 +19,9 @@ class GenreController extends Controller
         $this->genreService = $genreService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index($slug): JsonResponse
     {
         try {
-            $slug = $request->slug;
             $genreMovies = $this->genreService->index($slug);
 
             return $this->responseSuccess(Response::HTTP_OK, $genreMovies);

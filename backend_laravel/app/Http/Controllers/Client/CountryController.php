@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\Client\CountryService;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CountryController extends Controller
@@ -20,10 +19,9 @@ class CountryController extends Controller
         $this->countryService = $countryService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index($slug): JsonResponse
     {
         try {
-            $slug = $request->slug;
             $moviesCountry = $this->countryService->index($slug);
 
             return $this->responseSuccess(Response::HTTP_OK, $moviesCountry);

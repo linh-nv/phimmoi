@@ -95,6 +95,11 @@ abstract class BaseRepository implements RepositoryInterface
         return $model;
     }
 
+    public function updateOrCreate(array $conditions, array $value): Model
+    {
+
+        return $this->_model->updateOrCreate($conditions, $value);
+    }
     /**
      * Delete
      * @param Model $model
