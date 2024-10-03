@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
-use App\Services\CategoryService;
+use App\Services\Admin\CategoryService;
 use Illuminate\Support\ServiceProvider;
 
 

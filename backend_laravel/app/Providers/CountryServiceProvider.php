@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Country\CountryRepository;
 use App\Repositories\Country\CountryRepositoryInterface;
-use App\Services\CountryService;
+use App\Services\Admin\CountryService;
 use Illuminate\Support\ServiceProvider;
 
 
