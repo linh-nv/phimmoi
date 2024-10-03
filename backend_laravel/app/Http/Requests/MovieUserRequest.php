@@ -28,11 +28,6 @@ class MovieUserRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('movies', 'id')
-            ],
-            'user_id' => [
-                'required',
-                'integer',
-                Rule::exists('users', 'id')
             ]
         ];
     }
@@ -48,10 +43,6 @@ class MovieUserRequest extends FormRequest
             'movie_id.required' => 'The movie id is required.',
             'movie_id.integer' => 'The movie id must be a int.',
             'movie_id.exists' => 'The movie not exists.',
-
-            'user_id.required' => 'The user id is required.',
-            'user_id.integer' => 'The user id must be a int.',
-            'user_id.exists' => 'The user not exists.',
         ];
     }
 }
