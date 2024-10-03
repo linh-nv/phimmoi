@@ -1,4 +1,4 @@
-import { apiService } from "@/services/apiService";
+import { apiClientService } from "./apiClientService";
 import {
   CLIENT_API_BASE_URL,
   HEADER_ENDPONIT,
@@ -11,39 +11,48 @@ const searchEndponit = SEARCH_ENDPONIT;
 
 export const clientService = {
   getHeader() {
-    return apiService.get(endpoint + headerEndponit);
+    return apiClientService.get(endpoint + headerEndponit);
   },
   search(keyword) {
-    return apiService.search(endpoint + searchEndponit, keyword);
+    return apiClientService.search(endpoint + searchEndponit, keyword);
   },
   getHome() {
-    return apiService.get(endpoint);
+    return apiClientService.get(endpoint);
   },
   getMovieFilter(params) {
-    return apiService.get(endpoint + "/filter", params);
+    return apiClientService.get(endpoint + "/filter", params);
   },
   getFilterOption() {
-    return apiService.get(endpoint + "/filter-option");
+    return apiClientService.get(endpoint + "/filter-option");
   },
   getSilier() {
-    return apiService.get(endpoint + "/slider");
+    return apiClientService.get(endpoint + "/slider");
   },
   getTrending() {
-    return apiService.get(endpoint + "/movie-top");
+    return apiClientService.get(endpoint + "/movie-top");
   },
   getCategory(slug) {
-    return apiService.find(endpoint + "/category", slug);
+    return apiClientService.find(endpoint + "/category", slug);
   },
   getCountry(slug) {
-    return apiService.find(endpoint + "/country", slug);
+    return apiClientService.find(endpoint + "/country", slug);
   },
   getGenre(slug) {
-    return apiService.find(endpoint + "/genre", slug);
+    return apiClientService.find(endpoint + "/genre", slug);
   },
   getPaginate(url) {
-    return apiService.getByUrl(url);
+    return apiClientService.getByUrl(url);
   },
   getMovie(slug) {
-    return apiService.find(endpoint + "/movie", slug);
+    return apiClientService.find(endpoint + "/movie", slug);
+  },
+  getComments(slug) {
+    return apiClientService.find(endpoint + "/comment", slug);
+  },
+  createComments(data) {
+    return apiClientService.create(endpoint + "/comment", data);
+  },
+  deleteComments(id) {
+    return apiClientService.delete(endpoint + "/comment", id);
   },
 };

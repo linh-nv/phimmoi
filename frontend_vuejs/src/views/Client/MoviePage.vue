@@ -1,5 +1,5 @@
 <template>
-  <section class="movie-info mb-10 bg-zinc-900">
+  <section class="movie-info mb-10 bg-neutral-900">
     <MovieSumary
       :movie="movie"
       :category="category"
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <MovieComment />
+    <MovieComment :movie_id="movie.id" />
   </section>
 </template>
 
