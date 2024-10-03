@@ -55,4 +55,7 @@ export const clientService = {
   deleteComments(id) {
     return apiClientService.delete(endpoint + "/comment", id);
   },
+  getFavorite(id) {
+    return apiClientService.find(endpoint + "/favorite", id);
+  },
 };

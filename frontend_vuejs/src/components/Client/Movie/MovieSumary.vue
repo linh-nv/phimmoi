@@ -78,14 +78,20 @@
               </router-link>
             </span>
           </div>
-          <div class="mt-1 max-w-[180px] text-center">
+          <div class="mt-1 flex max-w-[180px] gap-5 text-center">
             <button
               @click="handleWatchNow"
               title="Xem Phim"
               class="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#d9534f] px-5 py-2 font-medium text-white hover:opacity-90"
             >
               <i class="fa-solid fa-play"></i>
-              <span class="">Xem ngay</span>
+              <span class="text-nowrap">Xem ngay</span>
+            </button>
+            <button
+              class="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#c58560] px-5 py-2 font-medium text-white hover:opacity-90"
+              title="Thêm vào list yêu thích"
+            >
+              <i class="fa-solid fa-heart-circle-plus"></i>
             </button>
           </div>
         </div>

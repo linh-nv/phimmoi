@@ -93,6 +93,7 @@
         <div class="create-account">
           <span>Chưa có tài khoản?</span>
           <router-link
+            @click="$emit('closeAuth')"
             :to="{ name: 'dangky' }"
             class="font-semibold text-blue-500"
           >
@@ -106,14 +107,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { clientAuthService } from "@/services/Client/clientAuthService";
-import { defineEmits } from "vue";
 
-const router = useRouter();
-const route = useRoute();
 const email = ref("");
 const password = ref("");
 
