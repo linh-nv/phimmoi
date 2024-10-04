@@ -38,7 +38,11 @@ class UserController extends Controller
     public function register(UserRequest $request): JsonResponse
     {
         try {
-            $user = $this->userService->register($request->all());
+            $user = $this->userService->handleRegister($request->all());
+            if (!$user) {
+
+                return $this->responseError(Response::HTTP_UNPROCESSABLE_ENTITY, 'INVALID_VERIFICATION_CODE', 'The verification code is either invalid or expired.');
+            }
 
             return $this->responseSuccess(Response::HTTP_CREATED, $user);
         } catch (\Throwable $e) {
@@ -64,7 +68,7 @@ class UserController extends Controller
         try {
             $refreshToken = $request->refresh_token;
             $refresh = $this->userService->refresh((string) $refreshToken);
-            
+
             return $this->responseSuccess(Response::HTTP_OK, $refresh);
         } catch (\Throwable $e) {
 
