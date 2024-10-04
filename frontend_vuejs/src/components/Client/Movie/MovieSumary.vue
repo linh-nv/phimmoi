@@ -93,8 +93,19 @@
                 'mt-5 flex cursor-pointer items-center justify-center gap-2 rounded px-5 py-2 font-medium text-white hover:opacity-90',
                 movieFavorite ? 'bg-orange-500' : 'bg-gray-500',
               ]"
-              :title=" movieFavorite ? 'Đã thêm vào danh sách yêu thích' : 'Thêm vào list yêu thích'">
-              <i :class="movieFavorite ? 'fa-solid fa-check' : 'fa-solid fa-heart-circle-plus'"></i>
+              :title="
+                movieFavorite
+                  ? 'Đã thêm vào danh sách yêu thích'
+                  : 'Thêm vào list yêu thích'
+              "
+            >
+              <i
+                :class="
+                  movieFavorite
+                    ? 'fa-solid fa-check'
+                    : 'fa-solid fa-heart-circle-plus'
+                "
+              ></i>
             </button>
           </div>
         </div>
@@ -113,8 +124,16 @@ const props = defineProps({
   country: { type: Object, required: true },
   firstEpisode: { type: Object, required: true },
 });
+const createView = async () => {
+  try {
+    await clientService.createView(props.movie.id);
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+};
 const emit = defineEmits(["showEpisodeInfo"]);
 const handleWatchNow = () => {
+  createView();
   emit("showEpisodeInfo", props.firstEpisode);
 };
 
