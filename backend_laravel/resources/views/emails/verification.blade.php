@@ -1,0 +1,1 @@
+<p>Cảm ơn bạn đã đăng ký. Mã xác nhận của bạn là: <strong>{{ $verificationCode }}</strong></p>
