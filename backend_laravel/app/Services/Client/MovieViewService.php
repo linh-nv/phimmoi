@@ -66,4 +66,11 @@ class MovieViewService
 
         return $movie;
     }
+
+    public function createView(int $movieId): void
+    {
+        $movie = $this->movieRepository->find($movieId);
+        $this->movieRepository->update($movie, ['view' => ++$movie->view]);
+        $this->movieViewRepository->createView($movieId);
+    }
 }

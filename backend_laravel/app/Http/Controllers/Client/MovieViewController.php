@@ -78,4 +78,16 @@ class MovieViewController extends Controller
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
         }
     }
+
+    public function createView($id): JsonResponse
+    {
+        try {
+            $this->movieViewService->createView($id);
+
+            return $this->responseSuccess(Response::HTTP_OK, true);
+        } catch (\Throwable $th) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $th->getMessage());
+        }
+    }
 }

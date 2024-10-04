@@ -10,4 +10,9 @@ class MovieView extends Model
     use HasFactory;
 
     protected $table = 'movie_view';
+
+    protected $fillable = [
+        'movie_id',
+        'viewed_at',
+    ];
 }

@@ -5,6 +5,7 @@ namespace App\Repositories\MovieView;
 use App\Repositories\BaseRepository;
 use App\Util\Constants;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class MovieViewRepository extends BaseRepository implements MovieViewRepositoryInterface
@@ -61,5 +62,14 @@ class MovieViewRepository extends BaseRepository implements MovieViewRepositoryI
             ->orderByRaw('COUNT(*) DESC')
             ->take(Constants::PER_PAGE)
             ->pluck('movie_id');
+    }
+
+    public function createView(int $movieId): Model
+    {
+
+        return $this->_model->create([
+            'movie_id' => $movieId,
+            'viewed_at' => now()
+        ]);
     }
 }
