@@ -100,6 +100,7 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/movie-top/week', [MovieViewController::class, 'moviesWeek']);
     Route::get('/movie-top/month', [MovieViewController::class, 'moviesMonth']);
     Route::get('/movie-top/year', [MovieViewController::class, 'moviesYear']);
+    Route::get('/create-view/{id}', [MovieViewController::class, 'createView']);
     Route::get('/comment/{slug}', [MovieCommentController::class, 'getAll']);
 
     Route::group(['middleware' => 'jwt.verify'], function () {
