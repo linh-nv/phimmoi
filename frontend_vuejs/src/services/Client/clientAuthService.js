@@ -28,7 +28,7 @@ export const clientAuthService = {
   },
 
   async register(credentials) {
-    const response = await axios.post(`/register`, credentials);
+    const response = await clientAxiosInstance.post(`/register`, credentials);
 
     return response.data;
   },
