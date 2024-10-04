@@ -8,16 +8,16 @@ use Illuminate\Validation\Rule;
 
 class EpisodeRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         $admin = Auth::guard('admin-api')->user();
 
         return $admin instanceof \App\Models\Admin;
     }
 
-    public function rules()
+    public function rules(): array
     {
-        $episodeId = $this->route('episode') ? $this->route('episode')->id : null;
+        $episodeId = $this->route('episode') ?-> $this->route('episode')->id;
 
         return [
             'name' => 'required|string|max:255',
@@ -34,7 +34,7 @@ class EpisodeRequest extends FormRequest
     }
 
 
-    public function messages()
+    public function messages(): array
     {
 
         return [
