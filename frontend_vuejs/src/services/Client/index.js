@@ -58,4 +58,10 @@ export const clientService = {
   getFavorite(id) {
     return apiClientService.find(endpoint + "/favorite", id);
   },
+  createFavorite(data) {
+    return apiClientService.create(endpoint + "/favorite", data);
+  },
+  checkExistFavorite(id) {
+    return apiClientService.find(endpoint + "/favorite/exist", id);
+  }
 };

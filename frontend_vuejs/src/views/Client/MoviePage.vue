@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <MovieComment :movie_id="movie.id" />
+    <MovieComment v-if="movie.id" :movie_id="movie.id" />
   </section>
 </template>
 

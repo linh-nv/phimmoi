@@ -38,7 +38,6 @@
               <!-- <button class="flex items-center hover:underline">
                 Reply
               </button> -->
-              <!-- còn phần tạo comment và load thêm comment khi click vào tải thêm bình luận -->
               <button v-if="user && user.id === comment.user.id" @click="deleteComment(comment.id)"
                 class="hover:underline">
                 <i class="fa-solid fa-trash-can"></i>
