@@ -8,16 +8,16 @@ use Illuminate\Validation\Rule;
 
 class CountryRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         $admin = Auth::guard('admin-api')->user();
 
         return $admin instanceof \App\Models\Admin;
     }
 
-    public function rules()
+    public function rules(): array
     {
-        $countryId = $this->route('country') ? $this->route('country')->id : null;
+        $countryId = $this->route('country') ?-> $this->route('country')->id;
 
         return [
             'title' => 'required|string|max:255',
@@ -32,7 +32,7 @@ class CountryRequest extends FormRequest
     }
 
 
-    public function messages()
+    public function messages(): array
     {
 
         return [

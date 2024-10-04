@@ -8,16 +8,16 @@ use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         $admin = Auth::guard('admin-api')->user();
 
         return $admin instanceof \App\Models\Admin;
     }
 
-    public function rules()
+    public function rules(): array
     {
-        $categoryId = $this->route('category') ? $this->route('category')->id : null;
+        $categoryId = $this->route('category')?->$this->route('category')->id;
 
         return [
             'title' => 'required|string|max:255',
@@ -32,7 +32,7 @@ class CategoryRequest extends FormRequest
     }
 
 
-    public function messages()
+    public function messages(): array
     {
 
         return [

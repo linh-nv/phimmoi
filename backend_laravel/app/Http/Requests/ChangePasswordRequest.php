@@ -22,7 +22,7 @@ class ChangePasswordRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
 
         return [
@@ -31,7 +31,7 @@ class ChangePasswordRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
 
         return [

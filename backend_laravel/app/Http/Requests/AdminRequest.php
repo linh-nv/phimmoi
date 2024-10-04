@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 
 class AdminRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         $admin = Auth::guard('admin-api')->user();
 
@@ -20,9 +20,9 @@ class AdminRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
-        $adminId = $this->route('admin') ? $this->route('admin')->id : null;
+        $adminId = $this->route('admin') ?-> $this->route('admin')->id;
 
         return [
             'name' => 'required|string|max:255',

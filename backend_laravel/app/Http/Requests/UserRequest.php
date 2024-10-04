@@ -10,7 +10,7 @@ class UserRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize()
+    public function authorize(): bool
     {
 
         return true;
@@ -21,13 +21,13 @@ class UserRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
-        $userId = $this->route('user') ? $this->route('user')->id : null;
+        $userId = $this->route('user') ?-> $this->route('user')->id;
 
         return [
-            'name' => 'required|string|max:255',
-            'password' => 'required|string|min:6|confirmed',
+            'name' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:6|confirmed',
             'email' => [
                 'required',
                 'string',
@@ -42,7 +42,7 @@ class UserRequest extends FormRequest
     }
 
 
-    public function messages()
+    public function messages(): array
     {
 
         return [
