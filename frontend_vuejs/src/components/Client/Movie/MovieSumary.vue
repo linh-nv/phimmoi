@@ -78,14 +78,23 @@
               </router-link>
             </span>
           </div>
-          <div class="mt-1 max-w-[180px] text-center">
+          <div class="mt-1 flex max-w-[180px] gap-2 text-center">
             <button
               @click="handleWatchNow"
               title="Xem Phim"
               class="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded bg-[#d9534f] px-5 py-2 font-medium text-white hover:opacity-90"
             >
               <i class="fa-solid fa-play"></i>
-              <span class="">Xem ngay</span>
+              <span class="text-nowrap">Xem ngay</span>
+            </button>
+            <button
+              @click="addFavorite()"
+              :class="[
+                'mt-5 flex cursor-pointer items-center justify-center gap-2 rounded px-5 py-2 font-medium text-white hover:opacity-90',
+                movieFavorite ? 'bg-orange-500' : 'bg-gray-500',
+              ]"
+              :title=" movieFavorite ? 'Đã thêm vào danh sách yêu thích' : 'Thêm vào list yêu thích'">
+              <i :class="movieFavorite ? 'fa-solid fa-check' : 'fa-solid fa-heart-circle-plus'"></i>
             </button>
           </div>
         </div>
@@ -94,6 +103,9 @@
   </div>
 </template>
 <script setup>
+import { clientService } from "@/services/Client";
+import { ref, watch } from "vue";
+
 const props = defineProps({
   movie: { type: Object, required: true },
   category: { type: Object, required: true },
@@ -101,9 +113,28 @@ const props = defineProps({
   country: { type: Object, required: true },
   firstEpisode: { type: Object, required: true },
 });
-
 const emit = defineEmits(["showEpisodeInfo"]);
 const handleWatchNow = () => {
   emit("showEpisodeInfo", props.firstEpisode);
 };
+
+const movieFavorite = ref(false);
+const addFavorite = async () => {
+  const response = await clientService.createFavorite({
+    movie_id: props.movie.id,
+  });
+
+  movieFavorite.value = response.data ? true : false;
+};
+
+watch(
+  () => props.movie.id,
+  async (newId) => {
+    if (newId) {
+      const response = await clientService.checkExistFavorite(newId);
+      movieFavorite.value = response.data;
+    }
+  },
+  { immediate: true },
+);
 </script>

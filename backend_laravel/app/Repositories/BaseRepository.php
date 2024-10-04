@@ -152,4 +152,17 @@ abstract class BaseRepository implements RepositoryInterface
 
         return $this->_model->firstOrCreate($attributes, $values);
     }
+
+    public function insertOrRemove(array $conditions, array $attributes): ?Model
+    {
+        try {
+            $entity = $this->_model->where($conditions)->first();
+
+            $entity->delete();
+            return null;
+        } catch (\Throwable $th) {
+
+            return $this->_model->create($attributes);
+        }
+    }
 }

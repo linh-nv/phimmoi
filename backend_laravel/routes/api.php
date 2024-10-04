@@ -104,7 +104,7 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
 
     Route::group(['middleware' => 'jwt.verify'], function () {
         Route::get('/favorite/{id}', [MovieUserController::class, 'getAll']);
-        Route::post('/favorite', [MovieUserController::class, 'create']);
+        Route::post('/favorite', [MovieUserController::class, 'insertOrRemove']);
         Route::get('/favorite/exist/{movieId}', [MovieUserController::class, 'exist']);
         Route::post('comment', [MovieCommentController::class, 'create']);
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);

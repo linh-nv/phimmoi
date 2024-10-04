@@ -199,6 +199,13 @@ const router = createRouter({
           path: "",
           name: "trangchu",
           component: () => import("@/views/Client/HomePage.vue"),
+          meta: { title: "Trang chủ" },
+        },
+        {
+          path: "dangky",
+          name: "dangky",
+          component: () => import("@/views/Client/RegisterPage.vue"),
+          meta: { title: "Đăng ký" },
         },
       ],
     },
@@ -208,9 +215,10 @@ const router = createRouter({
       component: () => import("@/layouts/ClientLayout.vue"),
       children: [
         {
-          path: "dangky",
-          name: "dangky",
-          component: () => import("@/views/Client/HomePage.vue"),
+          path: "favorite",
+          name: "favorite",
+          component: () => import("@/views/Client/FavoritePage.vue"),
+          meta: { title: "Tủ phim" },
         },
         {
           path: "change-password",

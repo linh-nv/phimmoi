@@ -50,7 +50,14 @@
             </div>
             <ul class="flex flex-col text-sm">
               <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
-                Tủ phim
+                <router-link
+                  :to="{
+                    name: 'favorite',
+                    query: { title: 'Tủ phim' },
+                  }"
+                >
+                  Tủ phim
+                </router-link>
               </li>
               <li class="text-nowrap px-4 py-2 hover:bg-neutral-700">
                 <router-link
