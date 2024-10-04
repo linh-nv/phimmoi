@@ -63,5 +63,8 @@ export const clientService = {
   },
   checkExistFavorite(id) {
     return apiClientService.find(endpoint + "/favorite/exist", id);
-  }
+  },
+  createView(id) {
+    return apiClientService.find(endpoint + "/create-view", id);
+  },
 };
