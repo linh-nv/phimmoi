@@ -6,7 +6,7 @@
       <div class="tab-content tab-space">
         <div>
           <router-link
-            :to="{ name: 'phim', params: { slug: movie.slug } }"
+            :to="{ name: 'phim', params: { slug: movie.slug }, query: { title: movie.name } }"
             v-for="(movie, key) in movies"
             :title="movie.name"
             class="over:shadow-xl gap-3 group grid transform grid-cols-12 items-center pb-2 duration-300 hover:scale-105 hover:opacity-80"
