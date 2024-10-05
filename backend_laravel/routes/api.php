@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AddressController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AnalysisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CountryController;
@@ -71,6 +72,9 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/enums/movie-quality', [EnumController::class, 'getMovieQuality']);
     Route::get('/enums/movie-status', [EnumController::class, 'getMovieStatus']);
     Route::get('/enums/movie-type', [EnumController::class, 'getMovieType']);
+
+    Route::get('/overview', [AnalysisController::class, 'overview']);
+
 });
 
 // Client routes
