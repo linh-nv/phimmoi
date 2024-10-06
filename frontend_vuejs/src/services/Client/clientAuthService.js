@@ -6,8 +6,7 @@ import clientAxiosInstance from "./clientAxiosInstance";
 
 export const clientAuthService = {
   async login(credentials) {
-    const response = await clientAxiosInstance.post(`${API_BASE_URL}/login`, credentials);
-    
+    const response = await axios.post(`${API_BASE_URL}/login`, credentials);
     clientCookieService.setToken(response.data.data);
 
     const clientStore = useClientStore();
@@ -37,7 +36,7 @@ export const clientAuthService = {
     const refreshToken = clientCookieService.getRefreshToken();
     if (!refreshToken) throw new Error("No refresh token available");
 
-    const response = await axios.post(`/refresh`, {
+    const response = await axios.post(`${API_BASE_URL}/refresh`, {
       refresh_token: refreshToken,
     });
     clientCookieService.setToken(response.data.data);

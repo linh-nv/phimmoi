@@ -67,7 +67,7 @@ useForm({
 });
 
 const form = reactive({
-  movie_id: "",
+  movie_slug: "",
   name: "",
   slug: "",
   link_embed: "",
@@ -101,7 +101,7 @@ onMounted(async () => {
   try {
     const movieResponse = await movieService.find(slug);
 
-    form.movie_id = movieResponse.data.id;
+    form.movie_slug = movieResponse.data.slug;
 
     if (id) {
       const response = await episodeService.find(id);

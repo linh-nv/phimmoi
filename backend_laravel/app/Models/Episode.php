@@ -13,6 +13,6 @@ class Episode extends Model
         'name',
         'slug',
         'link_embed',
-        'movie_id',
+        'movie_slug',
     ];
 }

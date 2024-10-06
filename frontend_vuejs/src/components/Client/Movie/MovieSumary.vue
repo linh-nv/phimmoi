@@ -115,6 +115,7 @@
 </template>
 <script setup>
 import { clientService } from "@/services/Client";
+import { clientCookieService } from "@/services/Client/clientCookieService";
 import { ref, watch } from "vue";
 
 const props = defineProps({
@@ -133,23 +134,30 @@ const createView = async () => {
 };
 const emit = defineEmits(["showEpisodeInfo"]);
 const handleWatchNow = () => {
-  createView();
+  setTimeout(() => {
+    createView();
+  }, 60000);
   emit("showEpisodeInfo", props.firstEpisode);
 };
 
 const movieFavorite = ref(false);
 const addFavorite = async () => {
-  const response = await clientService.createFavorite({
-    movie_id: props.movie.id,
-  });
+  if (refreshToken) {
+    const response = await clientService.createFavorite({
+      movie_id: props.movie.id,
+    });
 
-  movieFavorite.value = response.data ? true : false;
+    movieFavorite.value = response.data ? true : false;
+  } else {
+    alert("Xin vui lòng đăng nhập!!");
+  }
 };
+const refreshToken = clientCookieService.getRefreshToken();
 
 watch(
   () => props.movie.id,
   async (newId) => {
-    if (newId) {
+    if (newId && refreshToken) {
       const response = await clientService.checkExistFavorite(newId);
       movieFavorite.value = response.data;
     }
