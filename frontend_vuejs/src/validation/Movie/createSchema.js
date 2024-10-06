@@ -9,14 +9,14 @@ export const createSchema = yup.object({
   status: yup.number().oneOf([0, 1, 2]).required("Status is required"),
   poster: yup.mixed().required("Poster is required"),
   thumb: yup.mixed().required("Thumb is required"),
-  trailer_url: yup.string().max(255).nullable(true),
-  time: yup.string().max(255).nullable(true),
-  episode_current: yup.string().max(255).nullable(true),
-  episode_total: yup.number().nullable(true),
-  quality: yup.number().oneOf([1, 2, 3]).nullable(true),
-  lang: yup.string().max(255).nullable(true),
-  notify: yup.string().max(255).nullable(true),
-  showtimes: yup.string().max(255).nullable(true),
+  trailer_url: yup.string().max(255),
+  time: yup.string().max(255),
+  episode_current: yup.string().max(255),
+  episode_total: yup.number(),
+  quality: yup.number().oneOf([1, 2, 3]),
+  lang: yup.string().max(255),
+  notify: yup.string().max(255),
+  showtimes: yup.string().max(255),
   year: yup
     .number()
     .min(1900)
@@ -30,7 +30,7 @@ export const createSchema = yup.object({
     .array()
     .of(yup.string().max(255))
     .min(1, "At least one director is required"),
-  genre_ids: yup.array().of(yup.number().integer().min(1)).nullable(true),
+  genre_ids: yup.array().of(yup.number().integer().min(1)),
   country_id: yup.number().required(),
   category_id: yup.number().required(),
 });
