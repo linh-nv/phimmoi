@@ -1,6 +1,6 @@
 import axios from "axios";
 import { clientCookieService } from "@/services/Client/clientCookieService";
-import { authService } from "@/services/authService";
+import { clientAuthService } from "@/services/Client/clientAuthService";
 import { API_BASE_URL } from "@/utils/apisDomain";
 import { useLoadingStore } from "@/stores/loadingStore";
 import { useClientStore } from "@/stores/clientStore";
@@ -38,12 +38,11 @@ clientAxiosInstance.interceptors.request.use(
     const accessTokenExpires = clientCookieService.getAccessTokenExpires();
     const now = new Date().getTime();
 
-    // Kiểm tra nếu access token đã hết hạn
     if (accessTokenExpires && now > accessTokenExpires) {
       if (!isRefreshing) {
         isRefreshing = true;
         try {
-          const response = await authService.refreshToken();
+          const response = await clientAuthService.refreshToken();
           accessToken = response.access_token;
           clientCookieService.setToken(response);
           processQueue(null, accessToken);
@@ -53,7 +52,7 @@ clientAxiosInstance.interceptors.request.use(
           clientStore.clearClient();
 
           window.location.href = "/";
-          alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!!");
+          alert("Đã xảy ra lỗi, xin vui lòng thử lại!");
           return Promise.reject(error);
         } finally {
           isRefreshing = false;
@@ -105,7 +104,7 @@ clientAxiosInstance.interceptors.response.use(
       error.config._retry = true;
 
       try {
-        const response = await authService.refreshToken();
+        const response = await clientAuthService.refreshToken();
         clientCookieService.setToken(response);
 
         error.config.headers.Authorization = `Bearer ${response.access_token}`;
@@ -116,7 +115,7 @@ clientAxiosInstance.interceptors.response.use(
         clientStore.clearClient();
 
         window.location.href = "/";
-        alert("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!!");
+        alert("Đã xảy ra lỗi, xin vui lòng thử lại!");
 
         return Promise.reject(refreshError);
       } finally {
