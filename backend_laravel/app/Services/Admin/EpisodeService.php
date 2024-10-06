@@ -42,7 +42,7 @@ class EpisodeService
     {
 
         return $this->episodeRepository->create([
-            'movie_id' => $data['movie_id'],
+            'movie_slug' => $data['movie_slug'],
             'name' => $data['name'],
             'slug' => convert_to_slug($data['slug']),
             'link_embed' => $data['link_embed'],
@@ -60,7 +60,7 @@ class EpisodeService
     {
 
         return $this->episodeRepository->update($episode, [
-            'movie_id' => $data['movie_id'],
+            'movie_slug' => $data['movie_slug'],
             'name' => $data['name'],
             'slug' => convert_to_slug($data['slug']),
             'link_embed' => $data['link_embed'],

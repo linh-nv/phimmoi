@@ -23,7 +23,7 @@ class EpisodeController extends Controller
     }
 
     /**
-     * Display a listing of episodes by movie_id.
+     * Display a listing of episodes by movie_slug.
      */
     public function getByMovie(string $movieSlug): JsonResponse
     {
