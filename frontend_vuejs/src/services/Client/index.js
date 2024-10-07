@@ -77,6 +77,6 @@ export const clientService = {
     return apiClientService.find(endpoint + CHECK_FAVORITE_ENDPONIT, id);
   },
   createView(id) {
-    return apiClientService.find(endpoint + CREATE_VIEW_ENDPONIT, id);
+    return apiClientService.getByUrl(`${endpoint + CREATE_VIEW_ENDPONIT}/ ${id}`);
   },
 };
