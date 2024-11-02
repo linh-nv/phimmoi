@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admin_refresh_tokens', function (Blueprint $table) {
             $table->id();
-            $table->text('token')->unique();
+            $table->string('token')->unique()->nullable();
             $table->foreignId('user_id')->constrained('admins')->onDelete('cascade');
             $table->bigInteger('expires_at');
             $table->timestamps();
