@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-# Database MySQL cho Laravel
+  # Database MySQL cho Laravel
   db:
     image: mysql:8.0
     container_name: mysql_db
@@ -26,6 +26,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./backend_laravel:/var/www/html
+      - ./php.ini:/usr/local/etc/php/php.ini
     ports:
       - "8000:80"
     depends_on:
@@ -45,6 +46,7 @@ services:
       - ./frontend_vuejs:/app
     command: npm run dev
 
+  # Container cho phpMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -56,5 +58,8 @@ services:
       - "8081:80"
     depends_on:
       - db
+    volumes:
+      - ./php.ini:/usr/local/etc/php/conf.d/php.ini
+
 volumes:
   db_data:
