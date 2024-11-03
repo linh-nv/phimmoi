@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./backend_laravel:/var/www/html
-      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./backend_laravel/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
     ports:
       - "8000:80"
     depends_on:
@@ -59,7 +59,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./backend_laravel/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
 
 volumes:
   db_data:
