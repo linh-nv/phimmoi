@@ -1,15 +1,16 @@
 # Sử dụng image NodeJS
 FROM node:18
 
-# Tạo thư mục làm việc
 WORKDIR /app
 
-# Copy package.json và cài đặt dependencies
 COPY package*.json ./
-RUN npm install
 
-# Copy mã nguồn Vue vào container
+RUN npm install && npm install -g serve
+
 COPY . .
 
-# Mở cổng 8080 cho frontend Vue
+RUN npm run build
+
 EXPOSE 8080
+
+CMD ["serve", "-s", "dist", "-l", "8080"]

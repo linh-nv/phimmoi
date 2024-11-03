@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-debugbar": "^3.13",
         "guzzlehttp/promises": "^2.0",
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.16",
