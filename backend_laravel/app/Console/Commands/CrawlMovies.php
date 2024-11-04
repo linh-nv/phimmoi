@@ -93,15 +93,15 @@ class CrawlMovies extends Command
 
     private function processMovies(array $movies, array &$moviesData, array &$episodesData, int &$processedCount, int $totalItems): void
     {
+        $batchSize = 100; // Kích thước của mỗi lô dữ liệu
+
         foreach ($movies as $movieData) {
             $details = $this->getMovieDetails($movieData['slug']);
             if (!is_array($details) || !isset($details['movie']['episode_current']) || strtolower($details['movie']['episode_current']) === 'trailer') {
-
                 continue;
             }
 
             if (!$movieRecord = $this->prepareMovieRecord($details['movie'])) {
-
                 continue;
             }
             $moviesData[] = $movieRecord;
@@ -112,6 +112,17 @@ class CrawlMovies extends Command
             $processedCount++;
             $progress = round(($processedCount / $totalItems) * 100, 2);
             $this->info("Progress: {$progress}% ({$processedCount} / {$totalItems} movies processed)");
+
+            // Kiểm tra nếu số lượng phim đã đạt đến kích thước lô
+            if ($processedCount % $batchSize === 0) {
+                // Lưu dữ liệu phim và tập phim hiện tại vào cơ sở dữ liệu
+                $this->saveMovies($moviesData);
+                $this->saveEpisodes($episodesData);
+
+                // Xóa dữ liệu để chuẩn bị cho lô tiếp theo
+                $moviesData = [];
+                $episodesData = [];
+            }
         }
     }
 
