@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://27.76.233.231/PhimMoi/phimmoi/backend_laravel/public/api";
+export const API_BASE_URL = "http://localhost:8000/api";
 export const AUTH_URL = API_BASE_URL + "/admin";
 export const MOVIE_ENDPONIT = "/movie";
 export const CATEGORY_ENDPONIT = "/category";
@@ -13,7 +13,7 @@ export const ENUM_MOVIE_STATUS_ENDPONIT = "/enums/movie-status";
 export const ENUM_MOVIE_TYPE_ENDPONIT = "/enums/movie-type";
 
 // Client url
-export const CLIENT_API_BASE_URL = "http://27.76.233.231/PhimMoi/phimmoi/backend_laravel/public/api/client";
+export const CLIENT_API_BASE_URL = "http://localhost:8000/api/client";
 export const HEADER_ENDPONIT = "/header";
 export const SEARCH_ENDPONIT = "/search";
 export const FILTER_ENDPOINT = "/filter";

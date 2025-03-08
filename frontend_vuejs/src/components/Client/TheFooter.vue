@@ -82,38 +82,6 @@
                 >Nguyễn Văn Linh</a
               >
             </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Nguyễn Thanh Thủy"
-                href="https://www.facebook.com/profile.php?id=100037167123537"
-                >Nguyễn Thanh Thủy</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Tô Văn Quân "
-                href="https://www.facebook.com/tovan.quan.9847"
-                >Tô Văn Quân
-              </a>
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Vũ Thế Sơn"
-                href="https://www.facebook.com/son.the.714"
-                >Vũ Thế Sơn</a
-              >
-            </li>
-            <li>
-              <a
-                class="text-sm text-gray-400 hover:text-blue-600"
-                title="Nguyễn Đăng Thành"
-                href="https://www.facebook.com/profile.php?id=100065308574071"
-                >Nguyễn Đăng Thành</a
-              >
-            </li>
           </ul>
         </div>
       </div>

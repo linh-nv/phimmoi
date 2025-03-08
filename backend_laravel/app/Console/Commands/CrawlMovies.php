@@ -16,6 +16,7 @@ use App\Util\CategoryDataTemplate;
 use App\Util\Constants;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Date;
 
 class CrawlMovies extends Command
 {
@@ -50,7 +51,7 @@ class CrawlMovies extends Command
         $episodesData = [];
 
         // Crawl data from each page
-        for ($page = 1; $page <= $totalPages; $page++) {
+        for ($page = 1; $page <= 100; $page++) {
             $pageData = $this->fetchDataWithRetries($apiUrl . $page);
             if (!$pageData || empty($pageData['items'])) {
                 continue;
@@ -217,9 +218,8 @@ class CrawlMovies extends Command
                 'movie_slug' => $movieSlug,
                 'name' => $episode['name'],
                 'slug' => $episode['slug'],
-                'link_embed' => $episode['link_embed'],
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => Date::now(),
+                'updated_at' =>  Date::now(),
             ];
         }
 
