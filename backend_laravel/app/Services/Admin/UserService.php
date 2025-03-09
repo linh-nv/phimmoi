@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Services\VerificationService;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -94,14 +97,54 @@ class UserService
     }
     public function register(array $data): Model
     {
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $data['name'],
+                'password' => Hash::make($data['password']),
+                'email' => $data['email'],
+                // 'phone' => $data['phone'] ?? null,
+                'created_at' => Carbon::now(),
+            ]);
 
-        return $this->userRepository->create([
-            'name' => $data['name'],
-            'password' => Hash::make($data['password']),
-            'email' => $data['email'],
-            'phone' => $data['phone'] ?? null,
-            'created_at' => Carbon::now(),
-        ]);
+            $apiUrl = 'http://localhost:3001/api/v1/register';
+            $jwtSecret = env('JWT_SECRET');
+
+            if (!$jwtSecret) {
+                throw new \Exception('JWT_SECRET không được cấu hình trong file .env');
+            }
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $jwtSecret,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->post($apiUrl, [
+                'id' => $user->id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+
+            // dd($response);
+
+            if (!$response->successful()) {
+                DB::rollBack();
+
+                throw new \Exception($response->json('message') ?? 'Đăng ký thất bại từ API NestJS', $response->status());
+            }
+
+            DB::commit();
+
+            return $user;
+        } catch (QueryException $e) {
+            DB::rollBack();
+            throw new \Exception('Lỗi cơ sở dữ liệu: ' . $e->getMessage(), 500);
+        } catch (RequestException $e) {
+            DB::rollBack();
+            throw new \Exception('Lỗi kết nối API: ' . $e->getMessage(), 500);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage(), 500);
+        }
     }
 
     public function changePassword(string $newPassword): Model
