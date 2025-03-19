@@ -4,7 +4,7 @@
     :class="{ '-translate-x-full': !isNavOpen, 'translate-x-0': isNavOpen }"
   >
     <div
-      class="nav__wrap flex h-full w-3/4 flex-col gap-2 bg-black px-5 py-2 md:w-fit md:bg-transparent md:my-auto"
+      class="nav__wrap flex h-full w-3/4 flex-col gap-2 bg-black px-5 py-2 md:my-auto md:w-fit md:bg-transparent"
     >
       <div class="nav__header flex justify-end md:hidden">
         <!-- Close Button -->
@@ -23,7 +23,10 @@
         </ul>
 
         <!-- Nav body -->
-        <ul id="main-menu" class="flex flex-col text-[#ffffffcc] md:flex-row md:gap-5">
+        <ul
+          id="main-menu"
+          class="flex flex-col text-[#ffffffcc] md:flex-row md:gap-5"
+        >
           <!-- Category -->
           <NavItem
             title="Thể loại"
@@ -53,6 +56,13 @@
             v-model:activeSection="activeSection"
             route-name="quocgia"
           />
+
+          <a
+            :href="`http://localhost:5173/home`"
+            class="flex items-center gap-2"
+          >
+            Mạng xã hội
+          </a>
         </ul>
       </div>
     </div>
@@ -63,6 +73,7 @@
 import { ref, onMounted } from "vue";
 import NavItem from "./NavItem.vue";
 import { clientService } from "@/services/Client";
+import { clientCookieService } from "@/services/Client/clientCookieService";
 
 const props = defineProps({
   isNavOpen: {
@@ -71,11 +82,12 @@ const props = defineProps({
   },
 });
 
-const activeSection = ref(null);
+const activeSection = ref(null);``
 
 const categories = ref({});
 const genres = ref({});
 const countries = ref({});
+const refreshToken = clientCookieService.getRefreshToken();
 
 onMounted(async () => {
   const response = await clientService.getHeader();

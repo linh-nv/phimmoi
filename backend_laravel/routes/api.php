@@ -83,6 +83,7 @@ Route::post('login', [UserController::class, 'login'])->name('login');
 Route::post('refresh', [UserController::class, 'refresh']);
 
 Route::group(['middleware' => 'jwt.verify'], function () {
+    Route::get('redirect', [UserController::class, 'redirect']);
     Route::post('logout', [UserController::class, 'logout']);
     Route::post('change-password', [UserController::class, 'changePassWord']);
     Route::get('me', [UserController::class, 'userProfile']);

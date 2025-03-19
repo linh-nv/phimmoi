@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -98,5 +99,18 @@ class UserController extends Controller
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
         }
+    }
+
+    public function redirect(Request $request)
+    {
+        $refresh = $this->userService->refresh($request->refreshToken);
+        $token = $refresh['data']['refresh_token'];
+
+        $reactAppUrl = env(key: 'REACT_APP_URL', default: 'http://localhost:5173');
+        $redirectUrl = $reactAppUrl . '/auth/callback';
+
+        Http::get($redirectUrl, [
+            'token' => $token,
+        ]);
     }
 }

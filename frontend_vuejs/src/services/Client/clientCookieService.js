@@ -9,6 +9,7 @@ export const clientCookieService = {
       refresh_expires_in
     } = tokenData || {};
 
+    console.log(tokenData);
     if (!access_token || !refresh_token) {
       console.error("Access token or refresh token is missing.");
       return;
@@ -21,6 +22,7 @@ export const clientCookieService = {
     Cookies.set("client_refresh_token", refresh_token, { expires: refreshTokenExpires });
     Cookies.set("client_access_token_expires", accessTokenExpires.getTime());
     Cookies.set("client_refresh_token_expires", refreshTokenExpires.getTime());
+    Cookies.set("client_id", tokenData.data.id);
   },  
 
   getAccessToken() {
@@ -44,5 +46,6 @@ export const clientCookieService = {
     Cookies.remove("client_refresh_token");
     Cookies.remove("client_access_token_expires");
     Cookies.remove("client_refresh_token_expires");
+    Cookies.remove("client_id");
   },
 };

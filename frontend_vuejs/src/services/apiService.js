@@ -53,4 +53,7 @@ export const apiService = {
   getByUrl(url) {
     return handleApiCall(() => axios.get(url));
   },
+  redirect() {
+    return handleApiCall(() => axiosInstance.get("/redirect"));
+  },
 };
