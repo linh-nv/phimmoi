@@ -218,6 +218,7 @@ class CrawlMovies extends Command
                 'movie_slug' => $movieSlug,
                 'name' => $episode['name'],
                 'slug' => $episode['slug'],
+                'link_embed' => $episode['link_embed'],
                 'created_at' => Date::now(),
                 'updated_at' =>  Date::now(),
             ];
