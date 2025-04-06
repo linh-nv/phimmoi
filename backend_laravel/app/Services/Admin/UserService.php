@@ -17,6 +17,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -124,8 +125,11 @@ class UserService
                 'password' => Hash::make($data['password']),
             ]);
 
-            // dd($response);
-
+            if ($response->failed()) {
+                DB::rollBack();
+                Log::error('Đăng ký thất bại từ API NestJS: ' . $response->body());
+                throw new \Exception('Đăng ký thất bại từ API NestJS', $response->status());
+            }
             if (!$response->successful()) {
                 DB::rollBack();
 
@@ -137,12 +141,15 @@ class UserService
             return $user;
         } catch (QueryException $e) {
             DB::rollBack();
+            Log::error('Lỗi cơ sở dữ liệu: ' . $e->getMessage());
             throw new \Exception('Lỗi cơ sở dữ liệu: ' . $e->getMessage(), 500);
         } catch (RequestException $e) {
             DB::rollBack();
+            Log::error('Lỗi kết nối API: ' . $e->getMessage());
             throw new \Exception('Lỗi kết nối API: ' . $e->getMessage(), 500);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Lỗi không xác định: ' . $e->getMessage());
             throw new \Exception($e->getMessage(), 500);
         }
     }

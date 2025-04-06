@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             // GenreSeeder::class,
             // CountrySeeder::class,
             AdminSeeder::class,
-            UserSeeder::class,
+            // UserSeeder::class,
             // AddressSeeder::class,
             // MovieSeeder::class,
             // EpisodeSeeder::class,
