@@ -108,33 +108,33 @@ class UserService
                 'created_at' => Carbon::now(),
             ]);
 
-            $apiUrl = 'http://localhost:3001/api/v1/register';
-            $jwtSecret = env('JWT_SECRET');
+            // $apiUrl = 'http://localhost:3001/api/v1/register';
+            // $jwtSecret = env('JWT_SECRET');
 
-            if (!$jwtSecret) {
-                throw new \Exception('JWT_SECRET không được cấu hình trong file .env');
-            }
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $jwtSecret,
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])->post($apiUrl, [
-                'id' => $user->id,
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]);
+            // if (!$jwtSecret) {
+            //     throw new \Exception('JWT_SECRET không được cấu hình trong file .env');
+            // }
+            // $response = Http::withHeaders([
+            //     'Authorization' => 'Bearer ' . $jwtSecret,
+            //     'Content-Type' => 'application/json',
+            //     'Accept' => 'application/json',
+            // ])->post($apiUrl, [
+            //     'id' => $user->id,
+            //     'name' => $data['name'],
+            //     'email' => $data['email'],
+            //     'password' => Hash::make($data['password']),
+            // ]);
 
-            if ($response->failed()) {
-                DB::rollBack();
-                Log::error('Đăng ký thất bại từ API NestJS: ' . $response->body());
-                throw new \Exception('Đăng ký thất bại từ API NestJS', $response->status());
-            }
-            if (!$response->successful()) {
-                DB::rollBack();
+            // if ($response->failed()) {
+            //     DB::rollBack();
+            //     Log::error('Đăng ký thất bại từ API NestJS: ' . $response->body());
+            //     throw new \Exception('Đăng ký thất bại từ API NestJS', $response->status());
+            // }
+            // if (!$response->successful()) {
+            //     DB::rollBack();
 
-                throw new \Exception($response->json('message') ?? 'Đăng ký thất bại từ API NestJS', $response->status());
-            }
+            //     throw new \Exception($response->json('message') ?? 'Đăng ký thất bại từ API NestJS', $response->status());
+            // }
 
             DB::commit();
 
