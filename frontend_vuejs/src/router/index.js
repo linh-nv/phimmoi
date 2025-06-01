@@ -250,6 +250,12 @@ const router = createRouter({
           component: () => import("@/views/Client/MoviePage.vue"),
           meta: { title: "Xem phim" },
         },
+        {
+          path: "xem-chung",
+          name: "xemchung",
+          component: () => import("@/views/Client/PremiereRoom.vue"),
+          meta: { title: "Xem chung" },
+        },
       ],
     },
   ],

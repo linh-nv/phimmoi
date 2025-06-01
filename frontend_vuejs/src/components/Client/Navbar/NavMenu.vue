@@ -63,6 +63,14 @@
           >
             Mạng xã hội
           </a> -->
+
+          <NavItem
+            title="Xem chung"
+            icon-class="fa-solid fa-globe w-9"
+            section-key="premiere_rooms"
+            v-model:activeSection="activeSection"
+            route-name="xemchung"
+          />
         </ul>
       </div>
     </div>
@@ -82,7 +90,7 @@ const props = defineProps({
   },
 });
 
-const activeSection = ref(null);``
+const activeSection = ref(null);
 
 const categories = ref({});
 const genres = ref({});

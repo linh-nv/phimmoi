@@ -7,17 +7,30 @@
         isActive ? 'active' : '',
       ]"
     >
-      <span class="flex items-center">
+      <span v-if="Object.keys(items).length > 0" class="flex items-center">
         <i :class="iconClass" class="md:hidden"></i>
         <p>{{ title }}</p>
       </span>
-      <button class="more">
+      
+      <router-link
+        v-else
+        class="flex items-center"
+        :to="{
+          name: 'xemchung',
+          query: { title: 'Xem chung' },
+        }"
+      >
+        <i :class="iconClass" class="md:hidden"></i>
+        <p>{{ title }}</p>
+      </router-link>
+
+      <button class="more" v-if="Object.keys(items).length > 0">
         <i
           :class="isActive ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'"
         ></i>
       </button>
     </div>
-    <transition name="slide">
+    <transition name="slide" v-if="Object.keys(items).length > 0">
       <div
         v-if="isActive"
         class="ml-9 mt-2 flex max-h-[50vh] flex-col gap-2 overflow-y-auto text-sm md:absolute md:left-0 md:mx-0 md:grid md:h-fit md:w-max md:max-w-[40vw] md:grid-cols-3 md:items-center md:justify-center md:gap-5 md:overflow-x-hidden md:rounded-lg md:bg-black md:p-5 md:shadow-lg lg:max-w-[50vw] xl:max-w-[60vw] xl:grid-cols-4"
@@ -45,7 +58,8 @@ import { computed } from "vue";
 const props = defineProps({
   items: {
     type: Object,
-    required: true,
+    // required: true,
+    default: () => ({}),
   },
   title: {
     type: String,
