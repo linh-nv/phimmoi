@@ -41,10 +41,10 @@
       </section>
       <section class="form-bottom">
         <button class="login-btn" type="submit">Sign In</button>
-        <div class="create-account">
+        <!-- <div class="create-account">
           <span>Don’t have an account?</span>
           <a href="#register">Create Account</a>
-        </div>
+        </div> -->
       </section>
     </Form>
   </div>
@@ -86,7 +86,7 @@ const onSubmit = async () => {
     const redirectPath = route.query.redirect || router.resolve({ name: "home" });
     router.push(redirectPath);
   } catch (error) {
-    alert("An unexpected error occurred. Please try again.");
+    alert("Đăng nhập thất bại vui lòng kiểm tra lại thông tin đăng nhập của bạn.");
   }
 };
 </script>

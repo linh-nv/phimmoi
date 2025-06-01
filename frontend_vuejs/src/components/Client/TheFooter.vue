@@ -71,7 +71,7 @@
             </li>
           </ul>
         </div>
-        <div class="space-y-3">
+        <!-- <div class="space-y-3">
           <span class="uppercase tracking-wide text-gray-50">Thành viên</span>
           <ul class="space-y-1">
             <li>
@@ -83,7 +83,7 @@
               >
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </footer>

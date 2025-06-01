@@ -43,14 +43,22 @@
     </div>
   </section>
 
-  <section class="mb-4 rounded-lg bg-white p-4 shadow">
+  <section class="mb-4 w-full rounded-lg bg-white p-4 shadow">
     <!-- Sales Details chart -->
     <h2 class="mb-4">Views Genres Of The Month</h2>
-    <BarChart :genre="data.views_by_genre" />
+    <div class="grid grid-cols-2 gap-4 h-full w-full">
+      <div class="col-span-1">
+        <BarChart :genre="data.views_by_genre" />
+      </div>
+      <div class="col-span-1 h-[90%]">
+        <GenreCharts :genre="data.views_by_genre" />
+      </div>
+    </div>
   </section>
 </template>
 <script setup>
 import BarChart from "@/components/Admin/Dashboard/BarChart.vue";
+import GenreCharts from "@/components/Admin/Dashboard/GenreCharts.vue";
 import { dashboardService } from "@/services/Admin/Dashboard";
 import { onMounted, reactive } from "vue";
 

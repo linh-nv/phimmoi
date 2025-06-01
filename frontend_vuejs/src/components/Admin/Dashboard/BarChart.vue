@@ -1,5 +1,10 @@
 <template>
-  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Bar
+    id="my-chart-id"
+    :options="chartOptions"
+    :data="chartData"
+    class="h-full"
+  />
 </template>
 
 <script setup>

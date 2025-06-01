@@ -54,6 +54,7 @@
                 id="phone"
                 type="phone"
                 class="w-full bg-transparent text-white focus:outline-none"
+                placeholder="Nhập số điện thoại (tùy chọn)"
               />
               <ErrorMessage
                 name="phone"
@@ -69,6 +70,7 @@
                 id="password_register"
                 type="password"
                 class="w-full bg-transparent text-white focus:outline-none"
+                placeholder="Nhập mật khẩu"
               />
               <ErrorMessage
                 name="password"
@@ -84,6 +86,7 @@
                 id="password_confirmation"
                 type="password"
                 class="w-full bg-transparent text-white focus:outline-none"
+                placeholder="Nhập lại mật khẩu"
               />
               <ErrorMessage
                 name="password_confirmation"
