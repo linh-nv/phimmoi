@@ -87,7 +87,7 @@
     </div>
   </div>
 
-	<div class="grid">
+	<div class="grid mt-10">
 		<h2>Công chiếu</h2>
 	</div>
 </template>
@@ -120,10 +120,8 @@ const showModal = ref(false);
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.2;
-  filter: brightness(0.9);
+  filter: brightness(1);
 }
-
-
 
 .btn-light {
   background-color: #fff !important;

@@ -256,6 +256,12 @@ const router = createRouter({
           component: () => import("@/views/Client/PremiereRoom.vue"),
           meta: { title: "Xem chung" },
         },
+        {
+          path: "xem-chung/:slug",
+          name: "xemchung-detail",
+          component: () => import("@/views/Client/CreatePremiereRoom.vue"),
+          meta: { title: "Tạo phòng xem chung" },
+        },
       ],
     },
   ],

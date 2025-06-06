@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EnumController;
+use App\Http\Controllers\Admin\PremiereRoomController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\Client\CountryController as ClientCountryController;
 use App\Http\Controllers\Client\GenreController as ClientGenreController;
@@ -114,5 +115,9 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
         Route::get('/favorite/exist/{movieId}', [MovieUserController::class, 'exist']);
         Route::post('comment', [MovieCommentController::class, 'create']);
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
+
+        Route::get('/premiere-room', [PremiereRoomController::class, 'index']);
+        Route::post('/premiere-room', [PremiereRoomController::class, 'store']);
+        Route::delete('/premiere-room/{id}', [PremiereRoomController::class, 'delete']);
     });
 });

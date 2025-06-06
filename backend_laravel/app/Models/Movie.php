@@ -79,8 +79,8 @@ class Movie extends Model
 
     public function episodes(): HasMany
     {
-
-        return $this->hasMany(Episode::class, foreignKey: 'movie_slug', localKey: 'slug');
+        return $this->hasMany(Episode::class, foreignKey: 'movie_slug', localKey: 'slug')
+            ->orderByRaw("CAST(REGEXP_SUBSTR(name, '[0-9]+') AS UNSIGNED)");
     }
 
     public function comments(): HasMany

@@ -107,6 +107,17 @@
                 "
               ></i>
             </button>
+            <router-link
+              :to="{
+                name: 'xemchung-detail',
+                params: { slug: movie.slug },
+                query: { title: 'Công chiếu: ' + movie.name },
+              }"
+              class="mt-5 flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded bg-[#FFD875] px-5 py-2 font-medium text-black hover:opacity-90"
+            >
+              <icon> 🎬 </icon>
+              Xem chung
+            </router-link>
           </div>
         </div>
       </div>
