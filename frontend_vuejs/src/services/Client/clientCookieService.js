@@ -9,7 +9,6 @@ export const clientCookieService = {
       refresh_expires_in
     } = tokenData || {};
 
-    console.log(tokenData);
     if (!access_token || !refresh_token) {
       console.error("Access token or refresh token is missing.");
       return;

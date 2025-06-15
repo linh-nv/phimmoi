@@ -8,6 +8,7 @@ use App\Repositories\PremiereRoom\PremiereRoomRepository;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ResponseHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class PremiereRoomController extends Controller
@@ -45,6 +46,18 @@ class PremiereRoomController extends Controller
             $data = $this->premiereRoomRepository->create($request->all());
 
             return $this->responseSuccess(Response::HTTP_CREATED, $data);
+        } catch (\Exception $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    public function show(PremiereRoom $premiereRoom): JsonResponse
+    {
+        try {
+            $premiereRoom->load(['movie', 'user', 'episode']);
+
+            return $this->responseSuccess(Response::HTTP_OK, $premiereRoom);
         } catch (\Exception $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());

@@ -264,6 +264,12 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/room/:code",
+      name: "room-detail",
+      component: () => import("@/views/Client/MovieRoom.vue"),
+      meta: { title: "Xem chung" },
+    },
   ],
 });
 

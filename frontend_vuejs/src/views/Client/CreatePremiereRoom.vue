@@ -9,7 +9,7 @@
           <img
             :src="movie.poster_url || movie.thumb_url"
             :alt="movie.name"
-            class="h-[500px] w-full object-cover rounded-lg"
+            class="h-[500px] w-full rounded-lg object-cover"
             @error="handleImageError"
           />
 
@@ -52,6 +52,7 @@
             <!-- Chọn tập -->
             <div class="mt-4">
               <select
+                v-model="roomData.episode_id"
                 class="w-full rounded border border-white bg-transparent px-4 py-2 text-sm text-white"
               >
                 <option :value="null" disabled class="bg-[#111]">
@@ -59,8 +60,8 @@
                 </option>
                 <option
                   v-for="(ep, index) in movie.episodes"
-                  :key="ep.slug"
-                  :value="ep"
+                  :key="ep.id"
+                  :value="ep.id"
                   class="bg-[#111]"
                 >
                   {{ ep.name || "Tập " + (index + 1) }}
@@ -77,7 +78,7 @@
         <div class="form-group">
           <label class="form-label">1. Tên phòng</label>
           <input
-            v-model="roomData.name"
+            v-model="roomData.title"
             type="text"
             class="form-input"
             :placeholder="`Cùng xem ${movie.name} nhé`"
@@ -129,6 +130,10 @@
 import { clientService } from "@/services/Client";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useClientStore } from "@/stores/clientStore";
+
+const clientStore = useClientStore();
+const user = clientStore.getClient ?? null;
 
 const router = useRouter();
 const route = useRoute();
@@ -147,7 +152,8 @@ const fetchMovies = async (slug) => {
   genres.value = response.data.genres;
   country.value = response.data.country;
   episodes.value = response.data.episodes;
-  firstEpisode.value = episodes.value[0];
+
+  roomData.value.episode_id = episodes.value[0].id || null;
 };
 
 onMounted(() => {
@@ -164,30 +170,39 @@ watch(route, () => {
 });
 
 // Reactive form data
-const roomData = ref({
-  name: "",
-  startMode: "manual", // 'auto' or 'manual'
-  isPrivate: false,
-});
+const roomData = ref({});
 
 // Computed property for room name placeholder
 const roomNamePlaceholder = computed(() => {
-  return movie ? `Cùng xem ${movie.name} nhé` : null;
+  return movie ? `Cùng xem ${movie.value.name} nhé` : null;
 });
 
 // Methods for handling form actions
-const createRoom = () => {
+const createRoom = async () => {
+  if (!movie.value && user.id === null) {
+    alert("Bạn cần đăng nhập để tạo phòng");
+    return;
+  }
+  if (!roomData.value.episode_id) {
+    alert("Vui lòng chọn tập phim muốn chiếu");
+    return;
+  }
+
   const roomConfig = {
-    name: roomData.value.name || roomNamePlaceholder.value,
-    movieId: props.movie.id,
-    autoStart: roomData.value.startMode === "auto",
-    isPrivate: roomData.value.isPrivate,
-    poster: props.movie.poster_url,
+    title: roomData.value.title || roomNamePlaceholder.value,
+    movie_id: movie.value.id,
+    episode_id: roomData.value.episode_id,
+    user_id: user.id,
+    isPublic: !roomData.value.isPrivate,
   };
 
-  console.log("Tạo phòng với cấu hình:", roomConfig);
-  // Emit event to parent component or call API
-  // emit('create-room', roomConfig)
+  try {
+    const res = await clientService.createPremiereRoom(roomConfig);
+
+    router.push({ name: "room-detail", params: { code: res.data.code } });
+  } catch (error) {
+    console.error("❌ Lỗi khi tạo phòng:", error);
+  }
 };
 
 const cancelRoom = () => {

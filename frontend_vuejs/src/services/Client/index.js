@@ -77,6 +77,26 @@ export const clientService = {
     return apiClientService.find(endpoint + CHECK_FAVORITE_ENDPONIT, id);
   },
   createView(id) {
-    return apiClientService.getByUrl(`${endpoint + CREATE_VIEW_ENDPONIT}/ ${id}`);
+    return apiClientService.getByUrl(
+      `${endpoint + CREATE_VIEW_ENDPONIT}/ ${id}`,
+    );
+  },
+  createPremiereRoom(data) {
+    return apiClientService.create(endpoint + "/premiere-room", data);
+  },
+  getPremiereRoom(code) {
+    return apiClientService.find(endpoint + "/premiere-room", code);
+  },
+
+  sendChatMessage(data) {
+    return apiClientService.create(endpoint + "/send", data);
+  },
+
+  getChatMessages(roomCode) {
+    return apiClientService.get(endpoint + `/room/${roomCode}/messages`);
+  },
+
+  deleteChatMessage(messageId) {
+    return apiClientService.delete(endpoint + `/messages/${messageId}`);
   },
 };

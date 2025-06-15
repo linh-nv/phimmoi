@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EnumController;
 use App\Http\Controllers\Admin\PremiereRoomController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\Client\ChatController;
 use App\Http\Controllers\Client\CountryController as ClientCountryController;
 use App\Http\Controllers\Client\GenreController as ClientGenreController;
 use App\Http\Controllers\Client\HomeController;
@@ -75,7 +76,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/enums/movie-type', [EnumController::class, 'getMovieType']);
 
     Route::get('/overview', [AnalysisController::class, 'overview']);
-
 });
 
 // Client routes
@@ -109,6 +109,11 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/create-view/{id}', [MovieViewController::class, 'createView']);
     Route::get('/comment/{slug}', [MovieCommentController::class, 'getAll']);
 
+    // Chat routes
+    Route::post('/send', [ChatController::class, 'sendMessage']);
+    Route::get('/room/{roomCode}/messages', [ChatController::class, 'getMessages']);
+    Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage']);
+
     Route::group(['middleware' => 'jwt.verify'], function () {
         Route::get('/favorite/{id}', [MovieUserController::class, 'getAll']);
         Route::post('/favorite', [MovieUserController::class, 'insertOrRemove']);
@@ -117,7 +122,8 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
 
         Route::get('/premiere-room', [PremiereRoomController::class, 'index']);
+        Route::get('/premiere-room/{premiereRoom}', [PremiereRoomController::class, 'show']);
         Route::post('/premiere-room', [PremiereRoomController::class, 'store']);
-        Route::delete('/premiere-room/{id}', [PremiereRoomController::class, 'delete']);
+        Route::delete('/premiere-room/{premiereRoom}', [PremiereRoomController::class, 'delete']);
     });
 });

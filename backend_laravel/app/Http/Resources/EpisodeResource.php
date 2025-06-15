@@ -15,6 +15,7 @@ class EpisodeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'link_embed' => $this->link_embed,
