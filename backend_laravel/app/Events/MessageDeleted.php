@@ -26,7 +26,7 @@ class MessageDeleted implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel("chat-room.{$this->roomCode}"),
+            new Channel("chat-room.{$this->roomCode}"),
         ];
     }
 

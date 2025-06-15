@@ -50,7 +50,7 @@ class ChatService
             $messageModel->load('user');
 
             // Broadcast event
-            broadcast(new MessageSent($messageModel))->toOthers();
+            broadcast(new MessageSent($messageModel));
 
             // Update cache
             $this->updateMessageCache($roomCode, $messageModel);
@@ -112,7 +112,7 @@ class ChatService
                 // Clear cache
                 $this->clearMessageCache($message->premiere_room_code);
 
-                broadcast(new MessageDeleted($message))->toOthers();
+                broadcast(new MessageDeleted($message));
 
                 Log::info('Message deleted successfully', [
                     'message_id' => $messageId,

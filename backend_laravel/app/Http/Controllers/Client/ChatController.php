@@ -27,7 +27,7 @@ class ChatController extends Controller
         try {
             $message = $this->chatService->sendMessage(
                 roomCode: $request->room_code,
-                userId: Auth::id(),
+                userId: (int)Auth::id(),
                 message: $request->message,
                 type: $request->type ?? 'text',
                 metadata: $request->metadata ?? []

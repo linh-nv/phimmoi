@@ -249,11 +249,13 @@ onMounted(() => {
 const shareUrl = computed(() => window.location.href);
 
 const setupChatRealtime = (roomCode) => {
+  console.log("Setting up chat realtime for room:", roomCode);
+
   echo
-    .join(`chat-room.${roomCode}`)
+    .channel(`chat-room.${roomCode}`)
     .listen(".message.sent", (e) => {
       console.log("Tin nhắn mới:", e);
-      
+
       chatMessages.value.push({
         id: e.message.id,
         text: e.message.message,
@@ -264,11 +266,9 @@ const setupChatRealtime = (roomCode) => {
             : "received",
       });
     })
-    .listen(".message.deleted", (e) => {
-      chatMessages.value = chatMessages.value.filter(
-        (msg) => msg.id !== e.messageId,
-      );
-    });
+    .listenForWhisper("debug", (e) => {
+      console.log("🤫 Whisper:", e);
+    })
 };
 
 const fetchMovies = async (slug) => {

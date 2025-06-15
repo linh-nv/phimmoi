@@ -3,6 +3,7 @@ import Pusher from "pusher-js";
 
 // Gán Pusher vào window
 window.Pusher = Pusher;
+window.Pusher.logToConsole = true;
 
 // Cấu hình Echo với các tùy chọn tối ưu
 const echo = new Echo({
