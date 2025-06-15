@@ -109,11 +109,6 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
     Route::get('/create-view/{id}', [MovieViewController::class, 'createView']);
     Route::get('/comment/{slug}', [MovieCommentController::class, 'getAll']);
 
-    // Chat routes
-    Route::post('/send', [ChatController::class, 'sendMessage']);
-    Route::get('/room/{roomCode}/messages', [ChatController::class, 'getMessages']);
-    Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage']);
-
     Route::group(['middleware' => 'jwt.verify'], function () {
         Route::get('/favorite/{id}', [MovieUserController::class, 'getAll']);
         Route::post('/favorite', [MovieUserController::class, 'insertOrRemove']);
@@ -122,8 +117,13 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
 
         Route::get('/premiere-room', [PremiereRoomController::class, 'index']);
-        Route::get('/premiere-room/{premiereRoom}', [PremiereRoomController::class, 'show']);
+        Route::get('/premiere-room/{code}', [PremiereRoomController::class, 'show']);
         Route::post('/premiere-room', [PremiereRoomController::class, 'store']);
-        Route::delete('/premiere-room/{premiereRoom}', [PremiereRoomController::class, 'delete']);
+        Route::delete('/premiere-room/{code}', [PremiereRoomController::class, 'delete']);
+
+        // Chat routes
+        Route::post('/send', [ChatController::class, 'sendMessage']);
+        Route::get('/room/{roomCode}/messages', [ChatController::class, 'getMessages']);
+        Route::delete('/messages/{messageId}', [ChatController::class, 'deleteMessage']);
     });
 });

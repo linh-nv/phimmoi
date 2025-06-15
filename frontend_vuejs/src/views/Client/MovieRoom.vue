@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-black text-white">
+  <div class="h-screen max-h-screen overflow-hidden bg-black text-white">
     <!-- Header -->
     <div
       class="flex items-center justify-between border-b border-gray-700 px-4 py-2"
@@ -27,7 +27,7 @@
       </div>
       <div class="flex items-center space-x-4">
         <button
-          @click="endRoom"
+          @click="endRoom(room.code)"
           class="rounded bg-red-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-red-700"
         >
           Kết thúc
@@ -53,13 +53,13 @@
         <!-- Video Container -->
         <div class="relative aspect-video bg-black">
           <!-- Video Player -->
-          <!-- <iframe
+          <iframe
             :src="room?.episode?.link_embed"
             class="h-full w-full"
             frameborder="0"
             allowfullscreen
             allow="autoplay; encrypted-media"
-          ></iframe> -->
+          ></iframe>
         </div>
 
         <!-- Movie Info -->
@@ -115,46 +115,99 @@
         v-if="showChat"
         class="flex w-1/4 flex-col border-l border-gray-700 bg-gray-900"
       >
-        <!-- Chat Header -->
+        <!-- Chat Header với danh sách người tham gia -->
         <div class="border-b border-gray-700 bg-green-600 p-4">
           <div class="text-sm font-medium text-white">
             Buổi xem chung bắt đầu.
           </div>
           <div class="mt-1 text-xs text-green-100">
-            Chúc các bạn xem phim vui vẻ thông quen.
+            Chúc các bạn xem phim vui vẻ!
+          </div>
+          <!-- Danh sách người tham gia -->
+          <div v-if="activeUsers.length > 0" class="mt-2">
+            <div class="mb-1 text-xs text-green-100">Đang tham gia:</div>
+            <div class="flex flex-wrap gap-1">
+              <span
+                v-for="user in activeUsers"
+                :key="user.id"
+                class="inline-block rounded-full bg-green-700 px-2 py-1 text-xs text-green-100"
+              >
+                {{ user.name }}
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- Chat Messages -->
-        <div class="flex-1 space-y-3 overflow-y-auto p-4">
+        <div class="space-y-3 p-4">
           <div class="text-center text-xs text-gray-400">
-            {{ room.episode?.name || "Phần 1 - Tập 5" }} •
-            {{ room.movie?.name || "Khi Cuộc Đời Cho Bạn Quả Quyết" }}
+            {{ room.episode?.name }} •
+            {{ room.movie?.name }}
           </div>
-
+        </div>
+        <div
+          ref="chatContainer"
+          class="max-h-[68vh] flex-1 space-y-3 overflow-y-scroll p-4"
+        >
           <!-- System Messages -->
           <div class="rounded-lg bg-gray-800 p-3 text-sm">
             <div class="mb-1 font-medium text-yellow-400">Hệ thống</div>
             <div class="text-gray-300">Phòng đã được tạo thành công</div>
           </div>
-        </div>
-        <div class="flex-1 space-y-3 overflow-y-auto p-4">
+
+          <!-- Chat Messages -->
           <div
             v-for="(msg, index) in chatMessages"
             :key="index"
-            class="text-sm"
+            class="flex"
+            :class="msg.isOwnMessage ? 'justify-end' : 'justify-start'"
           >
             <div
-              :class="[
-                'rounded px-3 py-2',
-                msg.type === 'sent'
-                  ? 'ml-auto max-w-[80%] self-end bg-blue-700 text-white'
-                  : 'max-w-[80%] bg-gray-700 text-white',
-              ]"
+              class="group relative max-w-[80%]"
+              :class="msg.isOwnMessage ? 'mr-2' : 'ml-2'"
             >
-              <div>{{ msg.text }}</div>
-              <div class="mt-1 text-right text-xs text-gray-300">
-                {{ msg.time }}
+              <!-- Tên người gửi (chỉ hiển thị với tin nhắn của người khác) -->
+              <div
+                v-if="!msg.isOwnMessage && msg.userName"
+                class="mb-1 px-3 text-xs text-gray-400"
+              >
+                {{ msg.userName }}
+              </div>
+
+              <div
+                class="relative rounded-lg px-3 py-2 text-sm"
+                :class="[
+                  msg.isOwnMessage
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-700 text-white',
+                ]"
+              >
+                <div>{{ msg.text }}</div>
+                <div
+                  class="mt-1 flex items-center justify-between text-xs opacity-70"
+                  :class="msg.isOwnMessage ? 'text-blue-100' : 'text-gray-300'"
+                >
+                  <span>{{ msg.time }}</span>
+                  <!-- Nút xóa tin nhắn (chỉ hiển thị với tin nhắn của mình) -->
+                  <button
+                    v-if="msg.isOwnMessage"
+                    @click="deleteMessage(msg.id)"
+                    class="ml-2 opacity-0 transition-opacity duration-200 hover:text-red-300 group-hover:opacity-100"
+                    title="Xóa tin nhắn"
+                  >
+                    <svg
+                      class="h-3 w-3"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9zM4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v1H4V5zM3 8a1 1 0 011-1h12a1 1 0 110 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V9a1 1 0 01-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -172,7 +225,8 @@
             />
             <button
               @click="sendMessage"
-              class="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+              :disabled="!chatMessage.trim()"
+              class="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-600"
             >
               Gửi
             </button>
@@ -217,23 +271,64 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div
+      v-if="showDeleteModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      @click.self="showDeleteModal = false"
+    >
+      <div class="mx-4 w-96 max-w-sm rounded-lg bg-white p-6">
+        <h3 class="mb-4 text-lg font-medium text-gray-900">
+          Xác nhận xóa tin nhắn
+        </h3>
+        <p class="mb-6 text-sm text-gray-600">
+          Bạn có chắc chắn muốn xóa tin nhắn này không? Hành động này không thể
+          hoàn tác.
+        </p>
+        <div class="flex space-x-3">
+          <button
+            @click="confirmDeleteMessage"
+            class="flex-1 rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+          >
+            Xóa
+          </button>
+          <button
+            @click="showDeleteModal = false"
+            class="flex-1 rounded-md bg-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-400"
+          >
+            Hủy
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, nextTick } from "vue";
+import { ref, watch, computed, onMounted, nextTick, onUpdated } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 import { clientService } from "@/services/Client";
+
+import { useClientStore } from "@/stores/clientStore";
 import echo from "@/echo.js";
 
+const useClient = useClientStore();
 const route = useRoute();
 const router = useRouter();
 
+const getClient = computed(() => useClient.getClient || {});
+
 const room = ref({});
 const showChat = ref(true);
+const chatContainer = ref(null);
 const chatMessage = ref("");
-const chatMessages = ref([]); // 👈 lưu tin nhắn nhận được
+const chatMessages = ref([]);
+const activeUsers = ref([]); // Danh sách người tham gia
 const showShareModal = ref(false);
+const showDeleteModal = ref(false);
+const messageToDelete = ref(null);
 const copyButtonText = ref("Sao chép");
 const shareUrlInput = ref(null);
 
@@ -249,26 +344,58 @@ onMounted(() => {
 const shareUrl = computed(() => window.location.href);
 
 const setupChatRealtime = (roomCode) => {
-  console.log("Setting up chat realtime for room:", roomCode);
-
   echo
     .channel(`chat-room.${roomCode}`)
     .listen(".message.sent", (e) => {
-      console.log("Tin nhắn mới:", e);
+      const messageData = e.message;
+      const isOwnMessage = messageData.user_id === getClient.value.id;
 
       chatMessages.value.push({
-        id: e.message.id,
-        text: e.message.message,
-        time: new Date(e.message.created_at).toLocaleTimeString(),
-        type:
-          e.message.user_id === room.value.current_user_id
-            ? "sent"
-            : "received",
+        id: messageData.id,
+        text: messageData.message,
+        time:
+          messageData.formatted_time ||
+          new Date(messageData.created_at).toLocaleTimeString(),
+        userName: messageData.user_name,
+        userId: messageData.user_id,
+        isOwnMessage: isOwnMessage,
+      });
+
+      // Cập nhật danh sách người tham gia
+      updateActiveUsers(messageData.user);
+
+      // Scroll xuống cuối
+      nextTick(() => {
+        scrollToBottom();
       });
     })
-    .listenForWhisper("debug", (e) => {
-      console.log("🤫 Whisper:", e);
+    .listen(".message.deleted", (e) => {
+      chatMessages.value = chatMessages.value.filter(
+        (msg) => msg.id !== e.messageId,
+      );
     })
+    .listen(".user.joined", (e) => {
+      // Cập nhật danh sách khi có người tham gia
+      updateActiveUsers(e.user);
+    })
+    .listen(".user.left", (e) => {
+      // Xóa người dùng khỏi danh sách khi rời khỏi
+      activeUsers.value = activeUsers.value.filter(
+        (user) => user.id !== e.userId,
+      );
+    });
+};
+
+const updateActiveUsers = (user) => {
+  if (user && user.id !== getClient.value.id) {
+    const existingUser = activeUsers.value.find((u) => u.id === user.id);
+    if (!existingUser) {
+      activeUsers.value.push({
+        id: user.id,
+        name: user.name,
+      });
+    }
+  }
 };
 
 const fetchMovies = async (slug) => {
@@ -283,12 +410,29 @@ const fetchMovies = async (slug) => {
 const fetchMessages = async (roomCode) => {
   try {
     const response = await clientService.getChatMessages(roomCode);
-    chatMessages.value = response.data.map((msg) => ({
-      id: msg.id,
-      text: msg.message,
-      time: new Date(msg.created_at).toLocaleTimeString(),
-      type: msg.user_id === room.value.current_user_id ? "sent" : "received",
-    }));
+    chatMessages.value = response.data.map((msg) => {
+      const isOwnMessage = msg.user_id === getClient.value.id;
+
+      // Cập nhật danh sách người tham gia từ tin nhắn cũ
+      if (msg.user && !isOwnMessage) {
+        updateActiveUsers(msg.user);
+      }
+
+      return {
+        id: msg.id,
+        text: msg.message,
+        time:
+          msg.formatted_time || new Date(msg.created_at).toLocaleTimeString(),
+        userName: msg.user_name,
+        userId: msg.user_id,
+        isOwnMessage: isOwnMessage,
+      };
+    });
+
+    // Scroll xuống cuối sau khi load tin nhắn
+    nextTick(() => {
+      scrollToBottom();
+    });
   } catch (err) {
     console.error("Lỗi tải tin nhắn:", err);
   }
@@ -298,14 +442,53 @@ const sendMessage = async () => {
   if (!chatMessage.value.trim()) return;
 
   try {
-    await clientService.sendChatMessage({
+    const response = await clientService.sendChatMessage({
       room_code: route.params.code,
       message: chatMessage.value,
       type: "text",
     });
+
     chatMessage.value = "";
+
+    // Scroll xuống cuối sau khi gửi tin nhắn
+    nextTick(() => {
+      scrollToBottom();
+    });
   } catch (err) {
     console.error("Gửi tin nhắn thất bại:", err);
+  }
+};
+
+const deleteMessage = (messageId) => {
+  messageToDelete.value = messageId;
+  showDeleteModal.value = true;
+};
+
+const confirmDeleteMessage = async () => {
+  if (!messageToDelete.value) return;
+
+  try {
+    console.log("Xóa tin nhắn với ID:", messageToDelete.value);
+
+    await clientService.deleteChatMessage(messageToDelete.value);
+
+    // Xóa tin nhắn khỏi local state
+    chatMessages.value = chatMessages.value.filter(
+      (msg) => msg.id !== messageToDelete.value,
+    );
+
+    showDeleteModal.value = false;
+    messageToDelete.value = null;
+  } catch (err) {
+    console.error("Xóa tin nhắn thất bại:", err);
+    showDeleteModal.value = false;
+    messageToDelete.value = null;
+  }
+};
+
+const scrollToBottom = () => {
+  if (chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
   }
 };
 
@@ -315,8 +498,14 @@ const goBack = () => {
   router.go(-1);
 };
 
-const endRoom = () => {
-  router.push("/");
+const endRoom = async (id) => {
+  try {
+    const res = await clientService.deletePremiereRoom(id);
+
+    router.push("/");
+  } catch (error) {
+    console.error("❌ Lỗi xóa phòng:", error);
+  }
 };
 
 const copyShareUrl = async () => {
@@ -334,4 +523,13 @@ const copyShareUrl = async () => {
     }
   }
 };
+
+onUpdated(() => {
+  scrollToBottom();
+});
 </script>
+<style>
+.loading-box {
+  display: none;
+}
+</style>

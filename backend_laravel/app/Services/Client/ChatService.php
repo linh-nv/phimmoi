@@ -50,19 +50,12 @@ class ChatService
             $messageModel->load('user');
 
             // Broadcast event
-            broadcast(new MessageSent($messageModel));
+            event(new MessageSent($messageModel));
 
             // Update cache
             $this->updateMessageCache($roomCode, $messageModel);
 
             DB::commit();
-
-            Log::info('Message sent successfully', [
-                'room_code' => $roomCode,
-                'user_id' => $userId,
-                'message_id' => $messageModel->id,
-            ]);
-
             return $messageModel;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -96,15 +89,9 @@ class ChatService
     public function deleteMessage(
         int $messageId,
         int $userId,
-        bool $isAdmin = false
     ): bool {
         try {
             $message = PremiereRoomMessage::findOrFail($messageId);
-
-            // Check permission
-            if (!$isAdmin && $message->user_id !== $userId) {
-                throw new \Exception('Không có quyền xóa tin nhắn này');
-            }
 
             $success = $message->softDeleteMessage();
 
@@ -113,12 +100,6 @@ class ChatService
                 $this->clearMessageCache($message->premiere_room_code);
 
                 broadcast(new MessageDeleted($message));
-
-                Log::info('Message deleted successfully', [
-                    'message_id' => $messageId,
-                    'deleted_by' => $userId,
-                    'is_admin' => $isAdmin,
-                ]);
             }
 
             return $success;

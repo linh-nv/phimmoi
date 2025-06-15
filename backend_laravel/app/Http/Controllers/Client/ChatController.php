@@ -71,13 +71,12 @@ class ChatController extends Controller
     /**
      * Xóa tin nhắn
      */
-    public function deleteMessage(Request $request, int $messageId): JsonResponse
+    public function deleteMessage(int $messageId): JsonResponse
     {
         try {
             $success = $this->chatService->deleteMessage(
                 messageId: $messageId,
                 userId: Auth::id(),
-                isAdmin: $request->user()->hasRole('admin') ?? false
             );
 
             if ($success) {

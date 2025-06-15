@@ -87,6 +87,9 @@ export const clientService = {
   getPremiereRoom(code) {
     return apiClientService.find(endpoint + "/premiere-room", code);
   },
+  deletePremiereRoom(id) {
+    return apiClientService.delete(endpoint + "/premiere-room", id);
+  },
 
   sendChatMessage(data) {
     return apiClientService.create(endpoint + "/send", data);
@@ -97,6 +100,6 @@ export const clientService = {
   },
 
   deleteChatMessage(messageId) {
-    return apiClientService.delete(endpoint + `/messages/${messageId}`);
+    return apiClientService.delete(endpoint + `/messages`, messageId);
   },
 };

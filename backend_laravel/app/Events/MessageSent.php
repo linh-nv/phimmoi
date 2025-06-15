@@ -48,13 +48,13 @@ class MessageSent implements ShouldBroadcast
         return 'message.sent';
     }
 
-    /**
-     * Determine if this event should broadcast.
-     */
-    public function broadcastWhen(): bool
-    {
-        return !$this->message->is_deleted;
-    }
+    // /**
+    //  * Determine if this event should broadcast.
+    //  */
+    // public function broadcastWhen(): bool
+    // {
+    //     return !$this->message->is_deleted;
+    // }
 
     public function broadcastWith()
     {

@@ -67,7 +67,7 @@ class PremiereRoomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PremiereRoom $premiereRoom): JsonResponse
+    public function delete(PremiereRoom $premiereRoom): JsonResponse
     {
         try {
             $this->premiereRoomRepository->delete($premiereRoom);
