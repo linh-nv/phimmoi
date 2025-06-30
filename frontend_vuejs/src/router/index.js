@@ -262,6 +262,12 @@ const router = createRouter({
           component: () => import("@/views/Client/CreatePremiereRoom.vue"),
           meta: { title: "Tạo phòng xem chung" },
         },
+        {
+          path: "quan-ly-xem-chung",
+          name: "quanly-xemchung",
+          component: () => import("@/views/Client/ManagementPremiereRoom.vue"),
+          meta: { title: "Phòng xem chung" },
+        },
       ],
     },
     {

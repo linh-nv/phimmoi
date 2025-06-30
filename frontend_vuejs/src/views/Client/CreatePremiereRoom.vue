@@ -202,6 +202,8 @@ const createRoom = async () => {
     router.push({ name: "room-detail", params: { code: res.data.code } });
   } catch (error) {
     console.error("❌ Lỗi khi tạo phòng:", error);
+
+    alert(error.response?.data?.errors.error_message || "Lỗi khi tạo phòng");
   }
 };
 

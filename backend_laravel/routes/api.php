@@ -117,7 +117,9 @@ Route::group(['prefix' => 'client', 'middleware' => 'cacheResponse'], function (
         Route::delete('comment/{id}', [MovieCommentController::class, 'delete']);
 
         Route::get('/premiere-room', [PremiereRoomController::class, 'index']);
+        Route::get('/private-premiere-room/{id}', [PremiereRoomController::class, 'getPrivateRoom']);
         Route::get('/premiere-room/{code}', [PremiereRoomController::class, 'show']);
+        Route::put('/premiere-room/{code}', [PremiereRoomController::class, 'end']);
         Route::post('/premiere-room', [PremiereRoomController::class, 'store']);
         Route::delete('/premiere-room/{code}', [PremiereRoomController::class, 'delete']);
 

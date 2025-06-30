@@ -51,7 +51,7 @@ class CrawlMovies extends Command
         $episodesData = [];
 
         // Crawl data from each page
-        for ($page = 1; $page <= 100; $page++) {
+        for ($page = 1; $page <= 10; $page++) {
             $pageData = $this->fetchDataWithRetries($apiUrl . $page);
             if (!$pageData || empty($pageData['items'])) {
                 continue;

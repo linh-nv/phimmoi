@@ -84,8 +84,17 @@ export const clientService = {
   createPremiereRoom(data) {
     return apiClientService.create(endpoint + "/premiere-room", data);
   },
+  getAllPremiereRoom() {
+    return apiClientService.get(endpoint + "/premiere-room");
+  },
+  getPrivatePremiereRoom(id) {
+    return apiClientService.find(endpoint + "/private-premiere-room", id);
+  },
   getPremiereRoom(code) {
     return apiClientService.find(endpoint + "/premiere-room", code);
+  },
+  endPremiereRoom(code) {
+    return apiClientService.update(endpoint + "/premiere-room", code);
   },
   deletePremiereRoom(id) {
     return apiClientService.delete(endpoint + "/premiere-room", id);

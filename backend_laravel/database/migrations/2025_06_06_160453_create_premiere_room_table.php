@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->boolean('isPublic');
+            $table->boolean('status')->default(1); // 1: active, 0: inactive
             $table->timestamps();
         });
     }

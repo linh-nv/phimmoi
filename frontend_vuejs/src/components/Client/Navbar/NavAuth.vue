@@ -70,7 +70,7 @@
           </div>
           <div class="flex flex-col items-center">
             <span class="font-semibold uppercase opacity-50">Hoặc</span>
-            <div class="social-auth flex gap-5 p-5">
+            <!-- <div class="social-auth flex gap-5 p-5">
               <div class="github-auth transition duration-300 hover:scale-110">
                 <button class="rounded-lg bg-white">
                   <img
@@ -87,7 +87,7 @@
                   />
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="create-account">

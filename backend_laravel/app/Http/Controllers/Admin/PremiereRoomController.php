@@ -28,7 +28,19 @@ class PremiereRoomController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $data = $this->premiereRoomRepository->getPaginate();
+            $data = PremiereRoom::where('isPublic', true)->with(['movie', 'user', 'episode'])->latest()->get();
+
+            return $this->responseSuccess(Response::HTTP_OK, $data);
+        } catch (\Exception $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    public function getPrivateRoom(int $id): JsonResponse
+    {
+        try {
+            $data = PremiereRoom::where('user_id', $id)->with(['movie', 'user', 'episode'])->latest()->get();
 
             return $this->responseSuccess(Response::HTTP_OK, $data);
         } catch (\Exception $e) {
@@ -43,6 +55,11 @@ class PremiereRoomController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
+            $isExist = PremiereRoom::where('user_id', $request->input('user_id'))->where('status', true)->exists();
+
+            if ($isExist) {
+                return $this->responseError(Response::HTTP_BAD_REQUEST, 'HTTP_BAD_REQUEST', 'Bạn đã có phòng đang công chiếu!');
+            }
             $data = $this->premiereRoomRepository->create($request->all());
 
             return $this->responseSuccess(Response::HTTP_CREATED, $data);
@@ -52,10 +69,23 @@ class PremiereRoomController extends Controller
         }
     }
 
-    public function show(PremiereRoom $premiereRoom): JsonResponse
+    public function show(string $code): JsonResponse
     {
         try {
-            $premiereRoom->load(['movie', 'user', 'episode']);
+
+            $premiereRoom = PremiereRoom::where('code', $code)->with(['movie', 'user', 'episode'])->firstOrFail();
+
+            return $this->responseSuccess(Response::HTTP_OK, $premiereRoom);
+        } catch (\Exception $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    public function end(string $code): JsonResponse
+    {
+        try {
+            $premiereRoom = PremiereRoom::where('code', $code)->update(['status' => false]);
 
             return $this->responseSuccess(Response::HTTP_OK, $premiereRoom);
         } catch (\Exception $e) {

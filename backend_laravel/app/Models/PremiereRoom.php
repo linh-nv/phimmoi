@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class PremiereRoom extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
         'code',
@@ -104,8 +102,17 @@ class PremiereRoom extends Model
      */
     public function getOnlineUsersCountAttribute(): int
     {
-        // Tạm thời return 0, sẽ implement sau với Pusher presence
-        return 0;
+        $count = $this->messages()
+            ->select('user_id')
+            ->with('user')
+            ->groupBy('user_id')
+            ->get()
+            ->pluck('user')
+            ->unique('id')
+            ->values()
+            ->count();
+
+        return $count;
     }
 
     /**
@@ -121,8 +128,7 @@ class PremiereRoom extends Model
      */
     public function getLastActivityAttribute(): ?string
     {
-        $lastMessage = $this->messages()->latest()->first();
-        return $lastMessage?->created_at?->diffForHumans();
+        return $this?->created_at?->diffForHumans();
     }
 
     /**
