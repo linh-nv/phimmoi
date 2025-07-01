@@ -30,9 +30,9 @@ class ChatService
             $room = PremiereRoom::where('code', $roomCode)->firstOrFail();
             $user = User::findOrFail($userId);
 
-            if (!$room->canAccess($user)) {
-                throw new \Exception('Không có quyền truy cập phòng này');
-            }
+            // if (!$room->canAccess($user)) {
+            //     throw new \Exception('Không có quyền truy cập phòng này');
+            // }
 
             // Validate message
             $this->validateMessage($message, $type);

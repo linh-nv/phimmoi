@@ -39,7 +39,7 @@
       </div>
       <div class="account group relative">
         <span class="flex cursor-pointer items-center gap-2 py-2">
-          <h3 class="ml-2">{{ admin.name }}</h3>
+          <h3 class="ml-2">{{ admin?.name }}</h3>
           <div
             class="flex aspect-square h-5 w-5 items-center justify-center rounded-[50%] border border-gray-400"
           >
