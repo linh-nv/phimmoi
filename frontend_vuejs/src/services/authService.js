@@ -27,7 +27,10 @@ export const authService = {
   },
 
   async register(credentials) {
-    const response = await axios.post(`${AUTH_URL}/register`, credentials);
+    const response = await axiosInstance.post(
+      `${AUTH_URL}/register`,
+      credentials,
+    );
 
     return response.data;
   },
@@ -40,6 +43,18 @@ export const authService = {
       refresh_token: refreshToken,
     });
     cookieService.setToken(response.data.data);
+
+    return response.data;
+  },
+
+  async getAll() {
+    const response = await axiosInstance.get(`${AUTH_URL}/all`);
+
+    return response.data;
+  },
+
+  async delete(id) {
+    const response = await axiosInstance.delete(`${AUTH_URL}/delete/${id}`);
 
     return response.data;
   },

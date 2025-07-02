@@ -17,7 +17,7 @@ class MovieRequest extends FormRequest
 
     public function rules(): array
     {
-        $movieId = $this->route('movie') ?-> $this->route('movie')->id;
+        $movieId = optional($this->route('movie'))->id;
 
         return [
             'name' => 'required|string|max:255',

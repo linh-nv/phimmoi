@@ -22,7 +22,7 @@ class AdminRequest extends FormRequest
      */
     public function rules(): array
     {
-        $adminId = $this->route('admin') ?-> $this->route('admin')->id;
+        $adminId = optional($this->route('admin'))->id;
 
         return [
             'name' => 'required|string|max:255',

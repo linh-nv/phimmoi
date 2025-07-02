@@ -17,7 +17,7 @@ class EpisodeRequest extends FormRequest
 
     public function rules(): array
     {
-        $episodeId = $this->route('episode')?->$this->route('episode')->id;
+        $episodeId = optional($this->route('episode'))->id;
 
         return [
             'name' => 'required|string|max:255',

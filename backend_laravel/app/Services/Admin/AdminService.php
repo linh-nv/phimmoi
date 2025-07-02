@@ -24,6 +24,11 @@ class AdminService
         $this->adminJWT = $adminJWT;
     }
 
+    public function getAll()
+    {
+
+        return $this->adminRepository->getPaginate();
+    }
     /**
      * ============== JWT service =============    
      * */
@@ -98,5 +103,20 @@ class AdminService
         return $this->adminRepository->update($admin, [
             'password' => Hash::make($newPassword)
         ]);
+    }
+
+    public function delete(int $id)
+    {
+        $admin = $this->adminRepository->find($id);
+
+        if (!$admin) {
+            throw new \Exception('Admin not found');
+        }
+
+        if ($admin->id === Auth::guard('admin-api')->id()) {
+            throw new \Exception('You cannot delete yourself');
+        }
+
+        return $this->adminRepository->delete($admin);
     }
 }

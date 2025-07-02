@@ -17,7 +17,7 @@ class GenreRequest extends FormRequest
 
     public function rules(): array
     {
-        $genreId = $this->route('genre') ?-> $this->route('genre')->id;
+        $genreId = optional($this->route('genre'))->id;
 
         return [
             'title' => 'required|string|max:255',

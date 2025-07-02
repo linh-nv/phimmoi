@@ -17,7 +17,7 @@ class CountryRequest extends FormRequest
 
     public function rules(): array
     {
-        $countryId = $this->route('country') ?-> $this->route('country')->id;
+        $countryId = optional($this->route('country'))->id;
 
         return [
             'title' => 'required|string|max:255',

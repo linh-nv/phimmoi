@@ -22,6 +22,18 @@ class AdminController extends Controller
         $this->adminService = $adminService;
     }
 
+    public function index(): JsonResponse
+    {
+        try {
+            $admin = $this->adminService->getAll();
+
+            return $this->responseSuccess(Response::HTTP_OK, $admin);
+        } catch (\Throwable $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
@@ -94,6 +106,18 @@ class AdminController extends Controller
             }
 
             return $this->responseSuccess(Response::HTTP_OK, $updatedAdmin);
+        } catch (\Throwable $e) {
+
+            return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());
+        }
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        try {
+            $admin = $this->adminService->delete($id);
+
+            return $this->responseSuccess(Response::HTTP_OK, $admin);
         } catch (\Throwable $e) {
 
             return $this->responseError(Response::HTTP_INTERNAL_SERVER_ERROR, 'INTERNAL_ERROR', $e->getMessage());

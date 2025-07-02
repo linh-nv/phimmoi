@@ -38,6 +38,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('login', [AdminController::class, 'login']);
     Route::post('refresh', [AdminController::class, 'refresh']);
     Route::group(['middleware' => 'jwt.verify'], function () {
+        Route::get('all', [AdminController::class, 'index']);
+        Route::delete('delete/{id}', [AdminController::class, 'delete']);
         Route::post('logout', [AdminController::class, 'logout']);
         Route::post('change-password', [AdminController::class, 'changePassword']);
         Route::get('me', [AdminController::class, 'adminProfile']);

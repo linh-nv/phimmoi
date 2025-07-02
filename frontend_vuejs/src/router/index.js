@@ -19,6 +19,28 @@ const router = createRouter({
               component: () => import("@/views/Admin/HomeView.vue"),
             },
             {
+              path: "accounts-management",
+              children: [
+                {
+                  path: "",
+                  name: "accounts-management",
+                  component: () =>
+                    import("@/views/Admin/Accounts/AccountView.vue"),
+                },
+                {
+                  path: "form",
+                  children: [
+                    {
+                      path: "",
+                      name: "account-create",
+                      component: () =>
+                        import("@/views/Admin/Accounts/AccountForm.vue"),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               path: "/account-information",
               name: "account-information",
               component: () => import("@/views/Admin/ChangePassword.vue"),

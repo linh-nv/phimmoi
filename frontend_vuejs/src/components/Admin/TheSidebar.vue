@@ -91,6 +91,12 @@ const menuItems = ref([
     link: findPathByName("country"),
     isActive: false,
   },
+  {
+    name: "Accounts",
+    icon: "fa-solid fa-users",
+    link: findPathByName("accounts-management"),
+    isActive: false,
+  },
 ]);
 
 const selectItem = (selectedItem) => {
