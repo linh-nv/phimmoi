@@ -1,8 +1,10 @@
 <template>
-  <div class="h-screen max-h-screen overflow-hidden bg-black text-white">
+  <div
+    class="h-screen max-h-screen overflow-x-hidden overflow-y-scroll bg-gray-800 text-white"
+  >
     <!-- Header -->
     <div
-      class="flex items-center justify-between border-b border-gray-700 px-4 py-2"
+      class="flex items-center justify-between border-b border-gray-700 px-4 py-5 max-h-[75px] max-w-[75vw]"
     >
       <div class="flex items-center space-x-4">
         <button
@@ -14,14 +16,15 @@
               fill-rule="evenodd"
               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
               clip-rule="evenodd"
-            ></path>
+            />
           </svg>
         </button>
         <div class="flex items-center space-x-3">
           <span
             class="rounded-sm bg-red-600 px-2 py-1 text-xs font-bold text-white"
-            >LIVE</span
           >
+            LIVE
+          </span>
           <h1 class="text-lg font-medium">{{ room.title || "Đang tải..." }}</h1>
         </div>
       </div>
@@ -32,7 +35,7 @@
         >
           Kết thúc
         </button>
-        <button
+        <!-- <button
           @click="toggleSettings"
           class="rounded-full p-2 transition-colors hover:bg-gray-700"
         >
@@ -41,15 +44,15 @@
               fill-rule="evenodd"
               d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
               clip-rule="evenodd"
-            ></path>
+            />
           </svg>
-        </button>
+        </button> -->
       </div>
     </div>
 
-    <div class="flex flex-1">
+    <div class="flex">
       <!-- Video Player Area -->
-      <div class="relative flex-1 bg-gray-900">
+      <div class="relative w-3/4 bg-gray-900">
         <!-- Video Container -->
         <div class="relative aspect-video bg-black">
           <!-- Video Player -->
@@ -60,10 +63,10 @@
             frameborder="0"
             allowfullscreen
             allow="autoplay; encrypted-media"
-          ></iframe>
+          />
         </div>
 
-        <!-- Movie Info -->
+        <!-- Action Bar -->
         <div class="bg-gray-800 px-4 py-3.5">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-6">
@@ -78,7 +81,7 @@
                 >
                   <path
                     d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"
-                  ></path>
+                  />
                 </svg>
                 <span class="text-sm text-gray-400">Chia sẻ</span>
               </button>
@@ -105,9 +108,89 @@
             </div>
 
             <div class="text-right">
-              <span class="text-sm font-medium text-white">{{
-                room.user?.name || "Linh"
-              }}</span>
+              <span class="text-sm font-medium text-white">
+                {{ room.user?.name || "Linh" }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie Info Section -->
+        <div class="bg-gray-900 px-4 py-4">
+          <div class="flex items-start space-x-4">
+            <!-- Movie Poster -->
+            <div class="flex-shrink-0">
+              <img
+                :src="room.movie?.poster_url"
+                :alt="room.movie?.name"
+                class="h-32 w-20 rounded-lg object-cover shadow-lg"
+              />
+            </div>
+
+            <!-- Movie Details -->
+            <div class="min-w-0 flex-1">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h2 class="mb-2 text-xl font-bold text-white">
+                    {{ room.movie?.name || "M3GAN 2.0" }}
+                  </h2>
+                  <p class="mb-3 text-sm text-gray-400">
+                    {{ room.movie?.original_name || "M3GAN 2.0" }}
+                  </p>
+
+                  <!-- Rating & Info Tags -->
+                  <div class="mb-3 flex flex-wrap items-center gap-2">
+                    <span
+                      class="rounded bg-yellow-600 px-2 py-1 text-xs font-medium text-white"
+                    >
+                      {{ room.episode?.name }}
+                    </span>
+
+                    <span
+                      class="rounded bg-gray-700 px-2 py-1 text-xs text-white"
+                    >
+                      {{ room.movie?.year || "2025" }}
+                    </span>
+
+                    <span
+                      class="rounded bg-gray-700 px-2 py-1 text-xs text-white"
+                    >
+                      {{ room.movie?.time || "1h 40m" }}
+                    </span>
+                    <span
+                      class="rounded bg-gray-700 px-2 py-1 text-xs text-white"
+                    >
+                      {{ "HD" }}
+                    </span>
+                  </div>
+
+                  <!-- Genres
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span
+                      v-for="genre in room.movie?.genres || [
+                        'Chiều Rạp',
+                        'Gay Cấn',
+                        'Kinh Dị',
+                        'Khoa Học',
+                        'Tâm Lý',
+                        'Viễn Tưởng',
+                      ]"
+                      :key="genre"
+                      class="text-sm text-gray-300"
+                    >
+                      {{ genre }}
+                    </span>
+                  </div> -->
+
+                  <!-- Description -->
+                  <p class="line-clamp-2 text-sm text-gray-300">
+                    {{
+                      room.movie?.description ||
+                      "Phần tiếp theo của bộ phim kinh dị về con búp bê AI M3GAN. Câu chuyện tiếp tục khai thác những khía cạnh đen tối của trí tuệ nhân tạo và sự nguy hiểm tiềm ẩn khi công nghệ vượt khỏi tầm kiểm soát của con người."
+                    }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -116,100 +199,105 @@
       <!-- Chat Panel -->
       <div
         v-if="showChat"
-        class="flex w-1/4 flex-col border-l border-gray-700 bg-gray-900"
+        class="fixed right-0 top-0 flex h-screen w-1/4 flex-col justify-between border-l border-gray-700 bg-gray-900"
       >
-        <!-- Chat Header với danh sách người tham gia -->
-        <div class="border-b border-gray-700 bg-green-600 p-4">
-          <div class="text-sm font-medium text-white">
-            Buổi xem chung bắt đầu.
-          </div>
-          <div class="mt-1 text-xs text-green-100">
-            Chúc các bạn xem phim vui vẻ!
-          </div>
-          <!-- Danh sách người tham gia -->
-          <div v-if="activeUsers.length > 0" class="mt-2">
-            <div class="mb-1 text-xs text-green-100">Người tham gia:</div>
-            <div class="flex flex-wrap gap-1">
-              <span
-                v-for="user in activeUsers"
-                :key="user.id"
-                class="inline-block rounded-full bg-green-700 px-2 py-1 text-xs text-green-100"
-              >
-                {{ user.name }}
-              </span>
+        <div>
+          <!-- Chat Header -->
+          <div class="border-b border-gray-700 bg-green-600 p-4">
+            <div class="text-sm font-medium text-white">
+              Buổi xem chung bắt đầu.
+            </div>
+            <div class="mt-1 text-xs text-green-100">
+              Chúc các bạn xem phim vui vẻ!
+            </div>
+            <!-- Active Users -->
+            <div v-if="activeUsers.length > 0" class="mt-2">
+              <div class="mb-1 text-xs text-green-100">Người tham gia:</div>
+              <div class="flex flex-wrap gap-1">
+                <span
+                  v-for="user in activeUsers"
+                  :key="user.id"
+                  class="inline-block rounded-full bg-green-700 px-2 py-1 text-xs text-green-100"
+                >
+                  {{ user.name }}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Chat Messages -->
-        <div class="space-y-3 p-4">
-          <div class="text-center text-xs text-gray-400">
-            {{ room.episode?.name }} •
-            {{ room.movie?.name }}
+          <!-- Episode Info -->
+          <div class="p-4">
+            <div class="text-center text-xs text-gray-400">
+              {{ room.episode?.name }} •
+              {{ room.movie?.name }}
+            </div>
           </div>
-        </div>
-        <div
-          ref="chatContainer"
-          class="max-h-[72vh] flex-1 space-y-3 overflow-y-scroll p-4"
-        >
-          <!-- System Messages -->
-          <div class="rounded-lg bg-gray-800 p-3 text-sm">
-            <div class="mb-1 font-medium text-yellow-400">Hệ thống</div>
-            <div class="text-gray-300">Phòng đã được tạo thành công</div>
-          </div>
-
           <!-- Chat Messages -->
           <div
-            v-for="(msg, index) in chatMessages"
-            :key="index"
-            class="flex"
-            :class="msg.isOwnMessage ? 'justify-end' : 'justify-start'"
+            ref="chatContainer"
+            class="max-h-[78vh] flex-1 space-y-3 overflow-y-scroll p-4"
           >
-            <div
-              class="group relative max-w-[80%]"
-              :class="msg.isOwnMessage ? 'mr-2' : 'ml-2'"
-            >
-              <!-- Tên người gửi (chỉ hiển thị với tin nhắn của người khác) -->
-              <div
-                v-if="!msg.isOwnMessage && msg.userName"
-                class="mb-1 px-3 text-xs text-gray-400"
-              >
-                {{ msg.userName }}
-              </div>
+            <!-- System Message -->
+            <div class="rounded-lg bg-gray-800 p-3 text-sm">
+              <div class="mb-1 font-medium text-yellow-400">Hệ thống</div>
+              <div class="text-gray-300">Phòng đã được tạo thành công</div>
+            </div>
 
+            <!-- Chat Messages -->
+            <div
+              v-for="(msg, index) in chatMessages"
+              :key="index"
+              class="flex"
+              :class="msg.isOwnMessage ? 'justify-end' : 'justify-start'"
+            >
               <div
-                class="relative rounded-lg px-3 py-2 text-sm"
-                :class="[
-                  msg.isOwnMessage
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-700 text-white',
-                ]"
+                class="group relative max-w-[80%]"
+                :class="msg.isOwnMessage ? 'mr-2' : 'ml-2'"
               >
-                <div>{{ msg.text }}</div>
+                <!-- Username -->
                 <div
-                  class="mt-1 flex items-center justify-between text-xs opacity-70"
-                  :class="msg.isOwnMessage ? 'text-blue-100' : 'text-gray-300'"
+                  v-if="!msg.isOwnMessage && msg.userName"
+                  class="mb-1 px-3 text-xs text-gray-400"
                 >
-                  <span>{{ msg.time }}</span>
-                  <!-- Nút xóa tin nhắn (chỉ hiển thị với tin nhắn của mình) -->
-                  <button
-                    v-if="msg.isOwnMessage"
-                    @click="deleteMessage(msg.id)"
-                    class="ml-2 opacity-0 transition-opacity duration-200 hover:text-red-300 group-hover:opacity-100"
-                    title="Xóa tin nhắn"
+                  {{ msg.userName }}
+                </div>
+
+                <div
+                  class="relative rounded-lg px-3 py-2 text-sm"
+                  :class="[
+                    msg.isOwnMessage
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-700 text-white',
+                  ]"
+                >
+                  <div>{{ msg.text }}</div>
+                  <div
+                    class="mt-1 flex items-center justify-between text-xs opacity-70"
+                    :class="
+                      msg.isOwnMessage ? 'text-blue-100' : 'text-gray-300'
+                    "
                   >
-                    <svg
-                      class="h-3 w-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                    <span>{{ msg.time }}</span>
+                    <!-- Delete Button -->
+                    <button
+                      v-if="msg.isOwnMessage"
+                      @click="deleteMessage(msg.id)"
+                      class="ml-2 opacity-0 transition-opacity duration-200 hover:text-red-300 group-hover:opacity-100"
+                      title="Xóa tin nhắn"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9zM4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v1H4V5zM3 8a1 1 0 011-1h12a1 1 0 110 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V9a1 1 0 01-1-1z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        class="h-3 w-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9zM4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v1H4V5zM3 8a1 1 0 011-1h12a1 1 0 110 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V9a1 1 0 01-1-1z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -305,45 +393,46 @@
         </div>
       </div>
     </div>
-  </div>
-  <div
-    v-if="!room.status && room?.movie?.slug"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
-  >
+
+    <!-- Room Ended Modal -->
     <div
-      class="mx-4 w-[420px] overflow-hidden rounded-2xl bg-gray-900 shadow-2xl"
+      v-if="!room.status && room?.movie?.slug"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
     >
-      <div class="px-6 py-4 text-center">
-        <div class="text-sm font-medium text-gray-300">Đã kết thúc</div>
-        <div class="mt-1 text-lg font-bold text-yellow-400">
-          {{ room?.movie?.name }}
+      <div
+        class="mx-4 w-[420px] overflow-hidden rounded-2xl bg-gray-900 shadow-2xl"
+      >
+        <div class="px-6 py-4 text-center">
+          <div class="text-sm font-medium text-gray-300">Đã kết thúc</div>
+          <div class="mt-1 text-lg font-bold text-yellow-400">
+            {{ room?.movie?.name }}
+          </div>
         </div>
-      </div>
 
-      <!-- Action Buttons -->
-      <div class="flex gap-10 p-6">
-        <router-link
-          :to="{
-            name: 'phim',
-            params: { slug: room?.movie.slug },
-            query: { title: room?.movie.name },
-          }"
-          class="flex w-full max-w-52 items-center justify-between gap-5 rounded-xl bg-white px-6 py-4 font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:shadow-lg"
-        >
-          <i class="fa-solid fa-eye"></i>
-          <span>Xem riêng</span>
-        </router-link>
+        <div class="flex gap-10 p-6">
+          <router-link
+            :to="{
+              name: 'phim',
+              params: { slug: room?.movie.slug },
+              query: { title: room?.movie.name },
+            }"
+            class="flex w-full max-w-52 items-center justify-between gap-5 rounded-xl bg-white px-6 py-4 font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:shadow-lg"
+          >
+            <i class="fa-solid fa-eye" />
+            <span>Xem riêng</span>
+          </router-link>
 
-        <router-link
-          :to="{
-            name: 'xemchung',
-            query: { title: 'Xem chung' },
-          }"
-          class="flex w-full max-w-52 items-center justify-between gap-5 rounded-xl border-2 border-gray-600 bg-transparent px-6 py-4 font-medium text-white transition-all duration-200 hover:border-gray-500 hover:bg-gray-800"
-        >
-          <i class="fa-solid fa-podcast"></i>
-          <span>Live khác</span>
-        </router-link>
+          <router-link
+            :to="{
+              name: 'xemchung',
+              query: { title: 'Xem chung' },
+            }"
+            class="flex w-full max-w-52 items-center justify-between gap-5 rounded-xl border-2 border-gray-600 bg-transparent px-6 py-4 font-medium text-white transition-all duration-200 hover:border-gray-500 hover:bg-gray-800"
+          >
+            <i class="fa-solid fa-podcast" />
+            <span>Live khác</span>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>

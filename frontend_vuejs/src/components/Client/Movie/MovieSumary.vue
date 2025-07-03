@@ -147,7 +147,7 @@ const emit = defineEmits(["showEpisodeInfo"]);
 const handleWatchNow = () => {
   setTimeout(() => {
     createView();
-  }, 60000);
+  });
   emit("showEpisodeInfo", props.firstEpisode);
 };
 

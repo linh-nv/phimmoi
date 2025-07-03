@@ -141,7 +141,7 @@ const onSubmit = async () => {
 
     window.location.reload();
   } catch (error) {
-    alert("An unexpected error occurred. Please try again.");
+    alert("Wrong account or password, please try again!");
   }
 };
 </script>

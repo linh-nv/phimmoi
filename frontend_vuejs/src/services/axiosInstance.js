@@ -46,6 +46,7 @@ axiosInstance.interceptors.request.use(
     const loadingStore = useLoadingStore();
     loadingStore.stopLoading();
 
+    alert(error);
     return Promise.reject(error);
   },
 );

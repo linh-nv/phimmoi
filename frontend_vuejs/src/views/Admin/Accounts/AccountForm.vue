@@ -1,6 +1,6 @@
 <template>
   <section class="head flex items-center justify-between">
-    <h1>New Category</h1>
+    <h1>New Account</h1>
     <button
       @click="router.back()"
       class="flex cursor-pointer items-center justify-between gap-3 rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-400"
@@ -14,42 +14,66 @@
     @submit="handleSubmit"
     :validation-schema="validationSchema"
     class="form-box"
+    autocomplete="off"
   >
-    <div class="form-group">
-      <label for="title">Title:</label>
-      <Field name="title" v-model="form.title" type="text" id="title" />
-      <ErrorMessage name="title" class="form-message text-red-500" />
+    <div class="flex w-full gap-10">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <Field
+          name="user_name"
+          v-model="form.name"
+          type="text"
+          id="name"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <Field
+          name="user_email"
+          v-model="form.email"
+          type="text"
+          id="email"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <Field
+          name="user_phone"
+          v-model="form.phone"
+          type="text"
+          id="phone"
+          autocomplete="off"
+        />
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="slug">Slug:</label>
-      <Field name="slug" v-model="form.slug" type="text" id="slug" />
-      <ErrorMessage name="slug" class="form-message text-red-500" />
-    </div>
+    <div class="flex w-full gap-10">
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <Field
+          name="user_password"
+          v-model="form.password"
+          type="password"
+          id="password"
+          autocomplete="new-password"
+        />
+      </div>
 
-    <div class="flex w-full flex-col">
-      <label for="description">Description:</label>
-      <Field
-        as="textarea"
-        name="description"
-        v-model="form.description"
-        id="description"
-      />
-      <ErrorMessage name="description" class="form-message text-red-500" />
+      <div class="form-group">
+        <label for="password_confirmation">Password confirmation:</label>
+        <Field
+          name="user_password_confirmation"
+          v-model="form.password_confirmation"
+          type="password"
+          id="password_confirmation"
+          autocomplete="new-password"
+        />
+      </div>
     </div>
-
-    <!-- Status -->
-    <div class="form-group">
-      <label for="status">Status:</label>
-      <Field as="select" v-model.number="form.status" id="status" name="status">
-        <option value="" disabled>Select Status</option>
-        <option v-for="[key, value] in categoryStatus" :value="key">
-          {{ value }}
-        </option>
-      </Field>
-      <ErrorMessage name="status" class="form-message text-red-500" />
-    </div>
-
     <button
       class="w-full rounded-md bg-blue-500 px-4 py-2 text-xl font-semibold text-white"
       type="submit"
@@ -60,47 +84,42 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { categoryService } from "@/services/Admin/Category/category";
-import { enumService } from "@/services/Admin/Enum/enum.js";
-import { useRouter, useRoute } from "vue-router";
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 import { useForm, Form, Field, ErrorMessage } from "vee-validate";
-import { formSchema } from "@/validation/Category/formSchema";
+import { formSchema } from "@/validation/Account/formSchema";
+import { authService } from "@/services/authService";
 
 const router = useRouter();
-const route = useRoute();
-const slug = route.params.slug;
-
-const validationSchema = formSchema;
-
-useForm({
-  validationSchema,
+const { validate } = useForm({
+  validationSchema: formSchema,
 });
+// const validationSchema = formSchema;
+
+// useForm({
+//   validationSchema,
+// });
 
 const form = reactive({
-  title: "",
-  slug: "",
-  origin_name: "",
-  description: "",
-  status: null,
+  name: "",
+  email: "",
+  phone: "",
+  password: "",
+  password_confirmation: "",
 });
 
 const errors = ref({});
 
 const handleSubmit = async () => {
+  const isValid = await validate();
+  if (!isValid) return;
+
   try {
-    if (slug) {
-      await categoryService.update(slug, form);
-
-      alert("Category updated successfully!");
-    } else {
-      await categoryService.create(form);
-
-      alert("Category added successfully!");
-    }
-
-    router.push({ name: "category" });
+    await authService.register(form);
+    alert("Account added successfully!");
+    router.push({ name: "accounts-management" });
   } catch (error) {
+    alert(error.response.data.message);
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
     } else {
@@ -108,20 +127,4 @@ const handleSubmit = async () => {
     }
   }
 };
-
-const categoryStatus = ref([]);
-
-onMounted(async () => {
-  try {
-    const enumResponse = await enumService.getStatus();
-    categoryStatus.value = Object.entries(enumResponse.data);
-
-    if (slug) {
-      const response = await categoryService.find(slug);
-      Object.assign(form, { ...response.data });
-    }
-  } catch (error) {
-    console.error("Error fetching data", error);
-  }
-});
 </script>

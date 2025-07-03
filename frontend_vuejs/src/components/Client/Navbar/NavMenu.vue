@@ -65,6 +65,7 @@
           </a> -->
 
           <NavItem
+            v-if="user"
             title="Xem chung"
             icon-class="fa-solid fa-globe w-9"
             section-key="premiere_rooms"
@@ -82,6 +83,7 @@ import { ref, onMounted } from "vue";
 import NavItem from "./NavItem.vue";
 import { clientService } from "@/services/Client";
 import { clientCookieService } from "@/services/Client/clientCookieService";
+import { useClientStore } from "@/stores/clientStore";
 
 const props = defineProps({
   isNavOpen: {
@@ -89,6 +91,9 @@ const props = defineProps({
     required: true,
   },
 });
+const clientStore = useClientStore();
+
+const user = clientStore.getClient ?? null;
 
 const activeSection = ref(null);
 

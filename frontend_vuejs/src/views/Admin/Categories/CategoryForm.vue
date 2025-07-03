@@ -71,11 +71,11 @@ const router = useRouter();
 const route = useRoute();
 const slug = route.params.slug;
 
-const validationSchema = formSchema;
+// const validationSchema = formSchema;
 
-useForm({
-  validationSchema,
-});
+// useForm({
+//   validationSchema,
+// });
 
 const form = reactive({
   title: "",
@@ -101,6 +101,8 @@ const handleSubmit = async () => {
 
     router.push({ name: "category" });
   } catch (error) {
+    alert(error.response.data.message);
+
     if (error.response && error.response.data.errors) {
       errors.value = error.response.data.errors;
     } else {
